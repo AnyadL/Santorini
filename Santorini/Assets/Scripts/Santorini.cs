@@ -7,6 +7,8 @@ public class Santorini : MonoBehaviour
     [SerializeField]
     Ground _ground = default;
 
+    Vector3? _clickLocation;
+
     void Start()
     {
         _ground.OnStart();
@@ -29,8 +31,7 @@ public class Santorini : MonoBehaviour
     {
         try
         {
-            TestMouseClick();
-            _ground.OnUpdate();
+            _ground.OnFixedUpdate(GetMouseClick());
         }
         catch (System.Exception e)
         {
@@ -39,18 +40,19 @@ public class Santorini : MonoBehaviour
         }
     }
 
-    void TestMouseClick()
+    Vector3? GetMouseClick()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             float raycastDistance = 100f;
             if (Physics.Raycast(ray, out hit, raycastDistance))
             {
-                Debug.DrawLine(ray.origin, hit.point);
-                Debug.Log(hit.point);
+                return hit.point;
             }
         }
+
+        return null;
     }
 }

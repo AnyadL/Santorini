@@ -24,11 +24,33 @@ public class Ground : MonoBehaviour
         }
     }
 
-    public void OnFixedUpdate()
+    public void OnFixedUpdate(Vector3? mousePosition)
     {
+        Tile nearestTile = null;
+        float minDistance = float.MaxValue;
         foreach (Tile tile in _tiles)
         {
+            if (mousePosition != null)
+            {
+                float distance = Vector3.Distance((Vector3) mousePosition, tile.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestTile = tile;
+                }
+            }
+
             tile.OnFixedUpdate();
         }
+
+        if(nearestTile != null)
+        {
+            nearestTile.OnMouseClick();
+        }
+    }
+
+    public void OnFixedUpdate()
+    {
+
     }
 }
