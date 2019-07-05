@@ -48,9 +48,4 @@ public class Ground : MonoBehaviour
             nearestTile.OnMouseClick();
         }
     }
-
-    public void OnFixedUpdate()
-    {
-
-    }
 }

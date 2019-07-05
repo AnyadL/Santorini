@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Tile : MonoBehaviour
 {
@@ -61,16 +62,18 @@ public class Tile : MonoBehaviour
 
     [SerializeField]
     TileNeighbour[] _neighbours;
+    
+    Worker _worker = null;
+    List<ITowerPiece> _towerPieces;
+
+    bool _blocked = false;
 
     public void OnStart()
     {
-
+        _towerPieces = new List<ITowerPiece>();
     }
 
-    public void OnUpdate()
-    {
-
-    }
+    public void OnUpdate() { }
 
     public void OnFixedUpdate()
     {
@@ -100,5 +103,53 @@ public class Tile : MonoBehaviour
     public void SetNeighbours(TileNeighbour[] neighbours)
     {
         _neighbours = neighbours;
+    }
+
+    public void OnMoveWorker(Worker worker, int previousLevel)
+    {
+        if(_worker != null)
+        {
+            Debug.LogError("Tried to move worker onto already occupied tile");
+        }
+
+        if(_towerPieces.Select(t => t.GetLevel()).Max() > previousLevel + 1)
+        {
+            Debug.LogError("Worker tried to move up more than one level");
+        }
+
+        _worker = worker;
+    }
+
+    public void OnBuild(ITowerPiece towerPiece)
+    {
+        if(_worker != null)
+        {
+            Debug.LogError("Tried to build on top of worker");
+        }
+
+        if(_towerPieces.Count == 0)
+        {
+            if(towerPiece.GetLevel() == 1)
+            {
+                _towerPieces.Add(towerPiece);
+            }
+        }
+        else
+        {
+            int maxLevel = _towerPieces.Select(t => t.GetLevel()).Max();
+            if(maxLevel + 1 == towerPiece.GetLevel())
+            {
+                _towerPieces.Add(towerPiece);
+            }
+            else
+            {
+                Debug.LogError("Tried to build an invalid piece");
+            }
+        }
+
+        if(towerPiece.GetType() == typeof(TowerPiece_Dome))
+        {
+            _blocked = true;
+        }
     }
 }

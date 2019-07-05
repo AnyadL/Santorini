@@ -7,11 +7,20 @@ public class Santorini : MonoBehaviour
     [SerializeField]
     Ground _ground = default;
 
-    Vector3? _clickLocation;
+    [SerializeField]
+    List<Player> _players = default;
+
+    Player _activePlayer = null;
 
     void Start()
     {
         _ground.OnStart();
+        foreach (Player player in _players)
+        {
+            player.OnStart();
+        }
+
+        _activePlayer = _players[0];
     }
     
     void Update()
@@ -19,6 +28,10 @@ public class Santorini : MonoBehaviour
         try
         {
             _ground.OnUpdate();
+            foreach (Player player in _players)
+            {
+                player.OnUpdate();
+            }
         }
         catch (System.Exception e)
         {
