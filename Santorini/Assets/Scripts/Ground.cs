@@ -24,15 +24,17 @@ public class Ground : MonoBehaviour
         }
     }
 
-    public void OnFixedUpdate(Vector3? mousePosition)
+    public void OnFixedUpdate(bool clicked, Vector3 clickedPosition)
     {
         Tile nearestTile = null;
         float minDistance = float.MaxValue;
+        Vector2 clickedPositionFlat = new Vector2(clickedPosition.x, clickedPosition.z);
         foreach (Tile tile in _tiles)
         {
-            if (mousePosition != null)
+            if (clicked)
             {
-                float distance = Vector3.Distance((Vector3) mousePosition, tile.transform.position);
+                Vector2 tilePositionFlat = new Vector2(tile.transform.position.x, tile.transform.position.z);
+                float distance = Vector2.Distance(clickedPositionFlat, tilePositionFlat);
                 if (distance < minDistance)
                 {
                     minDistance = distance;

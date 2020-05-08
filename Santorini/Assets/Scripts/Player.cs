@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+/// <summary>
+/// The base game of Santorini has two players. Each Player has a God card that gives them powers. They move Workers around.
+/// </summary>
+public class Player
 {
     IGod _god;
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// There are 25 tiles on a Santorini board. Each tile has 8 neighbours, 3-8 of which are directly neighbouring. Only certain God powers allow a Player to move their Worker using indirect neighbours.
+/// </summary>
 public class Tile : MonoBehaviour
 {
     [System.Serializable]
@@ -63,14 +66,14 @@ public class Tile : MonoBehaviour
     [SerializeField]
     TileNeighbour[] _neighbours;
     
-    Worker _worker = null;
-    List<ITowerPiece> _towerPieces;
+    Worker _workerOnTile = null;
+    List<ITowerPiece> _towerPiecesOnTile;
 
     bool _blocked = false;
 
     public void OnStart()
     {
-        _towerPieces = new List<ITowerPiece>();
+        _towerPiecesOnTile = new List<ITowerPiece>();
     }
 
     public void OnUpdate() { }
@@ -107,39 +110,39 @@ public class Tile : MonoBehaviour
 
     public void OnMoveWorker(Worker worker, int previousLevel)
     {
-        if(_worker != null)
+        if(_workerOnTile != null)
         {
             Debug.LogError("Tried to move worker onto already occupied tile");
         }
 
-        if(_towerPieces.Select(t => t.GetLevel()).Max() > previousLevel + 1)
+        if(_towerPiecesOnTile.Select(t => t.GetLevel()).Max() > previousLevel + 1)
         {
             Debug.LogError("Worker tried to move up more than one level");
         }
 
-        _worker = worker;
+        _workerOnTile = worker;
     }
 
     public void OnBuild(ITowerPiece towerPiece)
     {
-        if(_worker != null)
+        if(_workerOnTile != null)
         {
             Debug.LogError("Tried to build on top of worker");
         }
 
-        if(_towerPieces.Count == 0)
+        if(_towerPiecesOnTile.Count == 0)
         {
             if(towerPiece.GetLevel() == 1)
             {
-                _towerPieces.Add(towerPiece);
+                _towerPiecesOnTile.Add(towerPiece);
             }
         }
         else
         {
-            int maxLevel = _towerPieces.Select(t => t.GetLevel()).Max();
+            int maxLevel = _towerPiecesOnTile.Select(t => t.GetLevel()).Max();
             if(maxLevel + 1 == towerPiece.GetLevel())
             {
-                _towerPieces.Add(towerPiece);
+                _towerPiecesOnTile.Add(towerPiece);
             }
             else
             {
