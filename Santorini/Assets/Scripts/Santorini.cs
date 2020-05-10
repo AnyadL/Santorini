@@ -11,23 +11,16 @@ public class Santorini : MonoBehaviour
     [SerializeField]
     PlayerCamera _camera = default;
 
-    List<Player> _players = default;
-
-    Player _activePlayer = null;
+    List<God> _gods = default;
+    God _activeGod = null;
 
     Vector3 _mouseClickedPosition = default;
 
     void Start()
     {
         _ground.OnStart();
-        _players = new List<Player>() { new Player(), new Player() };
-
-        foreach (Player player in _players)
-        {
-            player.OnStart();
-        }
-
-        _activePlayer = _players[0];
+        _gods = new List<God>() { new BaseGod(), new BaseGod() };
+        _activeGod = _gods[0];
     }
     
     void Update()
@@ -35,9 +28,13 @@ public class Santorini : MonoBehaviour
         try
         {
             _ground.OnUpdate();
-            foreach (Player player in _players)
+
+            // If Workers aren't placed -- _activeGod.PlaceWorkers() and switch _activeGod
+
+            _activeGod.PlayTurn();
+            if(_activeGod.GetStatus() == God.GodStatus.DoneTurn)
             {
-                player.OnUpdate();
+                _activeGod = GetNextGod();
             }
         }
         catch (System.Exception e)
@@ -91,5 +88,18 @@ public class Santorini : MonoBehaviour
         }
 
         return false;
+    }
+
+    God GetNextGod()
+    {
+        for(int i = 0; i < _gods.Count; i++)
+        {
+            if(_gods[i-1] == _activeGod)
+            {
+                return _gods[i];
+            }
+        }
+
+        return _activeGod;
     }
 }
