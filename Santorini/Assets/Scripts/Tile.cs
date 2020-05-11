@@ -37,30 +37,15 @@ public class Tile : MonoBehaviour
         {
             return _tile;
         }
-
-        public void SetTile(Tile tile)
-        {
-            _tile = tile;
-        }
-
+        
         public Direction GetDirection()
         {
             return _direction;
         }
 
-        public void SetDirection(Direction direction)
-        {
-            _direction = direction;
-        }
-
         public bool IsDirectlyNeighbouring()
         {
             return _directlyNeighbouring;
-        }
-
-        public void SetDirectlyNeighbouring(bool directlyNeighbouring)
-        {
-            _directlyNeighbouring = directlyNeighbouring;
         }
     }
 
@@ -116,26 +101,6 @@ public class Tile : MonoBehaviour
         }
 
         transform.Find("TileMesh").gameObject.SetActive(false);
-    }
-    
-    public void HighlightNeighbours()
-    {
-        foreach (TileNeighbour tileNeighbour in _neighbours)
-        {
-            tileNeighbour.GetTile().transform.Find("TileMesh").gameObject.SetActive(true);
-        }
-
-        transform.Find("TileMesh").gameObject.SetActive(true);
-    }
-
-    public TileNeighbour[] GetNeighbours()
-    {
-        return _neighbours;
-    }
-
-    public void SetNeighbours(TileNeighbour[] neighbours)
-    {
-        _neighbours = neighbours;
     }
 
     public void OnMoveWorker(GameObject worker, int previousLevel)
