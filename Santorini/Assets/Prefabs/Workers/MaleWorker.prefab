@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2403436426296951622}
   - component: {fileID: 5583159076045518457}
   - component: {fileID: 6179685439518418914}
+  - component: {fileID: 9137886885786710271}
   m_Layer: 0
   m_Name: MaleWorker
   m_TagString: Untagged
@@ -92,3 +93,15 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &9137886885786710271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877029560396092332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63106140e98dcd94c930b35d1f1d4a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

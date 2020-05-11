@@ -7,7 +7,7 @@ public class BaseGod : God
 {
     GodStatus _previousStatus = GodStatus.Waiting;
 
-    protected override void PlaceWorkers()
+    protected override void PlaceWorker(Ground ground)
     {
         throw new NotImplementedException();
     }
@@ -16,7 +16,7 @@ public class BaseGod : God
     //      Select a worker
     //      Move that worker
     //      Build with that worker
-    protected override void TurnSequence()
+    protected override void TurnSequence(Ground ground)
     {
         if (_status == GodStatus.Selecting || (_status == GodStatus.Waiting && _previousStatus == GodStatus.Waiting))
         {

@@ -88,7 +88,7 @@ public class Tile : MonoBehaviour
         transform.Find("TileMesh").gameObject.SetActive(false);
     }
 
-    public void OnMouseClick()
+    public void OnMouse0Click()
     {
         foreach (TileNeighbour tileNeighbour in _neighbours)
         {
