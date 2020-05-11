@@ -6,10 +6,22 @@ using UnityEngine;
 public class BaseGod : God
 {
     GodStatus _previousStatus = GodStatus.Waiting;
+    int _numWorkers = 0;
 
     protected override void PlaceWorker(Ground ground)
     {
-        throw new NotImplementedException();
+        if(_input.Mouse0ClickedOnBoard())
+        {
+            if(ground.TryPlaceWorkerOnTile(_workerPrefab1))
+            {
+                _status = GodStatus.DoneTurn;
+                _numWorkers++;
+                if(_numWorkers == 2)
+                {
+                    _donePlacing = true;
+                }
+            }
+        }
     }
 
     // Base God Turn Sequence:

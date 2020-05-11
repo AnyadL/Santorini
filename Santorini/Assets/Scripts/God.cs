@@ -19,16 +19,20 @@ public abstract class God
     protected GameObject _workerPrefab1 = default;
     protected GameObject _workerPrefab2 = default;
 
+    protected InputSystem _input = default;
+
     protected abstract void PlaceWorker(Ground ground);
     protected abstract void TurnSequence(Ground ground);
     protected abstract void Select();
     protected abstract void Move();
     protected abstract void Build();
 
-    public void OnStart(GameObject workerPrefab1, GameObject workerPrefab2)
+    public void OnStart(GameObject workerPrefab1, GameObject workerPrefab2, InputSystem input)
     {
         _workerPrefab1 = workerPrefab1;
         _workerPrefab2 = workerPrefab2;
+
+        _input = input;
     }
 
     public void PlayTurn(Ground ground)
@@ -36,6 +40,7 @@ public abstract class God
         // if not done placing, PlaceWorkers
         if (!_donePlacing)
         {
+            _status = GodStatus.Placing;
             PlaceWorker(ground);
         }
         else

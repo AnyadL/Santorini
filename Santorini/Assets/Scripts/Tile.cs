@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 /// <summary>
 /// There are 25 tiles on a Santorini board. Each tile has 8 neighbours, 3-8 of which are directly neighbouring. Only certain God powers allow a Player to move their Worker using indirect neighbours.
@@ -65,20 +66,49 @@ public class Tile : MonoBehaviour
 
     [SerializeField]
     TileNeighbour[] _neighbours;
-    
+
+    float _groundWorkerY = 0.0f;
+    float _level1WorkerY = 0.0f;
+    float _level2WorkerY = 0.0f;
+    float _level3WorkerY = 0.0f;
+    float _level1TowerPieceY = 0.0f;
+    float _level2TowerPieceY = 0.0f;
+    float _level3TowerPieceY = 0.0f;
+    float _domeY = 0.0f;
+
     Worker _workerOnTile = null;
     List<ITowerPiece> _towerPiecesOnTile;
 
-    bool _blocked = false;
+    bool _domed = false;
 
-    public void OnStart()
+    public void OnStart(float groundWorkerY, float level1WorkerY, float level2WorkerY, float level3WorkerY, float level1TowerPieceY, float level2TowerPieceY, float level3TowerPieceY, float domeY)
     {
+        _groundWorkerY = groundWorkerY;
+        _level1WorkerY = level1WorkerY;
+        _level2WorkerY = level2WorkerY;
+        _level3WorkerY = level3WorkerY;
+        _level1TowerPieceY = level1TowerPieceY;
+        _level2TowerPieceY = level2TowerPieceY;
+        _level3TowerPieceY = level3TowerPieceY;
+        _domeY = domeY;
+
         _towerPiecesOnTile = new List<ITowerPiece>();
     }
 
-    public void OnUpdate() { }
+    public bool TryPlaceWorker(GameObject workerPrefab)
+    {
+        if (_workerOnTile != null || _domed)
+        {
+            Debug.LogError("Tried to place worker on an occupied tile");
+            return false;
+        }
 
-    public void OnFixedUpdate()
+        GameObject newWorker = Instantiate(workerPrefab, new Vector3(transform.position.x, GetWorkerY(), transform.position.z), Quaternion.identity);
+        _workerOnTile = newWorker.GetComponent<Worker>();
+        return true;
+    }
+
+    public void OnUpdate()
     {
         foreach (TileNeighbour tileNeighbour in _neighbours)
         {
@@ -87,8 +117,8 @@ public class Tile : MonoBehaviour
 
         transform.Find("TileMesh").gameObject.SetActive(false);
     }
-
-    public void OnMouse0Click()
+    
+    public void HighlightNeighbours()
     {
         foreach (TileNeighbour tileNeighbour in _neighbours)
         {
@@ -108,7 +138,7 @@ public class Tile : MonoBehaviour
         _neighbours = neighbours;
     }
 
-    public void OnMoveWorker(Worker worker, int previousLevel)
+    public void OnMoveWorker(GameObject worker, int previousLevel)
     {
         if(_workerOnTile != null)
         {
@@ -120,7 +150,9 @@ public class Tile : MonoBehaviour
             Debug.LogError("Worker tried to move up more than one level");
         }
 
-        _workerOnTile = worker;
+        worker.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
+
+        _workerOnTile = worker.GetComponent<Worker>();
     }
 
     public void OnBuild(ITowerPiece towerPiece)
@@ -152,7 +184,24 @@ public class Tile : MonoBehaviour
 
         if(towerPiece.GetType() == typeof(TowerPiece_Dome))
         {
-            _blocked = true;
+            _domed = true;
+        }
+    }
+
+    float GetWorkerY()
+    {
+        switch (_towerPiecesOnTile.Count)
+        {
+            case 0:
+                return _groundWorkerY;
+            case 1:
+                return _level1WorkerY;
+            case 2:
+                return _level2WorkerY;
+            case 3:
+                return _level3WorkerY;
+            default:
+                return -1f;
         }
     }
 }

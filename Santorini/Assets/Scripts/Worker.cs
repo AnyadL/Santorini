@@ -7,13 +7,5 @@ using UnityEngine;
 /// </summary>
 public class Worker : MonoBehaviour
 {
-    public void OnStart()
-    {
 
-    }
-
-    public void OnUpdate()
-    {
-
-    }
 }

@@ -59,8 +59,8 @@ public class Santorini : MonoBehaviour
         _gods = new List<God>() { new BaseGod(), new BaseGod() };
         _activeGod = _gods[0];
 
-        _gods[0].OnStart(_player1Worker1, _player1Worker2);
-        _gods[1].OnStart(_player2Worker1, _player2Worker2);
+        _gods[0].OnStart(_player1Worker1, _player1Worker2, _input);
+        _gods[1].OnStart(_player2Worker1, _player2Worker2, _input);
     }
     
     void Update()
@@ -85,14 +85,11 @@ public class Santorini : MonoBehaviour
     
     God GetNextGod()
     {
-        for(int i = 0; i < _gods.Count; i++)
+        if(_gods[0] == _activeGod)
         {
-            if(_gods[i-1] == _activeGod)
-            {
-                return _gods[i];
-            }
+            return _gods[1];
         }
 
-        return _activeGod;
+        return _gods[0];
     }
 }

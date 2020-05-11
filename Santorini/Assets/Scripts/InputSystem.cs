@@ -8,7 +8,7 @@ public class InputSystem : MonoBehaviour
 
     public bool Mouse0ClickedOnBoard()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
