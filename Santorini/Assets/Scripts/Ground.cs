@@ -9,13 +9,43 @@ public class Ground : MonoBehaviour
     [SerializeField]
     Tile[] _tiles = null;
 
+    [Header("Tower Prefabs")]
+    [SerializeField]
+    GameObject _tower1Piece = default;
+    [SerializeField]
+    GameObject _tower2Piece = default;
+    [SerializeField]
+    GameObject _tower3Piece = default;
+    [SerializeField]
+    GameObject _dome = default;
+
+    [Header("Positions")]
+    [SerializeField]
+    Transform _groundWorkerPosition = default;
+    [SerializeField]
+    Transform _level1WorkerPosition = default;
+    [SerializeField]
+    Transform _level2WorkerPosition = default;
+    [SerializeField]
+    Transform _level3WorkerPosition = default;
+    [SerializeField]
+    Transform _level1TowerPiecePosition = default;
+    [SerializeField]
+    Transform _level2TowerPiecePosition = default;
+    [SerializeField]
+    Transform _level3TowerPiecePosition = default;
+    [SerializeField]
+    Transform _domePosition = default;
+    
     Tile _nearestTileToLastClick = default;
 
-    public void OnStart(float groundWorkerY, float level1WorkerY, float level2WorkerY, float level3WorkerY, float level1TowerPieceY, float level2TowerPieceY, float level3TowerPieceY, float domeY)
+    public void OnStart()
     {
         foreach (Tile tile in _tiles)
         {
-            tile.OnStart(groundWorkerY, level1WorkerY, level2WorkerY, level3WorkerY, level1TowerPieceY, level2TowerPieceY, level3TowerPieceY, domeY);
+            tile.OnStart();
+            tile.SetYPositions(_groundWorkerPosition.position.y, _level1WorkerPosition.position.y, _level2WorkerPosition.position.y, _level3WorkerPosition.position.y, _level1TowerPiecePosition.position.y, _level2TowerPiecePosition.position.y, _level3TowerPiecePosition.position.y, _domePosition.position.y);
+            tile.SetPrefabs(_tower1Piece, _tower2Piece, _tower3Piece, _dome);
         }
     }
 
@@ -29,17 +59,12 @@ public class Ground : MonoBehaviour
         if (clicked)
         {
             _nearestTileToLastClick = GetNearestTileToPosition(clickedPosition);
-
-            //if (_nearestTileToLastClick != null)
-            //{
-            //    _nearestTileToLastClick.HighlightNeighbours();
-            //}
         }
     }
 
-    public bool TryPlaceWorkerOnTile(GameObject workerPrefab)
+    public Tile GetNearestTiltToLastClick()
     {
-        return _nearestTileToLastClick.TryPlaceWorker(workerPrefab);
+        return _nearestTileToLastClick;
     }
 
     Tile GetNearestTileToPosition(Vector3 position)

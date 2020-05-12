@@ -5337,7 +5337,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1299820491}
   - component: {fileID: 1299820490}
-  - component: {fileID: 1299820492}
   m_Layer: 0
   m_Name: Santorini
   m_TagString: Untagged
@@ -5368,21 +5367,6 @@ MonoBehaviour:
     type: 3}
   _player2Worker2: {fileID: 8913242481601427647, guid: a6159057a6edcdb4d97647248e28a87b,
     type: 3}
-  _tower1Piece: {fileID: 875318232743257476, guid: 3bab583dddb4c964f935a2fdd1408191,
-    type: 3}
-  _tower2Piece: {fileID: 169209539915683650, guid: 66aa6ef46077ace45a059001b7c4f6e9,
-    type: 3}
-  _tower3Piece: {fileID: 2524677978011983681, guid: ebd9ccf07996d2348b188135cf4ebcb1,
-    type: 3}
-  _dome: {fileID: 8930429360730673587, guid: 07ced143d986b3e4db5a53443965552b, type: 3}
-  _groundWorkerPosition: {fileID: 596148434}
-  _level1WorkerPosition: {fileID: 191646712}
-  _level2WorkerPosition: {fileID: 1081941943}
-  _level3WorkerPosition: {fileID: 858130994}
-  _level1TowerPiecePosition: {fileID: 191716559}
-  _level2TowerPiecePosition: {fileID: 2134587643}
-  _level3TowerPiecePosition: {fileID: 1212546355}
-  _domePosition: {fileID: 242396079}
 --- !u!4 &1299820491
 Transform:
   m_ObjectHideFlags: 0
@@ -5400,21 +5384,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1299820492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299820489}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b83abb2c77068284190f8dcd1feab150, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _reassignTileNeighbours: 0
-  _testNeighbourAssignation: 0
-  _resetTest: 0
 --- !u!1001 &1306681615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6745,6 +6714,21 @@ MonoBehaviour:
   - {fileID: 1681993877}
   - {fileID: 184429247}
   - {fileID: 1778919450}
+  _tower1Piece: {fileID: 875318232743257476, guid: 3bab583dddb4c964f935a2fdd1408191,
+    type: 3}
+  _tower2Piece: {fileID: 169209539915683650, guid: 66aa6ef46077ace45a059001b7c4f6e9,
+    type: 3}
+  _tower3Piece: {fileID: 2524677978011983681, guid: ebd9ccf07996d2348b188135cf4ebcb1,
+    type: 3}
+  _dome: {fileID: 8930429360730673587, guid: 07ced143d986b3e4db5a53443965552b, type: 3}
+  _groundWorkerPosition: {fileID: 596148434}
+  _level1WorkerPosition: {fileID: 191646712}
+  _level2WorkerPosition: {fileID: 1081941943}
+  _level3WorkerPosition: {fileID: 858130994}
+  _level1TowerPiecePosition: {fileID: 191716559}
+  _level2TowerPiecePosition: {fileID: 2134587643}
+  _level3TowerPiecePosition: {fileID: 1212546355}
+  _domePosition: {fileID: 242396079}
 --- !u!1001 &1503949300
 PrefabInstance:
   m_ObjectHideFlags: 0
