@@ -11,7 +11,8 @@ public abstract class God
         Selecting,
         Moving,
         Building, 
-        DoneTurn
+        DoneTurn,
+        Won
     }
 
     protected GodStatus _status = GodStatus.Waiting;

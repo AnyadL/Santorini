@@ -113,7 +113,14 @@ public class BaseGod : God
             {
                 if(tile.TryMoveWorker(_selectedWorker, _selectedWorker.GetTile().GetLevel()))
                 {
-                    _status = GodStatus.Waiting;
+                    if (_selectedWorker.GetTile().GetLevel() == Tile.Level.Level3)
+                    {
+                        _status = GodStatus.Won;
+                    }
+                    else
+                    {
+                        _status = GodStatus.Waiting;
+                    }
                 }
             }
         }
