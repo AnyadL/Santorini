@@ -5045,7 +5045,15 @@ MonoBehaviour:
   m_PlayerSpawnMethod: 0
   m_OfflineScene: 
   m_OnlineScene: 
-  m_SpawnPrefabs: []
+  m_SpawnPrefabs:
+  - {fileID: 875318232743257476, guid: 3bab583dddb4c964f935a2fdd1408191, type: 3}
+  - {fileID: 169209539915683650, guid: 66aa6ef46077ace45a059001b7c4f6e9, type: 3}
+  - {fileID: 2524677978011983681, guid: ebd9ccf07996d2348b188135cf4ebcb1, type: 3}
+  - {fileID: 8930429360730673587, guid: 07ced143d986b3e4db5a53443965552b, type: 3}
+  - {fileID: 310272662942468822, guid: a1f18e5efc5d8ca489f1405da3dde6bd, type: 3}
+  - {fileID: 7153399350733529435, guid: b7326a8b7f8b0564f98a8b283be2e96b, type: 3}
+  - {fileID: 136961733957461417, guid: a01692394bd28b9499d34bc9bb8f9cfa, type: 3}
+  - {fileID: 8913242481601427647, guid: a6159057a6edcdb4d97647248e28a87b, type: 3}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -5088,7 +5096,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -5487,6 +5495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee04cf36cfba0454a8bbe1370d58582f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _networker: {fileID: 0}
   _ground: {fileID: 1501104374}
   _camera: {fileID: 963194229}
   _input: {fileID: 1850294214}

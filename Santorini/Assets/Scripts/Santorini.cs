@@ -24,8 +24,11 @@ public class Santorini : MonoBehaviour
     [SerializeField]
     GameObject _player2Worker2 = default;
 
+    List<NetworkedPlayer> _players = new List<NetworkedPlayer>();
     List<God> _gods = default;
     God _activeGod = null;
+
+    Networker _networker = default;
 
     void Start()
     {
@@ -41,6 +44,11 @@ public class Santorini : MonoBehaviour
     {
         try
         {
+            while(_players.Count < 2)
+            {
+                return;
+            }
+
             _ground.OnUpdate(_input.Mouse0ClickedOnBoard(), _input.GetMouse0ClickedPosition());
             _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _ground.transform);
 
@@ -64,14 +72,29 @@ public class Santorini : MonoBehaviour
             Debug.Break();
         }
     }
+
+    public int RegisterPlayer(NetworkedPlayer player)
+    {        
+        _players.Add(player);
+        Debug.Log("Player Added! Id: " + _players.Count);
+        return _players.Count;
+    }
+
+    public void SetNetworker(Networker networker)
+    {
+        _networker = networker;
+        _ground.SetNetworker(networker);
+    }
     
     God GetNextGod()
     {
         if(_gods[0] == _activeGod)
         {
+            _networker.SetCurrentPlayer(1);
             return _gods[1];
         }
 
+        _networker.SetCurrentPlayer(0);
         return _gods[0];
     }
 }

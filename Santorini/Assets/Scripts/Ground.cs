@@ -62,6 +62,15 @@ public class Ground : MonoBehaviour
         }
     }
 
+    public void SetNetworker(Networker networker)
+    {
+        foreach (Tile tile in _tiles)
+        {
+            tile.SetNetworker(networker);
+        }
+    }
+
+
     public Tile GetNearestTiltToLastClick()
     {
         return _nearestTileToLastClick;

@@ -24,11 +24,13 @@ public class Tile : MonoBehaviour
             NorthWest
         }
 
+#pragma warning disable 0649
         [SerializeField]
         Tile _tile;
 
         [SerializeField]
         Direction _direction;
+#pragma warning restore 0649
 
         [SerializeField]
         bool _directlyNeighbouring = false;
@@ -58,8 +60,10 @@ public class Tile : MonoBehaviour
         Dome = 4
     }
 
+#pragma warning disable 0649
     [SerializeField]
     TileNeighbour[] _neighbours;
+#pragma warning restore 0649
 
     GameObject _level1TowerPiece = default;
     GameObject _level2TowerPiece = default;
@@ -75,6 +79,7 @@ public class Tile : MonoBehaviour
     float _level3TowerPieceY = 0.0f;
     float _domeY = 0.0f;
 
+    Networker _networker = null;
     Worker _workerOnTile = null;
     List<TowerPiece> _towerPiecesOnTile;
 
@@ -103,6 +108,11 @@ public class Tile : MonoBehaviour
         _level2TowerPiece = level2TowerPiece;
         _level3TowerPiece = level3TowerPiece;
         _dome = dome;
+    }
+
+    public void SetNetworker(Networker networker)
+    {
+        _networker = networker;
     }
 
     public Worker GetWorkerOnTile()
@@ -168,6 +178,8 @@ public class Tile : MonoBehaviour
         GameObject newWorker = Instantiate(workerPrefab, new Vector3(transform.position.x, GetWorkerY(), transform.position.z), Quaternion.identity);
         _workerOnTile = newWorker.GetComponent<Worker>();
         _workerOnTile.SetTile(this);
+
+        _networker.SpawnObject(newWorker);
         return true;
     }
 
