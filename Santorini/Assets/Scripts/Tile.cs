@@ -80,6 +80,7 @@ public class Tile : MonoBehaviour
     float _domeY = 0.0f;
 
     Networker _networker = null;
+    NetworkedTile _networkedTile = null;
     Worker _workerOnTile = null;
     List<TowerPiece> _towerPiecesOnTile;
 
@@ -113,6 +114,16 @@ public class Tile : MonoBehaviour
     public void SetNetworker(Networker networker)
     {
         _networker = networker;
+    }
+
+    public void SetNetworkedTile(NetworkedTile networkedTile)
+    {
+        _networkedTile = networkedTile;
+    }
+
+    public NetworkedTile GetNetworkedTile()
+    {
+        return _networkedTile;
     }
 
     public Worker GetWorkerOnTile()
@@ -161,7 +172,17 @@ public class Tile : MonoBehaviour
         transform.Find("TileMesh").gameObject.SetActive(false);
     }
 
-    public bool TryPlaceWorker(GameObject workerPrefab)
+    public bool RequestPlaceWorkerCompleted()
+    {
+        return _networkedTile.RequestPlaceWorkerCompleted();
+    }
+
+    public bool RequestPlaceWorkerSucceeded()
+    {
+        return _networkedTile.RequestPlaceWorkerSucceeded();
+    }
+
+    public bool TryRequestPlaceWorker(Worker.Colour workerColour, Worker.Gender workerGender)
     {
         if (_workerOnTile != null || _domed)
         {
@@ -175,11 +196,7 @@ public class Tile : MonoBehaviour
             return false;
         }
 
-        GameObject newWorker = Instantiate(workerPrefab, new Vector3(transform.position.x, GetWorkerY(), transform.position.z), Quaternion.identity);
-        _workerOnTile = newWorker.GetComponent<Worker>();
-        _workerOnTile.SetTile(this);
-
-        _networker.SpawnObject(newWorker);
+        _networkedTile.SendAddWorkerRequest(workerColour, workerGender);
         return true;
     }
 
@@ -200,7 +217,10 @@ public class Tile : MonoBehaviour
         worker.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
 
         _workerOnTile = worker;
+        _networkedTile.AddWorker();
         worker.GetTile().OnWorkerExitTile();
+
+        worker.GetTile().GetNetworkedTile().RemoveWorker();
         _workerOnTile.SetTile(this);
         return true;
     }
@@ -232,7 +252,7 @@ public class Tile : MonoBehaviour
         _workerOnTile = null;
     }
 
-    float GetWorkerY()
+    public float GetWorkerY()
     {
         switch (_towerPiecesOnTile.Count)
         {

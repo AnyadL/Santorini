@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class God
+public abstract class God : MonoBehaviour
 {
     public enum GodStatus
     {
@@ -17,25 +17,24 @@ public abstract class God
 
     protected GodStatus _status = GodStatus.Waiting;
     protected bool _donePlacing = false;
+    protected bool _currentlyPlacing = false;
     protected Worker _selectedWorker = null;
-
-    protected GameObject _workerPrefab1 = default;
-    protected GameObject _workerPrefab2 = default;
-
+    
     protected InputSystem _input = default;
     protected Ground _ground = default;
 
+    protected Worker.Colour _workerColour = default;
+
     protected abstract void OnStartNewTurn();
-    protected abstract void PlaceWorker();
+    protected abstract IEnumerator PlaceWorker();
     protected abstract void TurnSequence();
     protected abstract void Select();
     protected abstract void Move();
     protected abstract void Build();
 
-    public void OnStart(GameObject workerPrefab1, GameObject workerPrefab2, InputSystem input, Ground ground)
+    public void OnStart(InputSystem input, Ground ground, Worker.Colour workerColour)
     {
-        _workerPrefab1 = workerPrefab1;
-        _workerPrefab2 = workerPrefab2;
+        _workerColour = workerColour;
 
         _input = input;
         _ground = ground;
@@ -49,10 +48,10 @@ public abstract class God
         }
 
         // if not done placing, PlaceWorkers
-        if (!_donePlacing)
+        if (!_donePlacing && !_currentlyPlacing)
         {
             _status = GodStatus.Placing;
-            PlaceWorker();
+            StartCoroutine(PlaceWorker());
         }
         else
         {

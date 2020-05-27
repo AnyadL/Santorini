@@ -32,12 +32,18 @@ public class Santorini : MonoBehaviour
 
     void Start()
     {
-        _ground.OnStart();
-        _gods = new List<God>() { new BaseGod(), new BaseGod() };
+        _ground.OnStart(_player1Worker1, _player2Worker1);
+
+        GameObject god1 = new GameObject("God2");
+        God baseGod1 = god1.AddComponent<BaseGod>();
+        GameObject god2 = new GameObject("God2");
+        God baseGod2 = god2.AddComponent<BaseGod>();
+
+        _gods = new List<God>() { baseGod1, baseGod2 };
         _activeGod = _gods[0];
 
-        _gods[0].OnStart(_player1Worker1, _player1Worker2, _input, _ground);
-        _gods[1].OnStart(_player2Worker1, _player2Worker2, _input, _ground);
+        _gods[0].OnStart(_input, _ground, Worker.Colour.Blue);
+        _gods[1].OnStart(_input, _ground, Worker.Colour.White);
     }
     
     void Update()
@@ -55,7 +61,7 @@ public class Santorini : MonoBehaviour
             _activeGod.PlayTurn();
             if(_activeGod.GetStatus() == God.GodStatus.Won)
             {
-                //Ensure other gods don't prevent the win
+                //TODO: Ensure other gods don't prevent the win
                 Debug.Log("You Win!!!");
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;

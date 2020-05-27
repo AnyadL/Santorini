@@ -17,11 +17,12 @@ public class SantoriniNetworkManager : NetworkManager
 
         foreach( Tile tile in santorini.GetGround().GetTiles())
         {
-            GameObject networkedTile = new GameObject("Networked Tile");
-            networkedTile.AddComponent<NetworkedTile>();
-            networkedTile.transform.parent = tile.transform;
+            GameObject networkedTileGO = new GameObject("Networked Tile");
+            NetworkedTile networkedTile = networkedTileGO.AddComponent<NetworkedTile>();
+            networkedTileGO.transform.parent = tile.transform;
+            tile.SetNetworkedTile(networkedTile);
 
-            NetworkServer.Spawn(networkedTile);
+            NetworkServer.Spawn(networkedTileGO);
         }
 
         base.OnClientConnect(conn);

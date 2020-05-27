@@ -36,11 +36,22 @@ public class Ground : MonoBehaviour
     Transform _level3TowerPiecePosition = default;
     [SerializeField]
     Transform _domePosition = default;
-    
-    Tile _nearestTileToLastClick = default;
 
-    public void OnStart()
+    GameObject _blueFemale = null;
+    GameObject _whiteFemale = null;
+
+    List<Worker> _workers = null;
+
+    Tile _nearestTileToLastClick = default;
+    Networker _networker = default;
+
+    bool _requestPlaceWorkerSucceeded = false;
+
+    public void OnStart(GameObject blueFemale, GameObject whiteFemale)
     {
+        _blueFemale = blueFemale;
+        _whiteFemale = whiteFemale;
+
         foreach (Tile tile in _tiles)
         {
             tile.OnStart();
@@ -54,6 +65,18 @@ public class Ground : MonoBehaviour
         foreach (Tile tile in _tiles)
         {
             tile.OnUpdate();
+            NetworkedTile networkedTile = tile.GetNetworkedTile();
+            if(networkedTile.addWorkerRequest != null)
+            {
+                AddWorkerToTile(networkedTile.addWorkerRequest, tile);
+                networkedTile.addWorkerRequest = null;
+            }
+            if (networkedTile.removeWorkerRequest != null)
+            {
+                RemoveWorkerFromFile(networkedTile.addWorkerRequest, tile);
+                networkedTile.removeWorkerRequest = null;
+            }
+
         }
 
         if (clicked)
@@ -62,8 +85,37 @@ public class Ground : MonoBehaviour
         }
     }
 
+    void RemoveWorkerFromFile(NetworkedTile.WorkerRequest WorkerRequest, Tile tile)
+    {
+
+    }
+
+
+    void AddWorkerToTile(NetworkedTile.WorkerRequest workerRequest, Tile tile)
+    {
+        GameObject workerPrefab;
+        if(workerRequest.colour == Worker.Colour.Blue)
+        {
+            workerPrefab = _blueFemale;
+        }
+        else
+        {
+            workerPrefab = _whiteFemale;
+        }
+
+        GameObject newWorker = Instantiate(workerPrefab, new Vector3(tile.transform.position.x, tile.GetWorkerY(), tile.transform.position.z), Quaternion.identity);
+        //_workerOnTile = newWorker.GetComponent<Worker>();
+        //_workerOnTile.SetTile(this);
+
+        _networker.SpawnObject(newWorker);
+        //_networkedTile.AddWorker();
+        //return true;
+    }
+
     public void SetNetworker(Networker networker)
     {
+        _networker = networker;
+
         foreach (Tile tile in _tiles)
         {
             tile.SetNetworker(networker);
@@ -78,6 +130,25 @@ public class Ground : MonoBehaviour
     public Tile GetNearestTiltToLastClick()
     {
         return _nearestTileToLastClick;
+    }
+
+    public IEnumerator TryPlaceWorkerAtLastClick(Worker.Colour workerColour, Worker.Gender workerGender)
+    {
+        if (_nearestTileToLastClick.TryRequestPlaceWorker(workerColour, workerGender))
+        {
+            if (!_nearestTileToLastClick.RequestPlaceWorkerCompleted())
+            {
+                yield return null;
+            }
+
+            _requestPlaceWorkerSucceeded = _nearestTileToLastClick.RequestPlaceWorkerSucceeded();
+            yield return _nearestTileToLastClick.RequestPlaceWorkerSucceeded();
+        }
+    }
+
+    public bool GetRequestPlaceWorkerSucceeded()
+    {
+        return _requestPlaceWorkerSucceeded;
     }
 
     Tile GetNearestTileToPosition(Vector3 position)

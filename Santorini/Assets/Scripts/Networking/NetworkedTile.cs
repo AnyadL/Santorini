@@ -7,9 +7,35 @@ using UnityEngine.Networking;
 
 public class NetworkedTile : NetworkBehaviour
 {
-    void Start()
+    public class WorkerRequest
     {
+        public Worker.Colour colour;
+        public Worker.Gender gender;
+    }
 
+    public WorkerRequest addWorkerRequest;
+    public WorkerRequest removeWorkerRequest;
+
+    public void SendAddWorkerRequest(Worker.Colour workerColour, Worker.Gender workerGender)
+    {
+        CmdAddWorkerRequest(workerColour, workerGender);
+    }
+
+    public void SendRemoveWorkerRequest(Worker.Colour workerColour, Worker.Gender workerGender)
+    {
+        CmdRemoveWorkerRequest(workerColour, workerGender);
+    }
+
+    [Command]
+    public void CmdAddWorkerRequest(Worker.Colour workerColour, Worker.Gender workerGender)
+    {
+        addWorkerRequest = new WorkerRequest() { colour = workerColour, gender = workerGender };
+    }
+
+    [Command]
+    public void CmdRemoveWorkerRequest(Worker.Colour workerColour, Worker.Gender workerGender)
+    {
+        removeWorkerRequest = new WorkerRequest() { colour = workerColour, gender = workerGender };
     }
 }
 #pragma warning restore 0618

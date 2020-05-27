@@ -44,14 +44,18 @@ public class BaseGod : God
         _previousStatus = GodStatus.Waiting;
     }
 
-    protected override void PlaceWorker()
+    protected override IEnumerator PlaceWorker()
     {
         if (_input.Mouse0ClickedOnBoard())
         {
-            Tile tile = _ground.GetNearestTiltToLastClick();
-            if (tile.TryPlaceWorker(_workerPrefab1))
+            //Tile tile = _ground.GetNearestTiltToLastClick();
+            //if (tile.TryPlaceWorker(_workerPrefabs[_numWorkers]))
+            _currentlyPlacing = true;
+            yield return StartCoroutine(_ground.TryPlaceWorkerAtLastClick(_workerColour, Worker.Gender.Female));
+
+            if (_ground.GetRequestPlaceWorkerSucceeded())
             {
-                tile.GetWorkerOnTile().SetGod(this);
+                //tile.GetWorkerOnTile().SetGod(this);
                 _status = GodStatus.DoneTurn;
                 _numWorkers++;
                 if (_numWorkers == 2)
@@ -61,6 +65,8 @@ public class BaseGod : God
                 }
             }
         }
+
+        _currentlyPlacing = false;
     }
 
     protected override void Select()
