@@ -8,9 +8,8 @@ public class SantoriniNetworkManager : NetworkManager
 {
     public override void OnClientConnect(NetworkConnection conn)
     {
-        GameObject networkerGO = new GameObject("Networker");
-        networkerGO.AddComponent<Networker>();
-        GameObject networker = Instantiate(networkerGO);
+        GameObject networker = new GameObject("Networker");
+        networker.AddComponent<Networker>();
         NetworkServer.Spawn(networker);
 
         Santorini santorini = FindObjectOfType<Santorini>();
