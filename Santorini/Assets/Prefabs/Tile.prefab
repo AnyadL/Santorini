@@ -121,28 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083721286de167a4f879425855a5ddbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbours:
-  - tile: {fileID: 0}
-    direction: 0
-    directlyNeighbouring: 0
-  - tile: {fileID: 0}
-    direction: 1
-    directlyNeighbouring: 0
-  - tile: {fileID: 0}
-    direction: 2
-    directlyNeighbouring: 0
-  - tile: {fileID: 0}
-    direction: 3
-    directlyNeighbouring: 0
-  - tile: {fileID: 0}
-    direction: 4
-    directlyNeighbouring: 0
-  - tile: {fileID: 0}
-    direction: 5
-    directlyNeighbouring: 0
-  - tile: {fileID: 0}
-    direction: 6
-    directlyNeighbouring: 0
-  - tile: {fileID: 0}
-    direction: 7
-    directlyNeighbouring: 0
+  _neighbours: []

@@ -70,6 +70,10 @@ public class Ground : MonoBehaviour
         }
     }
 
+    public Tile[] GetTiles()
+    {
+        return _tiles;
+    }
 
     public Tile GetNearestTiltToLastClick()
     {

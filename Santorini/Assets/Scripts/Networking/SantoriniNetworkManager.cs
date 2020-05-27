@@ -15,6 +15,15 @@ public class SantoriniNetworkManager : NetworkManager
         Santorini santorini = FindObjectOfType<Santorini>();
         santorini.SetNetworker(networker.GetComponent<Networker>());
 
+        foreach( Tile tile in santorini.GetGround().GetTiles())
+        {
+            GameObject networkedTile = new GameObject("Networked Tile");
+            networkedTile.AddComponent<NetworkedTile>();
+            networkedTile.transform.parent = tile.transform;
+
+            NetworkServer.Spawn(networkedTile);
+        }
+
         base.OnClientConnect(conn);
     }
 }

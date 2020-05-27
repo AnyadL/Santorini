@@ -214,6 +214,8 @@ public class Tile : MonoBehaviour
         }
 
         GameObject towerPieceGO = Instantiate(GetTowerPiecePrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);
+        _networker.SpawnObject(towerPieceGO);
+
         TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
         _towerPiecesOnTile.Add(towerPiece);
 

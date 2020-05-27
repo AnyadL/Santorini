@@ -85,6 +85,11 @@ public class Santorini : MonoBehaviour
         _networker = networker;
         _ground.SetNetworker(networker);
     }
+
+    public Ground GetGround()
+    {
+        return _ground;
+    }
     
     God GetNextGod()
     {
