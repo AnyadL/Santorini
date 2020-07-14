@@ -24,11 +24,13 @@ public class Tile : MonoBehaviour
             NorthWest
         }
 
+#pragma warning disable 0649
         [SerializeField]
         Tile _tile;
 
         [SerializeField]
         Direction _direction;
+#pragma warning restore 0649
 
         [SerializeField]
         bool _directlyNeighbouring = false;
@@ -58,8 +60,10 @@ public class Tile : MonoBehaviour
         Dome = 4
     }
 
+#pragma warning disable 0649
     [SerializeField]
     TileNeighbour[] _neighbours;
+#pragma warning restore 0649
 
     GameObject _level1TowerPiece = default;
     GameObject _level2TowerPiece = default;

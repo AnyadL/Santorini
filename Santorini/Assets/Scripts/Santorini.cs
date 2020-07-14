@@ -24,17 +24,17 @@ public class Santorini : MonoBehaviour
     [SerializeField]
     GameObject _player2Worker2 = default;
 
-    List<God> _gods = default;
-    God _activeGod = null;
+    List<Player> _players = default;
+    Player _activePlayer = null;
 
     void Start()
     {
         _ground.OnStart();
-        _gods = new List<God>() { new BaseGod(), new BaseGod() };
-        _activeGod = _gods[0];
+        _players = new List<Player>() { new Player(), new Player() };
+        _activePlayer = _players[0];
 
-        _gods[0].OnStart(_player1Worker1, _player1Worker2, _input, _ground);
-        _gods[1].OnStart(_player2Worker1, _player2Worker2, _input, _ground);
+        _players[0].Initialize(_input, _ground, Worker.Colour.Blue);
+        _players[1].Initialize(_input, _ground, Worker.Colour.White);
     }
     
     void Update()
@@ -44,8 +44,8 @@ public class Santorini : MonoBehaviour
             _ground.OnUpdate(_input.Mouse0ClickedOnBoard(), _input.GetMouse0ClickedPosition());
             _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _ground.transform);
 
-            _activeGod.PlayTurn();
-            if(_activeGod.GetStatus() == God.GodStatus.Won)
+            _activePlayer.GetGod().PlayTurn(_activePlayer.GetWorkers());
+            if(_activePlayer.GetGod().GetStatus() == God.GodStatus.Won)
             {
                 //Ensure other gods don't prevent the win
                 Debug.Log("You Win!!!");
@@ -53,9 +53,9 @@ public class Santorini : MonoBehaviour
                 UnityEditor.EditorApplication.isPlaying = false;
 #endif
             }
-            if(_activeGod.GetStatus() == God.GodStatus.DoneTurn)
+            if(_activePlayer.GetGod().GetStatus() == God.GodStatus.DoneTurn)
             {
-                _activeGod = GetNextGod();
+                _activePlayer = GetNextPlayer();
             }
         }
         catch (System.Exception e)
@@ -65,13 +65,13 @@ public class Santorini : MonoBehaviour
         }
     }
     
-    God GetNextGod()
+    Player GetNextPlayer()
     {
-        if(_gods[0] == _activeGod)
+        if(_players[0] == _activePlayer)
         {
-            return _gods[1];
+            return _players[1];
         }
 
-        return _gods[0];
+        return _players[0];
     }
 }

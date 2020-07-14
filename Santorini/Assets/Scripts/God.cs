@@ -17,31 +17,15 @@ public abstract class God
 
     protected GodStatus _status = GodStatus.Waiting;
     protected bool _donePlacing = false;
-    protected Worker _selectedWorker = null;
-
-    protected GameObject _workerPrefab1 = default;
-    protected GameObject _workerPrefab2 = default;
-
-    protected InputSystem _input = default;
-    protected Ground _ground = default;
-
+    
     protected abstract void OnStartNewTurn();
-    protected abstract void PlaceWorker();
-    protected abstract void TurnSequence();
-    protected abstract void Select();
-    protected abstract void Move();
-    protected abstract void Build();
-
-    public void OnStart(GameObject workerPrefab1, GameObject workerPrefab2, InputSystem input, Ground ground)
-    {
-        _workerPrefab1 = workerPrefab1;
-        _workerPrefab2 = workerPrefab2;
-
-        _input = input;
-        _ground = ground;
-    }
-
-    public void PlayTurn()
+    protected abstract void PlaceWorker(List<Worker> workers);
+    protected abstract void TurnSequence(List<Worker> workers);
+    protected abstract void Select(List<Worker> workers);
+    protected abstract void Move(List<Worker> workers);
+    protected abstract void Build(List<Worker> workers);
+    
+    public void PlayTurn(List<Worker> workers)
     {
         if(_status == GodStatus.DoneTurn)
         {
@@ -52,11 +36,11 @@ public abstract class God
         if (!_donePlacing)
         {
             _status = GodStatus.Placing;
-            PlaceWorker();
+            PlaceWorker(workers);
         }
         else
         {
-            TurnSequence();
+            TurnSequence(workers);
         }
     }
 
