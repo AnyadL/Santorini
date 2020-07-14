@@ -79,8 +79,6 @@ public class Tile : MonoBehaviour
     float _level3TowerPieceY = 0.0f;
     float _domeY = 0.0f;
 
-    Networker _networker = null;
-    NetworkedTile _networkedTile = null;
     Worker _workerOnTile = null;
     List<TowerPiece> _towerPiecesOnTile;
 
@@ -110,25 +108,25 @@ public class Tile : MonoBehaviour
         _level3TowerPiece = level3TowerPiece;
         _dome = dome;
     }
-
-    public void SetNetworker(Networker networker)
+    
+    public int GetTowerLevel()
     {
-        _networker = networker;
-    }
-
-    public void SetNetworkedTile(NetworkedTile networkedTile)
-    {
-        _networkedTile = networkedTile;
-    }
-
-    public NetworkedTile GetNetworkedTile()
-    {
-        return _networkedTile;
+        return _towerPiecesOnTile.Count;
     }
 
     public Worker GetWorkerOnTile()
     {
         return _workerOnTile;
+    }
+
+    public bool IsWorkerOnTile()
+    {
+        return _workerOnTile != null;
+    }
+
+    public bool IsDomed()
+    {
+        return _domed;   
     }
 
     public Level GetLevel()
@@ -171,80 +169,54 @@ public class Tile : MonoBehaviour
 
         transform.Find("TileMesh").gameObject.SetActive(false);
     }
-
-    public bool RequestPlaceWorkerCompleted()
-    {
-        return _networkedTile.RequestPlaceWorkerCompleted();
-    }
-
-    public bool RequestPlaceWorkerSucceeded()
-    {
-        return _networkedTile.RequestPlaceWorkerSucceeded();
-    }
-
-    public bool TryRequestPlaceWorker(Worker.Colour workerColour, Worker.Gender workerGender)
-    {
-        if (_workerOnTile != null || _domed)
-        {
-            Debug.LogError("Tried to place worker on an occupied tile");
-            return false;
-        }
-
-        if(_towerPiecesOnTile.Count > 0)
-        {
-            Debug.LogError("Tried to place worker on a level other than the ground");
-            return false;
-        }
-
-        _networkedTile.SendAddWorkerRequest(workerColour, workerGender);
-        return true;
-    }
-
+    
     public bool TryMoveWorker(Worker worker, Level previousLevel)
     {
-        if(_workerOnTile != null || _domed)
-        {
-            Debug.LogError("Tried to move worker onto already occupied tile");
-            return false;
-        }
+        return false;
+        //if(_workerOnTile != null || _domed)
+        //{
+        //    Debug.LogError("Tried to move worker onto already occupied tile");
+        //    return false;
+        //}
         
-        if(_towerPiecesOnTile.Count > (int) previousLevel + 1)
-        {
-            Debug.LogError("Worker tried to move up more than one level");
-            return false;
-        }
+        //if(_towerPiecesOnTile.Count > (int) previousLevel + 1)
+        //{
+        //    Debug.LogError("Worker tried to move up more than one level");
+        //    return false;
+        //}
 
-        worker.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
+        //worker.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
 
-        _workerOnTile = worker;
-        _networkedTile.AddWorker();
-        worker.GetTile().OnWorkerExitTile();
+        //_workerOnTile = worker;
+        //_networkedTile.AddWorker();
+        //worker.GetTile().OnWorkerExitTile();
 
-        worker.GetTile().GetNetworkedTile().RemoveWorker();
-        _workerOnTile.SetTile(this);
-        return true;
+        //worker.GetTile().GetNetworkedTile().RemoveWorker();
+        //_workerOnTile.SetTile(this);
+        //return true;
     }
 
     public bool TryBuild()
     {
-        if(_workerOnTile != null || _domed)
-        {
-            Debug.LogError("Tried to build on an occupied tile");
-            return false;
-        }
+        return false;
+        //if(_workerOnTile != null || _domed)
+        //{
+        //    Debug.LogError("Tried to build on an occupied tile");
+        //    return false;
+        //}
 
-        GameObject towerPieceGO = Instantiate(GetTowerPiecePrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);
-        _networker.SpawnObject(towerPieceGO);
+        //GameObject towerPieceGO = Instantiate(GetTowerPiecePrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);
+        //_networker.SpawnObject(towerPieceGO);
 
-        TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
-        _towerPiecesOnTile.Add(towerPiece);
+        //TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
+        //_towerPiecesOnTile.Add(towerPiece);
 
-        if(_towerPiecesOnTile.Count == 4)
-        {
-            _domed = true;
-        }
+        //if(_towerPiecesOnTile.Count == 4)
+        //{
+        //    _domed = true;
+        //}
 
-        return true;
+        //return true;
     }
 
     public void OnWorkerExitTile()

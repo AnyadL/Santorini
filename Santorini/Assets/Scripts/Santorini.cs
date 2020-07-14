@@ -6,7 +6,7 @@ using UnityEngine;
 public class Santorini : MonoBehaviour
 {
     [SerializeField]
-    Ground _ground = default;
+    Board _board = default;
 
     [SerializeField]
     PlayerCamera _camera = default;
@@ -27,12 +27,10 @@ public class Santorini : MonoBehaviour
     List<NetworkedPlayer> _players = new List<NetworkedPlayer>();
     List<God> _gods = default;
     God _activeGod = null;
-
-    Networker _networker = default;
-
+    
     void Start()
     {
-        _ground.OnStart(_player1Worker1, _player2Worker1);
+        _board.OnStart(_player1Worker1, _player2Worker1);
 
         GameObject god1 = new GameObject("God2");
         God baseGod1 = god1.AddComponent<BaseGod>();
@@ -42,8 +40,8 @@ public class Santorini : MonoBehaviour
         _gods = new List<God>() { baseGod1, baseGod2 };
         _activeGod = _gods[0];
 
-        _gods[0].OnStart(_input, _ground, Worker.Colour.Blue);
-        _gods[1].OnStart(_input, _ground, Worker.Colour.White);
+        _gods[0].OnStart(_input, _board, Worker.Colour.Blue);
+        _gods[1].OnStart(_input, _board, Worker.Colour.White);
     }
     
     void Update()
@@ -55,8 +53,8 @@ public class Santorini : MonoBehaviour
                 return;
             }
 
-            _ground.OnUpdate(_input.Mouse0ClickedOnBoard(), _input.GetMouse0ClickedPosition());
-            _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _ground.transform);
+            _board.OnUpdate(_input.Mouse0ClickedOnBoard(), _input.GetMouse0ClickedPosition());
+            _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _board.transform);
 
             _activeGod.PlayTurn();
             if(_activeGod.GetStatus() == God.GodStatus.Won)
@@ -85,27 +83,19 @@ public class Santorini : MonoBehaviour
         Debug.Log("Player Added! Id: " + _players.Count);
         return _players.Count;
     }
-
-    public void SetNetworker(Networker networker)
+    
+    public Board GetBoard()
     {
-        _networker = networker;
-        _ground.SetNetworker(networker);
-    }
-
-    public Ground GetGround()
-    {
-        return _ground;
+        return _board;
     }
     
     God GetNextGod()
     {
         if(_gods[0] == _activeGod)
         {
-            _networker.SetCurrentPlayer(1);
             return _gods[1];
         }
-
-        _networker.SetCurrentPlayer(0);
+        
         return _gods[0];
     }
 }

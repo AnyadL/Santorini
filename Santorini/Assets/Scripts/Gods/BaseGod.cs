@@ -48,14 +48,10 @@ public class BaseGod : God
     {
         if (_input.Mouse0ClickedOnBoard())
         {
-            //Tile tile = _ground.GetNearestTiltToLastClick();
-            //if (tile.TryPlaceWorker(_workerPrefabs[_numWorkers]))
-            _currentlyPlacing = true;
-            yield return StartCoroutine(_ground.TryPlaceWorkerAtLastClick(_workerColour, Worker.Gender.Female));
+            yield return StartCoroutine(_board.TryPlaceWorkerAtLastClick(_workerColour, Worker.Gender.Female));
 
-            if (_ground.GetRequestPlaceWorkerSucceeded())
+            if (_board.GetRequestPlaceWorkerSucceeded())
             {
-                //tile.GetWorkerOnTile().SetGod(this);
                 _status = GodStatus.DoneTurn;
                 _numWorkers++;
                 if (_numWorkers == 2)
@@ -65,15 +61,13 @@ public class BaseGod : God
                 }
             }
         }
-
-        _currentlyPlacing = false;
     }
 
     protected override void Select()
     {
         if (_input.Mouse0ClickedOnBoard())
         {
-            Worker worker = _ground.GetNearestTiltToLastClick().GetWorkerOnTile();
+            Worker worker = _board.GetNearestTiltToLastClick().GetWorkerOnTile();
             if (GodSelectedOwnWorker(worker))
             {
                 SelectWorker(worker);
@@ -107,7 +101,7 @@ public class BaseGod : God
     {
         if(_input.Mouse0ClickedOnBoard())
         {
-            Tile tile = _ground.GetNearestTiltToLastClick();
+            Tile tile = _board.GetNearestTiltToLastClick();
 
             if(GodSelectedOwnWorker(tile.GetWorkerOnTile()))
             {
@@ -136,7 +130,7 @@ public class BaseGod : God
     {
         if(_input.Mouse0ClickedOnBoard())
         {
-            Tile tile = _ground.GetNearestTiltToLastClick();
+            Tile tile = _board.GetNearestTiltToLastClick();
             if (tile.IsTileDirectlyNeighbouring(_selectedWorker.GetTile()))
             {
                 if (tile.TryBuild())

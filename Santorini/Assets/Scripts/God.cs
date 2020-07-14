@@ -17,11 +17,10 @@ public abstract class God : MonoBehaviour
 
     protected GodStatus _status = GodStatus.Waiting;
     protected bool _donePlacing = false;
-    protected bool _currentlyPlacing = false;
     protected Worker _selectedWorker = null;
     
     protected InputSystem _input = default;
-    protected Ground _ground = default;
+    protected Board _board = default;
 
     protected Worker.Colour _workerColour = default;
 
@@ -32,12 +31,12 @@ public abstract class God : MonoBehaviour
     protected abstract void Move();
     protected abstract void Build();
 
-    public void OnStart(InputSystem input, Ground ground, Worker.Colour workerColour)
+    public void OnStart(InputSystem input, Board board, Worker.Colour workerColour)
     {
         _workerColour = workerColour;
 
         _input = input;
-        _ground = ground;
+        _board = board;
     }
 
     public void PlayTurn()
@@ -48,7 +47,7 @@ public abstract class God : MonoBehaviour
         }
 
         // if not done placing, PlaceWorkers
-        if (!_donePlacing && !_currentlyPlacing)
+        if (!_donePlacing)
         {
             _status = GodStatus.Placing;
             StartCoroutine(PlaceWorker());

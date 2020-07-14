@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-public class Ground : MonoBehaviour
+public class Board : MonoBehaviour
 {
     [SerializeField]
     Tile[] _tiles = null;
@@ -43,7 +43,7 @@ public class Ground : MonoBehaviour
     List<Worker> _workers = null;
 
     Tile _nearestTileToLastClick = default;
-    Networker _networker = default;
+    NetworkedBoard _networkedBoard = default;
 
     bool _requestPlaceWorkerSucceeded = false;
 
@@ -65,18 +65,20 @@ public class Ground : MonoBehaviour
         foreach (Tile tile in _tiles)
         {
             tile.OnUpdate();
-            NetworkedTile networkedTile = tile.GetNetworkedTile();
-            if(networkedTile.addWorkerRequest != null)
+            if(_networkedBoard.addWorkerRequest != null)
             {
-                AddWorkerToTile(networkedTile.addWorkerRequest, tile);
-                networkedTile.addWorkerRequest = null;
-            }
-            if (networkedTile.removeWorkerRequest != null)
-            {
-                RemoveWorkerFromFile(networkedTile.addWorkerRequest, tile);
-                networkedTile.removeWorkerRequest = null;
-            }
+                AddWorkerToTile(_networkedBoard.addWorkerRequest, tile);
+                _networkedBoard.addWorkerRequest = null;
 
+                _networkedBoard.SendAddWorkerResponse(true);
+            }
+            if (_networkedBoard.removeWorkerRequest != null)
+            {
+                RemoveWorkerFromFile(_networkedBoard.addWorkerRequest, tile);
+                _networkedBoard.removeWorkerRequest = null;
+
+                _networkedBoard.SendRemoveWorkerResponse(true);
+            }
         }
 
         if (clicked)
@@ -85,13 +87,13 @@ public class Ground : MonoBehaviour
         }
     }
 
-    void RemoveWorkerFromFile(NetworkedTile.WorkerRequest WorkerRequest, Tile tile)
+    void RemoveWorkerFromFile(NetworkedBoard.WorkerRequest WorkerRequest, Tile tile)
     {
 
     }
 
 
-    void AddWorkerToTile(NetworkedTile.WorkerRequest workerRequest, Tile tile)
+    void AddWorkerToTile(NetworkedBoard.WorkerRequest workerRequest, Tile tile)
     {
         GameObject workerPrefab;
         if(workerRequest.colour == Worker.Colour.Blue)
@@ -107,19 +109,14 @@ public class Ground : MonoBehaviour
         //_workerOnTile = newWorker.GetComponent<Worker>();
         //_workerOnTile.SetTile(this);
 
-        _networker.SpawnObject(newWorker);
+        //_networker.SpawnObject(newWorker);
         //_networkedTile.AddWorker();
         //return true;
     }
 
-    public void SetNetworker(Networker networker)
+    public void SetNetworkedBoard(NetworkedBoard networkedBoard)
     {
-        _networker = networker;
-
-        foreach (Tile tile in _tiles)
-        {
-            tile.SetNetworker(networker);
-        }
+        _networkedBoard = networkedBoard;
     }
 
     public Tile[] GetTiles()
@@ -134,16 +131,33 @@ public class Ground : MonoBehaviour
 
     public IEnumerator TryPlaceWorkerAtLastClick(Worker.Colour workerColour, Worker.Gender workerGender)
     {
-        if (_nearestTileToLastClick.TryRequestPlaceWorker(workerColour, workerGender))
+        if (_nearestTileToLastClick.IsWorkerOnTile() || _nearestTileToLastClick.IsDomed())
         {
-            if (!_nearestTileToLastClick.RequestPlaceWorkerCompleted())
-            {
-                yield return null;
-            }
-
-            _requestPlaceWorkerSucceeded = _nearestTileToLastClick.RequestPlaceWorkerSucceeded();
-            yield return _nearestTileToLastClick.RequestPlaceWorkerSucceeded();
+            Debug.LogWarning("Tried to place worker on an occupied tile");
+            _requestPlaceWorkerSucceeded = false;
+            yield return false;
         }
+
+        if (_nearestTileToLastClick.GetTowerLevel() > 0)
+        {
+            Debug.LogWarning("Tried to place worker on a level other than the ground");
+            _requestPlaceWorkerSucceeded = false;
+            yield return false;
+        }
+
+        _networkedBoard.SendAddWorkerRequest(workerColour, workerGender);
+
+        if (!_networkedBoard.addWorkerRequestCompleted)
+        {
+            yield return null;
+        }
+
+        _requestPlaceWorkerSucceeded = _networkedBoard.addWorkerRequestSucceeded;
+
+        _networkedBoard.addWorkerRequestSucceeded = false;
+        _networkedBoard.addWorkerRequestCompleted = false;
+
+        yield return true;
     }
 
     public bool GetRequestPlaceWorkerSucceeded()

@@ -8,22 +8,13 @@ public class SantoriniNetworkManager : NetworkManager
 {
     public override void OnClientConnect(NetworkConnection conn)
     {
-        GameObject networker = new GameObject("Networker");
-        networker.AddComponent<Networker>();
-        NetworkServer.Spawn(networker);
-
         Santorini santorini = FindObjectOfType<Santorini>();
-        santorini.SetNetworker(networker.GetComponent<Networker>());
 
-        foreach( Tile tile in santorini.GetGround().GetTiles())
-        {
-            GameObject networkedTileGO = new GameObject("Networked Tile");
-            NetworkedTile networkedTile = networkedTileGO.AddComponent<NetworkedTile>();
-            networkedTileGO.transform.parent = tile.transform;
-            tile.SetNetworkedTile(networkedTile);
+        GameObject networkedBoardGO = new GameObject("Networked Board");
+        NetworkedBoard networkedBoard = networkedBoardGO.AddComponent<NetworkedBoard>();
+        santorini.GetBoard().SetNetworkedBoard(networkedBoard);
 
-            NetworkServer.Spawn(networkedTileGO);
-        }
+        NetworkServer.Spawn(networkedBoardGO);
 
         base.OnClientConnect(conn);
     }
