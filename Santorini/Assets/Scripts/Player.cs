@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public enum Status
+    {
+        Waiting,
+        Placing,
+        Selecting,
+        Moving,
+        Building,
+        DoneTurn,
+        Won
+    }
+
+    public Status _status = Status.Waiting;
+
     God _god = default;
     List<Worker> _workers = default;
 
@@ -19,6 +32,14 @@ public class Player : MonoBehaviour
         _workers[1].Initialize(Worker.Gender.Male, colour);
     }
 
+    public void PlayTurn(bool activePlayer)
+    {
+        if(!activePlayer)
+        {
+            return;
+        }
+    }
+
     public God GetGod()
     {
         return _god;
@@ -27,5 +48,10 @@ public class Player : MonoBehaviour
     public List<Worker> GetWorkers()
     {
         return _workers;
+    }
+
+    public Status GetStatus()
+    {
+        return _status;
     }
 }

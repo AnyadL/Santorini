@@ -44,8 +44,13 @@ public class Santorini : MonoBehaviour
             _ground.OnUpdate(_input.Mouse0ClickedOnBoard(), _input.GetMouse0ClickedPosition());
             _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _ground.transform);
 
-            _activePlayer.GetGod().PlayTurn(_activePlayer.GetWorkers());
-            if(_activePlayer.GetGod().GetStatus() == God.GodStatus.Won)
+            foreach (Player player in _players)
+            {
+                player.PlayTurn(player == _activePlayer ? true : false);
+            }
+
+
+            if(_activePlayer.GetStatus() == Player.Status.Won)
             {
                 //Ensure other gods don't prevent the win
                 Debug.Log("You Win!!!");
@@ -53,7 +58,7 @@ public class Santorini : MonoBehaviour
                 UnityEditor.EditorApplication.isPlaying = false;
 #endif
             }
-            if(_activePlayer.GetGod().GetStatus() == God.GodStatus.DoneTurn)
+            if(_activePlayer.GetStatus() == Player.Status.DoneTurn)
             {
                 _activePlayer = GetNextPlayer();
             }

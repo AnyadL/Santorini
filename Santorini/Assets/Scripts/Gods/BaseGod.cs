@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BaseGod : God
 {
-    GodStatus _previousStatus = GodStatus.Waiting;
+    //GodStatus _previousStatus = GodStatus.Waiting;
     int _numWorkers = 0;
     
     // Base God Turn Sequence:
@@ -14,34 +14,34 @@ public class BaseGod : God
     //      Build with that worker
     protected override void TurnSequence(List<Worker> workers)
     {
-        if (_status == GodStatus.Selecting || (_status == GodStatus.Waiting && _previousStatus == GodStatus.Waiting))
-        {
-            _status = GodStatus.Selecting;
-            _previousStatus = GodStatus.Selecting;
-            Select(workers);
-        }
-        else if (_status == GodStatus.Moving || (_status == GodStatus.Waiting && _previousStatus == GodStatus.Selecting))
-        {
-            _status = GodStatus.Moving;
-            _previousStatus = GodStatus.Moving;
-            Move(workers);
-        }
-        else if (_status == GodStatus.Building || (_status == GodStatus.Waiting && _previousStatus == GodStatus.Moving))
-        {
-            _status = GodStatus.Building;
-            _previousStatus = GodStatus.Building;
-            Build(workers);
-        }
-        else
-        {
-            Debug.LogError("God is in an unknown state");
-        }
+        //if (_status == GodStatus.Selecting || (_status == GodStatus.Waiting && _previousStatus == GodStatus.Waiting))
+        //{
+        //    _status = GodStatus.Selecting;
+        //    _previousStatus = GodStatus.Selecting;
+        //    Select(workers);
+        //}
+        //else if (_status == GodStatus.Moving || (_status == GodStatus.Waiting && _previousStatus == GodStatus.Selecting))
+        //{
+        //    _status = GodStatus.Moving;
+        //    _previousStatus = GodStatus.Moving;
+        //    Move(workers);
+        //}
+        //else if (_status == GodStatus.Building || (_status == GodStatus.Waiting && _previousStatus == GodStatus.Moving))
+        //{
+        //    _status = GodStatus.Building;
+        //    _previousStatus = GodStatus.Building;
+        //    Build(workers);
+        //}
+        //else
+        //{
+        //    Debug.LogError("God is in an unknown state");
+        //}
     }
 
     protected override void OnStartNewTurn()
     {
-        _status = GodStatus.Waiting;
-        _previousStatus = GodStatus.Waiting;
+        //_status = GodStatus.Waiting;
+        //_previousStatus = GodStatus.Waiting;
     }
 
     protected override void PlaceWorker(List<Worker> workers)
