@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
 
     public Status _status = Status.Waiting;
 
+    StateMachine _stateMachine = default;
+
     God _god = default;
     List<Worker> _workers = default;
 
@@ -30,6 +32,8 @@ public class Player : MonoBehaviour
         _workers = new List<Worker>() { new Worker(), new Worker() };
         _workers[0].Initialize(Worker.Gender.Female, colour);
         _workers[1].Initialize(Worker.Gender.Male, colour);
+
+        _stateMachine = new StateMachine();
     }
 
     public void PlayTurn(bool activePlayer)
@@ -38,6 +42,8 @@ public class Player : MonoBehaviour
         {
             return;
         }
+
+        _stateMachine.UpdateCurrentState();
     }
 
     public God GetGod()
