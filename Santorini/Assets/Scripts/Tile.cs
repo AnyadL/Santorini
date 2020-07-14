@@ -24,13 +24,11 @@ public class Tile : MonoBehaviour
             NorthWest
         }
 
-#pragma warning disable 0649
         [SerializeField]
         Tile _tile;
 
         [SerializeField]
         Direction _direction;
-#pragma warning restore 0649
 
         [SerializeField]
         bool _directlyNeighbouring = false;
@@ -60,10 +58,8 @@ public class Tile : MonoBehaviour
         Dome = 4
     }
 
-#pragma warning disable 0649
     [SerializeField]
     TileNeighbour[] _neighbours;
-#pragma warning restore 0649
 
     GameObject _level1TowerPiece = default;
     GameObject _level2TowerPiece = default;
@@ -108,25 +104,10 @@ public class Tile : MonoBehaviour
         _level3TowerPiece = level3TowerPiece;
         _dome = dome;
     }
-    
-    public int GetTowerLevel()
-    {
-        return _towerPiecesOnTile.Count;
-    }
 
     public Worker GetWorkerOnTile()
     {
         return _workerOnTile;
-    }
-
-    public bool IsWorkerOnTile()
-    {
-        return _workerOnTile != null;
-    }
-
-    public bool IsDomed()
-    {
-        return _domed;   
     }
 
     public Level GetLevel()
@@ -169,54 +150,67 @@ public class Tile : MonoBehaviour
 
         transform.Find("TileMesh").gameObject.SetActive(false);
     }
-    
+
+    public bool TryPlaceWorker(GameObject workerPrefab)
+    {
+        if (_workerOnTile != null || _domed)
+        {
+            Debug.LogError("Tried to place worker on an occupied tile");
+            return false;
+        }
+
+        if(_towerPiecesOnTile.Count > 0)
+        {
+            Debug.LogError("Tried to place worker on a level other than the ground");
+            return false;
+        }
+
+        GameObject newWorker = Instantiate(workerPrefab, new Vector3(transform.position.x, GetWorkerY(), transform.position.z), Quaternion.identity);
+        _workerOnTile = newWorker.GetComponent<Worker>();
+        _workerOnTile.SetTile(this);
+        return true;
+    }
+
     public bool TryMoveWorker(Worker worker, Level previousLevel)
     {
-        return false;
-        //if(_workerOnTile != null || _domed)
-        //{
-        //    Debug.LogError("Tried to move worker onto already occupied tile");
-        //    return false;
-        //}
+        if(_workerOnTile != null || _domed)
+        {
+            Debug.LogError("Tried to move worker onto already occupied tile");
+            return false;
+        }
         
-        //if(_towerPiecesOnTile.Count > (int) previousLevel + 1)
-        //{
-        //    Debug.LogError("Worker tried to move up more than one level");
-        //    return false;
-        //}
+        if(_towerPiecesOnTile.Count > (int) previousLevel + 1)
+        {
+            Debug.LogError("Worker tried to move up more than one level");
+            return false;
+        }
 
-        //worker.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
+        worker.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
 
-        //_workerOnTile = worker;
-        //_networkedTile.AddWorker();
-        //worker.GetTile().OnWorkerExitTile();
-
-        //worker.GetTile().GetNetworkedTile().RemoveWorker();
-        //_workerOnTile.SetTile(this);
-        //return true;
+        _workerOnTile = worker;
+        worker.GetTile().OnWorkerExitTile();
+        _workerOnTile.SetTile(this);
+        return true;
     }
 
     public bool TryBuild()
     {
-        return false;
-        //if(_workerOnTile != null || _domed)
-        //{
-        //    Debug.LogError("Tried to build on an occupied tile");
-        //    return false;
-        //}
+        if(_workerOnTile != null || _domed)
+        {
+            Debug.LogError("Tried to build on an occupied tile");
+            return false;
+        }
 
-        //GameObject towerPieceGO = Instantiate(GetTowerPiecePrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);
-        //_networker.SpawnObject(towerPieceGO);
+        GameObject towerPieceGO = Instantiate(GetTowerPiecePrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);
+        TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
+        _towerPiecesOnTile.Add(towerPiece);
 
-        //TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
-        //_towerPiecesOnTile.Add(towerPiece);
+        if(_towerPiecesOnTile.Count == 4)
+        {
+            _domed = true;
+        }
 
-        //if(_towerPiecesOnTile.Count == 4)
-        //{
-        //    _domed = true;
-        //}
-
-        //return true;
+        return true;
     }
 
     public void OnWorkerExitTile()
@@ -224,7 +218,7 @@ public class Tile : MonoBehaviour
         _workerOnTile = null;
     }
 
-    public float GetWorkerY()
+    float GetWorkerY()
     {
         switch (_towerPiecesOnTile.Count)
         {

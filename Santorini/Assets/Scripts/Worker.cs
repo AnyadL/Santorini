@@ -12,28 +12,7 @@ public class Worker : MonoBehaviour
 
     God _god = default;
     Tile _tile = default;
-
-    public enum Gender
-    {
-        Female,
-        Male
-    }
-
-    public enum Colour
-    {
-        Blue,
-        White
-    }
-
-    Gender _gender = Gender.Female;
-    Colour _colour = Colour.Blue;
-
-    public void Initialize(Gender gender, Colour colour)
-    {
-        _gender = gender;
-        _colour = colour;
-    }
-
+    
     public void EnableHighlight()
     {
         _highlight.SetActive(true);
@@ -62,15 +41,5 @@ public class Worker : MonoBehaviour
     public Tile GetTile()
     {
         return _tile;
-    }
-    
-    public Gender GetGender()
-    {
-        return _gender;
-    }
-
-    public Colour GetColour()
-    {
-        return _colour;
     }
 }
