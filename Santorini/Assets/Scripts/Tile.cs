@@ -114,9 +114,19 @@ public class Tile : MonoBehaviour
         return _workerOnTile;
     }
 
+    public bool HasWorkerOnTile()
+    {
+        return _workerOnTile != null;
+    }
+
     public Level GetLevel()
     {
         return (Level) _towerPiecesOnTile.Count;
+    }
+
+    public bool IsDomed()
+    {
+        return _domed;
     }
 
     public bool IsTileNeighbouring(Tile possibleNeighbour)
@@ -155,24 +165,12 @@ public class Tile : MonoBehaviour
         transform.Find("TileMesh").gameObject.SetActive(false);
     }
 
-    public bool TryPlaceWorker(GameObject workerPrefab)
+    public Worker PlaceWorker(GameObject workerPrefab)
     {
-        if (_workerOnTile != null || _domed)
-        {
-            Debug.LogError("Tried to place worker on an occupied tile");
-            return false;
-        }
-
-        if(_towerPiecesOnTile.Count > 0)
-        {
-            Debug.LogError("Tried to place worker on a level other than the ground");
-            return false;
-        }
-
         GameObject newWorker = Instantiate(workerPrefab, new Vector3(transform.position.x, GetWorkerY(), transform.position.z), Quaternion.identity);
         _workerOnTile = newWorker.GetComponent<Worker>();
         _workerOnTile.SetTile(this);
-        return true;
+        return _workerOnTile;
     }
 
     public bool TryMoveWorker(Worker worker, Level previousLevel)
@@ -220,6 +218,39 @@ public class Tile : MonoBehaviour
     public void OnWorkerExitTile()
     {
         _workerOnTile = null;
+    }
+
+    public void AddWorker(Worker worker)
+    {
+        _workerOnTile = worker;
+        _workerOnTile.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
+    }
+
+    public void RemoveWorker()
+    {
+        _workerOnTile = null;
+    }
+
+    public void AddTowerPiece()
+    {
+        GameObject towerPieceGO = Instantiate(GetTowerPiecePrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);
+        TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
+        _towerPiecesOnTile.Add(towerPiece);
+
+        if (_towerPiecesOnTile.Count == 4)
+        {
+            _domed = true;
+        }
+    }
+
+    public void RemoveTowerPiece()
+    {
+        GameObject removedTowerPiece = _towerPiecesOnTile[_towerPiecesOnTile.Count - 1].gameObject;
+        _towerPiecesOnTile.RemoveAt(_towerPiecesOnTile.Count - 1);
+        Destroy(removedTowerPiece);
+
+        // No matter how high the tower was, if you remove the top item you can guarantee it is no longer domed
+        _domed = false;
     }
 
     float GetWorkerY()

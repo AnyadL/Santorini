@@ -19,6 +19,20 @@ public class Ground : MonoBehaviour
     [SerializeField]
     GameObject _dome = default;
 
+    [System.SerializableAttribute]
+    struct WorkerPrefab
+    {
+#pragma warning disable 0649
+        public Worker.Gender gender;
+        public Worker.Colour colour;
+        public GameObject prefab;
+#pragma warning restore 0649
+    }
+
+    [Header("Worker Prefabs")]
+    [SerializeField]
+    List<WorkerPrefab> _workerPrefabs = default;
+
     [Header("Positions")]
     [SerializeField]
     Transform _groundWorkerPosition = default;
@@ -36,11 +50,26 @@ public class Ground : MonoBehaviour
     Transform _level3TowerPiecePosition = default;
     [SerializeField]
     Transform _domePosition = default;
-    
-    Tile _nearestTileToLastClick = default;
 
-    public void OnStart()
+    List<Player> _players = default;
+    Player _activePlayer = default;
+
+    public void OnStart(List<Player> players)
     {
+        for(int i = 0; i < _workerPrefabs.Count; ++i)
+        {
+            for(int j = 0; j < _workerPrefabs.Count; ++j)
+            {
+                if (i == j) { continue; }
+                if (_workerPrefabs[i].gender == _workerPrefabs[j].gender && _workerPrefabs[i].colour == _workerPrefabs[j].colour)
+                {
+                    Debug.LogError("Worker prefab list defines the same worker twice.");
+                }
+            }
+        }
+
+        _players = players;
+        
         foreach (Tile tile in _tiles)
         {
             tile.OnStart();
@@ -49,25 +78,83 @@ public class Ground : MonoBehaviour
         }
     }
 
-    public void OnUpdate(bool clicked, Vector3 clickedPosition)
+    public void OnUpdate(Player activePlayer)
     {
+        _activePlayer = activePlayer;
+
         foreach (Tile tile in _tiles)
         {
             tile.OnUpdate();
         }
-
-        if (clicked)
-        {
-            _nearestTileToLastClick = GetNearestTileToPosition(clickedPosition);
-        }
     }
 
-    public Tile GetNearestTiltToLastClick()
+    public bool AllowsMove(Worker worker, Tile tile)
     {
-        return _nearestTileToLastClick;
+        // Can't move onto domed tile
+        if (tile.IsDomed())
+        {
+            return false;
+        }
+
+        Tile oldTile = worker.GetTile();
+
+        // Can't move up more than one level
+        if (tile.GetLevel() > oldTile.GetLevel() + 1)
+        {
+            return false;
+        }
+
+  
+        return true;
     }
 
-    Tile GetNearestTileToPosition(Vector3 position)
+    public bool OpponentsAllowMove(Tile tile)
+    {
+        bool allowed = true;
+        foreach(Player opponent in _players)
+        {
+            if(opponent == _activePlayer) { continue; }
+            allowed |= opponent.GetGod().AllowsOpponentMove(tile);
+        }
+
+        return allowed;
+    }
+
+    public bool OpponentsAllowMove(Worker worker, Tile tile)
+    {
+        bool allowed = true;
+        foreach (Player opponent in _players)
+        {
+            if (opponent == _activePlayer) { continue; }
+            allowed |= opponent.GetGod().AllowsOpponentMove(worker, tile);
+        }
+
+        return allowed;
+    }
+
+    public bool AllowsBuild(Worker worker, Tile tile)
+    {
+        return !tile.IsDomed();
+    }
+
+    public bool OpponentsAllowBuild(Worker worker, Tile tile)
+    {
+        bool allowed = true;
+        foreach (Player opponent in _players)
+        {
+            if (opponent == _activePlayer) { continue; }
+            allowed |= opponent.GetGod().AllowsOpponentBuild(worker, tile);
+        }
+
+        return allowed;
+    }
+
+    public Player GetActivePlayer()
+    {
+        return _activePlayer;
+    }
+
+    public Tile GetNearestTileToPosition(Vector3 position)
     {
         Tile nearestTile = null;
         float minDistance = float.MaxValue;
@@ -84,5 +171,36 @@ public class Ground : MonoBehaviour
         }
 
         return nearestTile;
+    }
+
+    public GameObject GetNextWorkerPrefab()
+    {
+        int numWorkers = _activePlayer.GetWorkers().Count;
+        Worker.Colour colour = _activePlayer.GetColour();
+        if (numWorkers == 0)
+        {
+            return GetWorkerPrefab(Worker.Gender.Female, colour);
+        }
+        else if (numWorkers == 1)
+        {
+            return GetWorkerPrefab(Worker.Gender.Male, colour);
+        }
+
+        // First and Second must be male and female, but any additional workers can be any gender
+        return GetWorkerPrefab((Worker.Gender) UnityEngine.Random.Range(0, 1), colour);
+    }
+
+    GameObject GetWorkerPrefab(Worker.Gender gender, Worker.Colour colour)
+    {
+        foreach(WorkerPrefab workerPrefab in _workerPrefabs)
+        {
+            if (workerPrefab.gender == gender && workerPrefab.colour == colour)
+            {
+                return workerPrefab.prefab;
+            }
+        }
+
+        Debug.LogErrorFormat("Found no Worker prefab with these settings:\nGender: {0}, Colour: {1}", gender.ToString(), colour.ToString());
+        return null;
     }
 }

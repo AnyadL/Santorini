@@ -4,29 +4,49 @@ using UnityEngine;
 
 public class InputSystem : MonoBehaviour
 {
-    Vector3 _mouse0ClickedPosition = default;
+    bool _mouse0ClickedThisFrame = false;
+    bool _mouse0ClickedBoard = false;
+    Vector3 _mouse0ClickedPositionScreen = default;
+    Vector3 _mouse0ClickedPositionBoard = default;
+   
 
-    public bool Mouse0ClickedOnBoard()
+    public void OnUpdate()
     {
-        if (Input.GetMouseButtonDown(0))
+        ResetMouse0Click();
+
+        _mouse0ClickedThisFrame = Input.GetMouseButtonDown(0);
+        if (_mouse0ClickedThisFrame)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            _mouse0ClickedPositionScreen = Input.mousePosition;
+            Ray ray = Camera.main.ScreenPointToRay(_mouse0ClickedPositionScreen);
             RaycastHit hit;
             float raycastDistance = 150f;
             if (Physics.Raycast(ray, out hit, raycastDistance))
             {
-                _mouse0ClickedPosition = hit.point;
-                return true;
+                _mouse0ClickedBoard = true;
+                _mouse0ClickedPositionBoard = hit.point;
             }
         }
-
-        _mouse0ClickedPosition = new Vector3();
-        return false;
     }
 
-    public Vector3 GetMouse0ClickedPosition()
+    public bool Mouse0ClickedOnBoard()
     {
-        return _mouse0ClickedPosition;
+        return _mouse0ClickedBoard;
+    }
+
+    public Vector3 GetMouse0ClickedPositionBoard()
+    {
+        return _mouse0ClickedPositionBoard;
+    }
+
+    public bool GetMouse0ClickedThisFrame()
+    {
+        return _mouse0ClickedThisFrame;
+    }
+
+    public Vector3 GetMouse0ClickedPositionScreen()
+    {
+        return _mouse0ClickedPositionScreen;
     }
 
     public bool Mouse1Clicked()
@@ -37,5 +57,13 @@ public class InputSystem : MonoBehaviour
     public float GetMouseScrollDeltaY()
     {
         return Input.mouseScrollDelta.y;
+    }
+
+    public void ResetMouse0Click()
+    {
+        _mouse0ClickedThisFrame = false;
+        _mouse0ClickedBoard = false;
+        _mouse0ClickedPositionBoard = new Vector3();
+        _mouse0ClickedPositionScreen = new Vector3();
     }
 }

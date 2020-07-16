@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine 
 {
     List<State> _states = default;
     State _currentState = default;
 
-    public void Initialize(State initialState)
+    InputSystem _input = default;
+    Ground _ground = default;
+
+    public void Initialize(State initialState, InputSystem input, Ground ground)
     {
         _states = new List<State>() { initialState };
         _currentState = initialState;
+
+        _input = input;
+        _ground = ground;
     }
 
     public void RegisterState(State state)
@@ -20,14 +26,35 @@ public class StateMachine : MonoBehaviour
 
     public void UpdateCurrentState()
     {
-        State newState = _currentState.UpdateState();
+        int newStateIndex = _currentState.UpdateState(_input, _ground);
 
-        while (newState != null)
+        int stateTransitionCounter = 0;
+
+        while (newStateIndex != -1)
         {
+            ++stateTransitionCounter;
+            if(stateTransitionCounter > 15)
+            {
+                Debug.LogError("Detected possible infinite loop in state machine");
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+                break;
+            }
             _currentState.ExitState();
-            _currentState = newState;
-            _currentState.EnterState();
-            newState = _currentState.UpdateState();
+            _currentState = _states[newStateIndex];
+            _currentState.EnterState(_input, _ground);
+            newStateIndex = _currentState.UpdateState(_input, _ground);
         }
+    }
+
+    public int GetStateId()
+    {
+        return _currentState.GetStateId();
+    }
+
+    public void SetState(int stateId)
+    {
+        _currentState = _states[stateId];
     }
 }

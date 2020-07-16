@@ -4,18 +4,35 @@ using UnityEngine;
 
 public class SelectingState : State
 {
-    public override void EnterState()
+    public override void EnterState(InputSystem input, Ground ground)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Entering Selecting State");
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
-    public override State UpdateState()
+    public override int UpdateState(InputSystem input, Ground ground)
     {
-        throw new System.NotImplementedException();
+        if(!input.Mouse0ClickedOnBoard()) { return -1; }
+
+        Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
+        Tile nearestTileToClick = ground.GetNearestTileToPosition(clickedPosition);
+        Player activePlayer = ground.GetActivePlayer();
+
+        Worker selectedWorker = ground.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();
+        if(activePlayer.TrySelectWorker(selectedWorker))
+        {
+            return (int)Player.StateId.Moving;
+        }
+
+        return -1;
+    }
+
+    public override int GetStateId()
+    {
+        return (int)Player.StateId.Selecting;
     }
 }

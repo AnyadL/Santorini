@@ -13,55 +13,70 @@ public class Santorini : MonoBehaviour
 
     [SerializeField]
     InputSystem _input = default;
-
-    [Header("Player Prefabs")]
-    [SerializeField]
-    GameObject _player1Worker1 = default;
-    [SerializeField]
-    GameObject _player1Worker2 = default;
-    [SerializeField]
-    GameObject _player2Worker1 = default;
-    [SerializeField]
-    GameObject _player2Worker2 = default;
-
+    
     List<Player> _players = default;
     Player _activePlayer = null;
 
     void Start()
     {
-        _ground.OnStart();
         _players = new List<Player>() { new Player(), new Player() };
         _activePlayer = _players[0];
 
         _players[0].Initialize(_input, _ground, Worker.Colour.Blue);
         _players[1].Initialize(_input, _ground, Worker.Colour.White);
+
+        _ground.OnStart(_players);
+        Debug.LogFormat("Player {0}'s Turn", _activePlayer.GetColour().ToString());
     }
-    
+
     void Update()
     {
         try
         {
-            _ground.OnUpdate(_input.Mouse0ClickedOnBoard(), _input.GetMouse0ClickedPosition());
+            _input.OnUpdate();
+            _ground.OnUpdate(_activePlayer);
             _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _ground.transform);
+            
+            foreach (Player player in _players)
+            {
+                if(player.HasWon())
+                {
+                    bool canWin = true;
+                    foreach (Player otherPlayer in _players)
+                    {
+                        if(otherPlayer.PreventsWin(player))
+                        {
+                            canWin = false;
+                            break;
+                        }
+                    }
+
+                    if (canWin)
+                    {
+                        Debug.Log("You Win!!!");
+#if UNITY_EDITOR
+                        UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+                    }
+                    else
+                    {
+                        Debug.Log("An opponenet prevented your win! D:");
+                    }
+                }
+            }
 
             foreach (Player player in _players)
             {
-                player.PlayTurn(player == _activePlayer ? true : false);
+                player.UpdatePlayer(player == _activePlayer ? true : false);
             }
 
-
-            if(_activePlayer.GetStatus() == Player.Status.Won)
+            if(_activePlayer.IsDoneTurn())
             {
-                //Ensure other gods don't prevent the win
-                Debug.Log("You Win!!!");
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#endif
-            }
-            if(_activePlayer.GetStatus() == Player.Status.DoneTurn)
-            {
+                _activePlayer.FinalizeTurn();
                 _activePlayer = GetNextPlayer();
+                Debug.LogFormat("Player {0}'s Turn", _activePlayer.GetColour().ToString());
             }
+            
         }
         catch (System.Exception e)
         {
@@ -72,7 +87,9 @@ public class Santorini : MonoBehaviour
     
     Player GetNextPlayer()
     {
-        if(_players[0] == _activePlayer)
+        //TODO: Any players that haven't placed all their workers should be prioritized
+
+        if (_players[0] == _activePlayer)
         {
             return _players[1];
         }

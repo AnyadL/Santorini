@@ -18,11 +18,11 @@ public class Worker : MonoBehaviour
         Blue, 
         White
     }
-
+    
     [SerializeField]
     GameObject _highlight = default;
 
-    God _god = default;
+    Player _player = default;
     Tile _tile = default;
 
     Gender _gender = Gender.Female;
@@ -44,14 +44,14 @@ public class Worker : MonoBehaviour
         _highlight.SetActive(false);
     }
 
-    public void SetGod(God god)
+    public void SetPlayer(Player player)
     {
-        _god = god; 
+        _player = player;
     }
 
-    public God GetGod()
+    public Player GetPlayer()
     {
-        return _god;
+        return _player;
     }
 
     public void SetTile(Tile tile)

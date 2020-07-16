@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class WaitingState : State
 {
-    public override void EnterState()
+    public override void EnterState(InputSystem input, Ground ground)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Entering Waiting State");
+        ground.GetActivePlayer().GetGod().ResetCounters();
+        input.ResetMouse0Click();
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
-    public override State UpdateState()
+    public override int UpdateState(InputSystem input, Ground ground)
     {
-        throw new System.NotImplementedException();
+        return (int)Player.StateId.Placing;
+    }
+
+    public override int GetStateId()
+    {
+        return (int)Player.StateId.Waiting; 
     }
 }
