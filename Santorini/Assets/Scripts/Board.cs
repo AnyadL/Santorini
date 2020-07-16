@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-public class Ground : MonoBehaviour
+public class Board : MonoBehaviour
 {
     [SerializeField]
     Tile[] _tiles = null;

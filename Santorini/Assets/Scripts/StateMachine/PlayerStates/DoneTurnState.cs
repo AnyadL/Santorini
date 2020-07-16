@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoneTurnState : State
 {
-    public override void EnterState(InputSystem input, Ground ground)
+    public override void EnterState(InputSystem input, Board board)
     {
         Debug.Log("Entering Done Turn State");
         input.ResetMouse0Click();
@@ -12,9 +12,9 @@ public class DoneTurnState : State
 
     public override void ExitState() { return; }
 
-    public override int UpdateState(InputSystem input, Ground ground)
+    public override int UpdateState(InputSystem input, Board board)
     {
-        if(!ground.GetActivePlayer().GetGod().FinishedTurn())
+        if(!board.GetActivePlayer().GetGod().FinishedTurn())
         {
             return (int)Player.StateId.Placing;
         }

@@ -15,22 +15,22 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     float maxZoom = 100f;
 
-    public void OnUpdate(bool mouse1Clicked, float scrollDeltaY, Transform ground)
+    public void OnUpdate(bool mouse1Clicked, float scrollDeltaY, Transform board)
     {
         // Rotate Camera if Right Click
         if (mouse1Clicked)
         {
-            RotateAroundTransform(ground, Input.GetAxis("Mouse X"));
+            RotateAroundTransform(board, Input.GetAxis("Mouse X"));
         }
 
         // Zoom Camera if Mouse Wheel
         if (scrollDeltaY > Mathf.Epsilon)
         {
-            ZoomIn(ground.position);
+            ZoomIn(board.position);
         }
         else if (scrollDeltaY < -Mathf.Epsilon)
         {
-            ZoomOut(ground.position);
+            ZoomOut(board.position);
         }
     }
 

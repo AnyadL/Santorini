@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlacingState : State
 {
-    public override void EnterState(InputSystem input, Ground ground)
+    public override void EnterState(InputSystem input, Board board)
     {
         Debug.Log("Entering Placing State");
         input.ResetMouse0Click();
@@ -12,9 +12,9 @@ public class PlacingState : State
 
     public override void ExitState() { return; }
 
-    public override int UpdateState(InputSystem input, Ground ground)
+    public override int UpdateState(InputSystem input, Board board)
     {
-        Player activePlayer = ground.GetActivePlayer();
+        Player activePlayer = board.GetActivePlayer();
 
         if(activePlayer.GetGod().DonePlacing())
         {
@@ -24,11 +24,11 @@ public class PlacingState : State
         if (!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = ground.GetNearestTileToPosition(clickedPosition);
+        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
 
-        if (activePlayer.GetGod().AllowsMove(nearestTileToClick) && ground.OpponentsAllowMove(nearestTileToClick))
+        if (activePlayer.GetGod().AllowsMove(nearestTileToClick) && board.OpponentsAllowMove(nearestTileToClick))
         {
-            Worker newWorker = nearestTileToClick.PlaceWorker(ground.GetNextWorkerPrefab());
+            Worker newWorker = nearestTileToClick.PlaceWorker(board.GetNextWorkerPrefab());
             newWorker.SetPlayer(activePlayer);
             activePlayer.AddWorker(newWorker);
             activePlayer.GetGod().RegisterPlacedWorker();

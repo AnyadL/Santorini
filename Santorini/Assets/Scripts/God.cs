@@ -65,7 +65,7 @@ public abstract class God
 
     public virtual bool AllowsOpponentBuild(Worker worker, Tile tile) { return true; }
 
-    public virtual bool HasWon(Ground ground, List<Worker> workers)
+    public virtual bool HasWon(Board board, List<Worker> workers)
     {
         foreach(Worker worker in workers)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovingState : State
 {
-    public override void EnterState(InputSystem input, Ground ground)
+    public override void EnterState(InputSystem input, Board board)
     {
         Debug.Log("Entering Moving State");
         input.ResetMouse0Click();
@@ -12,13 +12,13 @@ public class MovingState : State
 
     public override void ExitState() { return; }
 
-    public override int UpdateState(InputSystem input, Ground ground)
+    public override int UpdateState(InputSystem input, Board board)
     {
         if (!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = ground.GetNearestTileToPosition(clickedPosition);
-        Player activePlayer = ground.GetActivePlayer();
+        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
+        Player activePlayer = board.GetActivePlayer();
         Worker selectedWorker = activePlayer.GetSelectedWorker();
 
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
@@ -30,10 +30,10 @@ public class MovingState : State
         }
 
         if(activePlayer.GetGod().AllowsMove(nearestTileToClick, selectedWorker) && 
-            ground.AllowsMove(selectedWorker, nearestTileToClick) &&
-            ground.OpponentsAllowMove(selectedWorker, nearestTileToClick))
+            board.AllowsMove(selectedWorker, nearestTileToClick) &&
+            board.OpponentsAllowMove(selectedWorker, nearestTileToClick))
         {
-            // God, Ground, and opponents all agree that the move is legal
+            // God, Board, and opponents all agree that the move is legal
             selectedWorker.GetTile().RemoveWorker();
             nearestTileToClick.AddWorker(selectedWorker);
             activePlayer.GetGod().RegisterMove();

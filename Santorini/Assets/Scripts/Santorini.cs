@@ -6,7 +6,7 @@ using UnityEngine;
 public class Santorini : MonoBehaviour
 {
     [SerializeField]
-    Ground _ground = default;
+    Board _board = default;
 
     [SerializeField]
     PlayerCamera _camera = default;
@@ -22,10 +22,10 @@ public class Santorini : MonoBehaviour
         _players = new List<Player>() { new Player(), new Player() };
         _activePlayer = _players[0];
 
-        _players[0].Initialize(_input, _ground, Worker.Colour.Blue);
-        _players[1].Initialize(_input, _ground, Worker.Colour.White);
+        _players[0].Initialize(_input, _board, Worker.Colour.Blue);
+        _players[1].Initialize(_input, _board, Worker.Colour.White);
 
-        _ground.OnStart(_players);
+        _board.OnStart(_players);
         Debug.LogFormat("Player {0}'s Turn", _activePlayer.GetColour().ToString());
     }
 
@@ -34,8 +34,8 @@ public class Santorini : MonoBehaviour
         try
         {
             _input.OnUpdate();
-            _ground.OnUpdate(_activePlayer);
-            _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _ground.transform);
+            _board.OnUpdate(_activePlayer);
+            _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _board.transform);
             
             foreach (Player player in _players)
             {

@@ -54,7 +54,7 @@ public class Tile : MonoBehaviour
 
     public enum Level
     {
-        Ground = 0,
+        Board = 0,
         Level1 = 1,
         Level2 = 2,
         Level3 = 3,
@@ -71,7 +71,7 @@ public class Tile : MonoBehaviour
     GameObject _level3TowerPiece = default;
     GameObject _dome = default;
 
-    float _groundWorkerY = 0.0f;
+    float _boardWorkerY = 0.0f;
     float _level1WorkerY = 0.0f;
     float _level2WorkerY = 0.0f;
     float _level3WorkerY = 0.0f;
@@ -90,9 +90,9 @@ public class Tile : MonoBehaviour
         _towerPiecesOnTile = new List<TowerPiece>();
     }
 
-    public void SetYPositions(float groundWorkerY, float level1WorkerY, float level2WorkerY, float level3WorkerY, float level1TowerPieceY, float level2TowerPieceY, float level3TowerPieceY, float domeY)
+    public void SetYPositions(float boardWorkerY, float level1WorkerY, float level2WorkerY, float level3WorkerY, float level1TowerPieceY, float level2TowerPieceY, float level3TowerPieceY, float domeY)
     {
-        _groundWorkerY = groundWorkerY;
+        _boardWorkerY = boardWorkerY;
         _level1WorkerY = level1WorkerY;
         _level2WorkerY = level2WorkerY;
         _level3WorkerY = level3WorkerY;
@@ -212,7 +212,7 @@ public class Tile : MonoBehaviour
         switch (_towerPiecesOnTile.Count)
         {
             case 0:
-                return _groundWorkerY;
+                return _boardWorkerY;
             case 1:
                 return _level1WorkerY;
             case 2:

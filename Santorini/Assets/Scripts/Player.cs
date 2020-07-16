@@ -18,7 +18,7 @@ public class Player
     StateMachine _stateMachine = default;
 
     protected InputSystem _input = default;
-    protected Ground _ground = default;
+    protected Board _board = default;
 
     God _god = default;
     List<Worker> _workers = default;
@@ -26,17 +26,17 @@ public class Player
 
     Worker _selectedWorker = default;
 
-    public void Initialize(InputSystem input, Ground ground, Worker.Colour colour)
+    public void Initialize(InputSystem input, Board board, Worker.Colour colour)
     {
         _input = input;
-        _ground = ground;
+        _board = board;
         _workers = new List<Worker>();
         _colour = colour;
 
         _god = new BaseGod();
 
         _stateMachine = new StateMachine();
-        _stateMachine.Initialize(input, ground);
+        _stateMachine.Initialize(input, board);
 
         WaitingState waitingState = new WaitingState();
         _stateMachine.RegisterState(waitingState);
@@ -76,7 +76,7 @@ public class Player
 
     public bool HasWon()
     {
-        return _god.HasWon(_ground, _workers);
+        return _god.HasWon(_board, _workers);
     }
 
     public bool IsDoneTurn()

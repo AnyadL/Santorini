@@ -8,14 +8,14 @@ public class StateMachine
     State _currentState = default;
 
     InputSystem _input = default;
-    Ground _ground = default;
+    Board _board = default;
 
-    public void Initialize(InputSystem input, Ground ground)
+    public void Initialize(InputSystem input, Board board)
     {
         _states = new List<State>();
 
         _input = input;
-        _ground = ground;
+        _board = board;
     }
 
     public void RegisterState(State state)
@@ -25,7 +25,7 @@ public class StateMachine
 
     public void UpdateCurrentState()
     {
-        int newStateIndex = _currentState.UpdateState(_input, _ground);
+        int newStateIndex = _currentState.UpdateState(_input, _board);
 
         int stateTransitionCounter = 0;
 
@@ -43,8 +43,8 @@ public class StateMachine
 
             _currentState.ExitState();
             _currentState = _states[newStateIndex];
-            _currentState.EnterState(_input, _ground);
-            newStateIndex = _currentState.UpdateState(_input, _ground);
+            _currentState.EnterState(_input, _board);
+            newStateIndex = _currentState.UpdateState(_input, _board);
         }
     }
 

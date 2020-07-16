@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildingState : State
 {
-    public override void EnterState(InputSystem input, Ground ground)
+    public override void EnterState(InputSystem input, Board board)
     {
         Debug.Log("Entering Building State");
         input.ResetMouse0Click();
@@ -12,21 +12,21 @@ public class BuildingState : State
 
     public override void ExitState() { return; }
 
-    public override int UpdateState(InputSystem input, Ground ground)
+    public override int UpdateState(InputSystem input, Board board)
     {
         if (!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = ground.GetNearestTileToPosition(clickedPosition);
-        Player activePlayer = ground.GetActivePlayer();
+        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
+        Player activePlayer = board.GetActivePlayer();
         Worker selectedWorker = activePlayer.GetSelectedWorker();
 
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
         if (activePlayer.GetGod().AllowsBuild(nearestTileToClick, selectedWorker) && 
-            ground.AllowsBuild(selectedWorker, nearestTileToClick) &&
-            ground.OpponentsAllowBuild(selectedWorker, nearestTileToClick))
+            board.AllowsBuild(selectedWorker, nearestTileToClick) &&
+            board.OpponentsAllowBuild(selectedWorker, nearestTileToClick))
         {
-            // God, Ground, and opponents all agree that the build is legal
+            // God, Board, and opponents all agree that the build is legal
             nearestTileToClick.AddTowerPiece();
             activePlayer.GetGod().RegisterBuild();
             if(activePlayer.GetGod().DoneBuilding())

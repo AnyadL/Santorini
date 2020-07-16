@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class SelectingState : State
 {
-    public override void EnterState(InputSystem input, Ground ground)
+    public override void EnterState(InputSystem input, Board board)
     {
         Debug.Log("Entering Selecting State");
     }
 
     public override void ExitState() { return; }
 
-    public override int UpdateState(InputSystem input, Ground ground)
+    public override int UpdateState(InputSystem input, Board board)
     {
         if(!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = ground.GetNearestTileToPosition(clickedPosition);
-        Player activePlayer = ground.GetActivePlayer();
+        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
+        Player activePlayer = board.GetActivePlayer();
 
-        Worker selectedWorker = ground.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();
+        Worker selectedWorker = board.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();
         if(activePlayer.TrySelectWorker(selectedWorker))
         {
             selectedWorker.EnableHighlight();
