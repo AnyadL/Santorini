@@ -10,10 +10,7 @@ public class MovingState : State
         input.ResetMouse0Click();
     }
 
-    public override void ExitState()
-    {
-        return;
-    }
+    public override void ExitState() { return; }
 
     public override int UpdateState(InputSystem input, Ground ground)
     {
@@ -28,6 +25,7 @@ public class MovingState : State
         if(workerOnTile != null && activePlayer.GetWorkers().Contains(workerOnTile))
         {
             // Player has decided to reselect which worker they're using
+            selectedWorker.DisableHighlight();
             return (int)Player.StateId.Selecting;
         }
 
@@ -35,7 +33,7 @@ public class MovingState : State
             ground.AllowsMove(selectedWorker, nearestTileToClick) &&
             ground.OpponentsAllowMove(selectedWorker, nearestTileToClick))
         {
-            // God and Ground agree that the move is legal
+            // God, Ground, and opponents all agree that the move is legal
             selectedWorker.GetTile().RemoveWorker();
             nearestTileToClick.AddWorker(selectedWorker);
             activePlayer.GetGod().RegisterMove();

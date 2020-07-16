@@ -9,10 +9,7 @@ public class SelectingState : State
         Debug.Log("Entering Selecting State");
     }
 
-    public override void ExitState()
-    {
-        return;
-    }
+    public override void ExitState() { return; }
 
     public override int UpdateState(InputSystem input, Ground ground)
     {
@@ -25,6 +22,7 @@ public class SelectingState : State
         Worker selectedWorker = ground.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();
         if(activePlayer.TrySelectWorker(selectedWorker))
         {
+            selectedWorker.EnableHighlight();
             return (int)Player.StateId.Moving;
         }
 

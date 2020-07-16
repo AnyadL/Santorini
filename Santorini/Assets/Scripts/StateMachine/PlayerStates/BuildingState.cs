@@ -10,10 +10,7 @@ public class BuildingState : State
         input.ResetMouse0Click();
     }
 
-    public override void ExitState()
-    {
-        return;
-    }
+    public override void ExitState() { return; }
 
     public override int UpdateState(InputSystem input, Ground ground)
     {
@@ -29,10 +26,12 @@ public class BuildingState : State
             ground.AllowsBuild(selectedWorker, nearestTileToClick) &&
             ground.OpponentsAllowBuild(selectedWorker, nearestTileToClick))
         {
+            // God, Ground, and opponents all agree that the build is legal
             nearestTileToClick.AddTowerPiece();
             activePlayer.GetGod().RegisterBuild();
             if(activePlayer.GetGod().DoneBuilding())
             {
+                selectedWorker.DisableHighlight();
                 return (int)Player.StateId.DoneTurn;
             }
         }

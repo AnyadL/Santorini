@@ -11,10 +11,7 @@ public class WaitingState : State
         input.ResetMouse0Click();
     }
 
-    public override void ExitState()
-    {
-        return;
-    }
+    public override void ExitState() { return; }
 
     public override int UpdateState(InputSystem input, Ground ground)
     {

@@ -36,9 +36,10 @@ public class Player
         _god = new BaseGod();
 
         _stateMachine = new StateMachine();
+        _stateMachine.Initialize(input, ground);
 
         WaitingState waitingState = new WaitingState();
-        _stateMachine.Initialize(waitingState, input, ground);
+        _stateMachine.RegisterState(waitingState);
 
         PlacingState placingState = new PlacingState();
         _stateMachine.RegisterState(placingState);
@@ -54,6 +55,8 @@ public class Player
 
         DoneTurnState doneTurnState = new DoneTurnState();
         _stateMachine.RegisterState(doneTurnState);
+
+        _stateMachine.SetState((int)StateId.Waiting);
     }
 
     public void UpdatePlayer(bool activePlayer)
@@ -78,7 +81,7 @@ public class Player
 
     public bool IsDoneTurn()
     {
-        return _stateMachine.GetStateId() == (int)StateId.DoneTurn;
+        return _stateMachine.GetCurrentStateId() == (int)StateId.DoneTurn;
     }
 
     public void FinalizeTurn()

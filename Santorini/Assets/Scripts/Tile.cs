@@ -5,7 +5,8 @@ using System.Linq;
 using System;
 
 /// <summary>
-/// There are 25 tiles on a Santorini board. Each tile has 8 neighbours, 3-8 of which are directly neighbouring. Only certain God powers allow a Player to move their Worker using indirect neighbours.
+/// There are 25 tiles on a Santorini board. Each tile has 8 neighbours, 3-8 of which are directly neighbouring. 
+/// Only some God powers allow a Player to move their Worker using indirect neighbours.
 /// </summary>
 public class Tile : MonoBehaviour
 {
@@ -171,53 +172,6 @@ public class Tile : MonoBehaviour
         _workerOnTile = newWorker.GetComponent<Worker>();
         _workerOnTile.SetTile(this);
         return _workerOnTile;
-    }
-
-    public bool TryMoveWorker(Worker worker, Level previousLevel)
-    {
-        if(_workerOnTile != null || _domed)
-        {
-            Debug.LogError("Tried to move worker onto already occupied tile");
-            return false;
-        }
-        
-        if(_towerPiecesOnTile.Count > (int) previousLevel + 1)
-        {
-            Debug.LogError("Worker tried to move up more than one level");
-            return false;
-        }
-
-        worker.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
-
-        _workerOnTile = worker;
-        worker.GetTile().OnWorkerExitTile();
-        _workerOnTile.SetTile(this);
-        return true;
-    }
-
-    public bool TryBuild()
-    {
-        if(_workerOnTile != null || _domed)
-        {
-            Debug.LogError("Tried to build on an occupied tile");
-            return false;
-        }
-
-        GameObject towerPieceGO = Instantiate(GetTowerPiecePrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);
-        TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
-        _towerPiecesOnTile.Add(towerPiece);
-
-        if(_towerPiecesOnTile.Count == 4)
-        {
-            _domed = true;
-        }
-
-        return true;
-    }
-
-    public void OnWorkerExitTile()
-    {
-        _workerOnTile = null;
     }
 
     public void AddWorker(Worker worker)

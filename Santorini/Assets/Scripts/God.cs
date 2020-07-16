@@ -7,14 +7,13 @@ public abstract class God
 {
     int _moves = 0;
     int _builds = 0;
-
     int _placedWorkersThisTurn = 0;
     int _placedWorkers = 0;
 
-    protected int _placedWorkersPerTurn = 1;
-    protected int _maxPlacedWorkers = 2;
     protected int _maxMoves = 0;
     protected int _maxBuilds = 0;
+    protected int _placedWorkersPerTurn = 1;
+    protected int _maxPlacedWorkers = 2;
 
     public virtual void Initialize() { return; }
 

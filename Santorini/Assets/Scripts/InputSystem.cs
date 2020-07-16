@@ -9,7 +9,6 @@ public class InputSystem : MonoBehaviour
     Vector3 _mouse0ClickedPositionScreen = default;
     Vector3 _mouse0ClickedPositionBoard = default;
    
-
     public void OnUpdate()
     {
         ResetMouse0Click();

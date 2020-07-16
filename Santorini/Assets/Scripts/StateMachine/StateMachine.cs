@@ -10,10 +10,9 @@ public class StateMachine
     InputSystem _input = default;
     Ground _ground = default;
 
-    public void Initialize(State initialState, InputSystem input, Ground ground)
+    public void Initialize(InputSystem input, Ground ground)
     {
-        _states = new List<State>() { initialState };
-        _currentState = initialState;
+        _states = new List<State>();
 
         _input = input;
         _ground = ground;
@@ -41,6 +40,7 @@ public class StateMachine
 #endif
                 break;
             }
+
             _currentState.ExitState();
             _currentState = _states[newStateIndex];
             _currentState.EnterState(_input, _ground);
@@ -48,7 +48,7 @@ public class StateMachine
         }
     }
 
-    public int GetStateId()
+    public int GetCurrentStateId()
     {
         return _currentState.GetStateId();
     }

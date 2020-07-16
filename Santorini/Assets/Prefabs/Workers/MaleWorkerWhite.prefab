@@ -12,6 +12,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: MaleWorkerWhite
       objectReference: {fileID: 0}
+    - target: {fileID: 9137886885786710271, guid: 68dc7a4cf5e396440855206bac0378aa,
+        type: 3}
+      propertyPath: _highlight
+      value: 
+      objectReference: {fileID: 164134536887072563}
+    - target: {fileID: 5583159076045518457, guid: 68dc7a4cf5e396440855206bac0378aa,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,10 +77,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5583159076045518457, guid: 68dc7a4cf5e396440855206bac0378aa,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68dc7a4cf5e396440855206bac0378aa, type: 3}
+--- !u!1 &164134536887072563 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7203967051161000992, guid: 68dc7a4cf5e396440855206bac0378aa,
+    type: 3}
+  m_PrefabInstance: {fileID: 7043276464822102803}
+  m_PrefabAsset: {fileID: 0}

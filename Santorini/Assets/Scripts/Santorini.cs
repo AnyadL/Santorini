@@ -60,7 +60,7 @@ public class Santorini : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("An opponenet prevented your win! D:");
+                        Debug.Log("An opponent prevented your win! D:");
                     }
                 }
             }
@@ -75,8 +75,7 @@ public class Santorini : MonoBehaviour
                 _activePlayer.FinalizeTurn();
                 _activePlayer = GetNextPlayer();
                 Debug.LogFormat("Player {0}'s Turn", _activePlayer.GetColour().ToString());
-            }
-            
+            }   
         }
         catch (System.Exception e)
         {

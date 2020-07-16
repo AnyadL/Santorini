@@ -103,33 +103,36 @@ public class Ground : MonoBehaviour
         {
             return false;
         }
-
   
         return true;
     }
 
     public bool OpponentsAllowMove(Tile tile)
     {
-        bool allowed = true;
         foreach(Player opponent in _players)
         {
             if(opponent == _activePlayer) { continue; }
-            allowed |= opponent.GetGod().AllowsOpponentMove(tile);
+            if(!opponent.GetGod().AllowsOpponentMove(tile))
+            {
+                return false;
+            }
         }
 
-        return allowed;
+        return true;
     }
 
     public bool OpponentsAllowMove(Worker worker, Tile tile)
     {
-        bool allowed = true;
         foreach (Player opponent in _players)
         {
             if (opponent == _activePlayer) { continue; }
-            allowed |= opponent.GetGod().AllowsOpponentMove(worker, tile);
+            if(!opponent.GetGod().AllowsOpponentMove(worker, tile))
+            {
+                return false;
+            }
         }
 
-        return allowed;
+        return true;
     }
 
     public bool AllowsBuild(Worker worker, Tile tile)
@@ -139,14 +142,16 @@ public class Ground : MonoBehaviour
 
     public bool OpponentsAllowBuild(Worker worker, Tile tile)
     {
-        bool allowed = true;
         foreach (Player opponent in _players)
         {
             if (opponent == _activePlayer) { continue; }
-            allowed |= opponent.GetGod().AllowsOpponentBuild(worker, tile);
+            if(!opponent.GetGod().AllowsOpponentBuild(worker, tile))
+            {
+                return false;
+            }
         }
 
-        return allowed;
+        return true;
     }
 
     public Player GetActivePlayer()
