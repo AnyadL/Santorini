@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using TMPro;
 
 public class Board : MonoBehaviour
 {
@@ -51,6 +52,12 @@ public class Board : MonoBehaviour
     [SerializeField]
     Transform _domePosition = default;
 
+    [Header("UI")]
+    [SerializeField]
+    TextMeshProUGUI _playerColourText = default;
+    [SerializeField]
+    TextMeshProUGUI _stateText = default;
+
     List<Player> _players = default;
     Player _activePlayer = default;
 
@@ -86,6 +93,14 @@ public class Board : MonoBehaviour
         {
             tile.OnUpdate();
         }
+
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        _playerColourText.text = _activePlayer.GetColour().ToString();
+        _stateText.text = _activePlayer.GetCurrentState().ToString();
     }
 
     public bool AllowsMove(Worker worker, Tile tile)

@@ -6,7 +6,6 @@ public class PlacingState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
-        Debug.Log("Entering Placing State");
         input.ResetMouse0Click();
     }
 

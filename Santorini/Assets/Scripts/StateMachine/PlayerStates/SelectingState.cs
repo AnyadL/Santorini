@@ -6,7 +6,7 @@ public class SelectingState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
-        Debug.Log("Entering Selecting State");
+        return;
     }
 
     public override void ExitState() { return; }

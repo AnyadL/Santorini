@@ -6,7 +6,6 @@ public class MovingState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
-        Debug.Log("Entering Moving State");
         input.ResetMouse0Click();
     }
 

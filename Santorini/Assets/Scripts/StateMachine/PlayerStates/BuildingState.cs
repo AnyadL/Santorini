@@ -6,7 +6,6 @@ public class BuildingState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
-        Debug.Log("Entering Building State");
         input.ResetMouse0Click();
     }
 

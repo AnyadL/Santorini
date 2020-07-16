@@ -129,4 +129,9 @@ public class Player
     {
         return _colour;
     }
+
+    public Player.StateId GetCurrentState()
+    {
+        return (Player.StateId) _stateMachine.GetCurrentStateId();
+    }
 }

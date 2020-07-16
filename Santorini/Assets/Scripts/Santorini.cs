@@ -26,7 +26,6 @@ public class Santorini : MonoBehaviour
         _players[1].Initialize(_input, _board, Worker.Colour.White);
 
         _board.OnStart(_players);
-        Debug.LogFormat("Player {0}'s Turn", _activePlayer.GetColour().ToString());
     }
 
     void Update()
@@ -74,7 +73,6 @@ public class Santorini : MonoBehaviour
             {
                 _activePlayer.FinalizeTurn();
                 _activePlayer = GetNextPlayer();
-                Debug.LogFormat("Player {0}'s Turn", _activePlayer.GetColour().ToString());
             }   
         }
         catch (System.Exception e)

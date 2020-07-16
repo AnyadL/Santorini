@@ -6,7 +6,6 @@ public class WaitingState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
-        Debug.Log("Entering Waiting State");
         board.GetActivePlayer().GetGod().ResetCounters();
         input.ResetMouse0Click();
     }
