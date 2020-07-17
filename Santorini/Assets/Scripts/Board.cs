@@ -122,6 +122,21 @@ public class Board : MonoBehaviour
         return true;
     }
 
+    public List<Tile> GetAvailableMoves(Worker worker)
+    {
+        List<Tile> possibleMoves = new List<Tile>();
+        foreach (Tile.TileNeighbour neighbour in worker.GetTile().GetTileNeighbours())
+        {
+            Tile tile = neighbour.GetTile();
+            if (AllowsMove(worker, tile) && OpponentsAllowMove(worker, tile))
+            {
+                possibleMoves.Add(tile);
+            }
+        }
+
+        return possibleMoves;
+    }
+
     public bool OpponentsAllowMove(Tile tile)
     {
         foreach(Player opponent in _players)
@@ -154,7 +169,7 @@ public class Board : MonoBehaviour
     {
         return !tile.IsDomed();
     }
-
+    
     public bool OpponentsAllowBuild(Worker worker, Tile tile)
     {
         foreach (Player opponent in _players)

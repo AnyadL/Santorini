@@ -6,7 +6,11 @@ public class SelectingState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
-        return;
+        if (!board.GetActivePlayer().HasAvailableMove())
+        {
+            Debug.LogErrorFormat("Player {0} cannot move!", board.GetActivePlayer().GetColour().ToString());
+            board.GetActivePlayer().SetHasLost(true);
+        }
     }
 
     public override void ExitState() { return; }

@@ -125,6 +125,11 @@ public class Tile : MonoBehaviour
         return (Level) _towerPiecesOnTile.Count;
     }
 
+    public TileNeighbour[] GetTileNeighbours()
+    {
+        return _neighbours;
+    }
+
     public bool IsDomed()
     {
         return _domed;

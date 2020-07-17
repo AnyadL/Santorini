@@ -62,6 +62,14 @@ public class Santorini : MonoBehaviour
                         Debug.Log("An opponent prevented your win! D:");
                     }
                 }
+
+                if(player.HasLost())
+                {
+                    Debug.Log("You lose!!!");
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+                }
             }
 
             foreach (Player player in _players)

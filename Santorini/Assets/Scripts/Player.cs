@@ -25,6 +25,7 @@ public class Player
     Worker.Colour _colour = default;
 
     Worker _selectedWorker = default;
+    bool _hasLost = false;
 
     public void Initialize(InputSystem input, Board board, Worker.Colour colour)
     {
@@ -79,11 +80,39 @@ public class Player
         return _god.HasWon(_board, _workers);
     }
 
+    public bool HasLost()
+    {
+        return _hasLost;
+    }
+
+    public void SetHasLost(bool lost)
+    {
+        _hasLost = lost;
+    }
+
     public bool IsDoneTurn()
     {
         return _stateMachine.GetCurrentStateId() == (int)StateId.DoneTurn;
     }
 
+    public bool HasAvailableMove()
+    {
+        foreach(Worker worker in _workers)
+        {
+            List<Tile> possibleMoves = _board.GetAvailableMoves(worker);
+
+            foreach(Tile tile in possibleMoves)
+            {
+                if(_god.AllowsMove(tile, worker))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
     public void FinalizeTurn()
     {
         if(_god.DonePlacing())

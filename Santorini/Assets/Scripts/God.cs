@@ -35,6 +35,19 @@ public abstract class God
         return DonePlacingThisTurn() && DoneMoving() && DoneBuilding();
     }
 
+    public virtual bool HasAvailableMove(Worker worker)
+    {
+        foreach(Tile.TileNeighbour neighbour in worker.GetTile().GetTileNeighbours())
+        {
+            if(AllowsMove(neighbour.GetTile(), worker))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public virtual bool AllowsMove(Tile tile, Worker worker)
     {
         return AllowsMove(tile) && worker.GetTile().IsTileDirectlyNeighbouring(tile);
