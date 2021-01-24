@@ -34,7 +34,7 @@ public class PlacingState : State
 
             if (activePlayer.GetGod().DonePlacingThisTurn())
             {
-                return (int)Player.StateId.DoneTurn;
+                return (int)Player.StateId.WaitingOnConfirmation;
             }
         }
         

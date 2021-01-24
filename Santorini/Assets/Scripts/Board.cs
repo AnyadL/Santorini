@@ -54,13 +54,15 @@ public class Board : MonoBehaviour
 
     [Header("UI")]
     [SerializeField]
+    PlayerHUD _playerHUD = default;
+    [SerializeField]
     TextMeshProUGUI _playerColourText = default;
     [SerializeField]
     TextMeshProUGUI _stateText = default;
 
     List<Player> _players = default;
     Player _activePlayer = default;
-
+    
     public void OnStart(List<Player> players)
     {
         for(int i = 0; i < _workerPrefabs.Count; ++i)
@@ -101,6 +103,25 @@ public class Board : MonoBehaviour
     {
         _playerColourText.text = _activePlayer.GetColour().ToString();
         _stateText.text = _activePlayer.GetCurrentState().ToString();
+
+        if(_activePlayer.IsWaitingOnConfirmation())
+        {
+            _playerHUD.EnableEndTurnButton();
+        }
+        else
+        {
+            _playerHUD.DisableEndTurnButton();
+        }
+    }
+
+    public bool PressedEndTurn()
+    {
+        return _playerHUD.PressedEndTurn();
+    }
+
+    public void ResetPlayerHUD()
+    {
+        _playerHUD.Reset();
     }
 
     public bool AllowsMove(Worker worker, Tile tile)
@@ -188,7 +209,7 @@ public class Board : MonoBehaviour
     {
         return _activePlayer;
     }
-
+    
     public Tile GetNearestTileToPosition(Vector3 position)
     {
         Tile nearestTile = null;

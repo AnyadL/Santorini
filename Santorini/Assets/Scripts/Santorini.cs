@@ -13,7 +13,7 @@ public class Santorini : MonoBehaviour
 
     [SerializeField]
     InputSystem _input = default;
-    
+
     List<Player> _players = default;
     Player _activePlayer = null;
 
@@ -74,14 +74,14 @@ public class Santorini : MonoBehaviour
 
             foreach (Player player in _players)
             {
-                player.UpdatePlayer(player == _activePlayer ? true : false);
+                player.UpdatePlayer(player == _activePlayer);
             }
 
-            if(_activePlayer.IsDoneTurn())
+            if (_activePlayer.IsDoneTurn())
             {
                 _activePlayer.FinalizeTurn();
                 _activePlayer = GetNextPlayer();
-            }   
+            }
         }
         catch (System.Exception e)
         {

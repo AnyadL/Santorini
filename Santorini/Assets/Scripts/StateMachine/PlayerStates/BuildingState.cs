@@ -31,7 +31,7 @@ public class BuildingState : State
             if(activePlayer.GetGod().DoneBuilding())
             {
                 selectedWorker.DisableHighlight();
-                return (int)Player.StateId.DoneTurn;
+                return (int)Player.StateId.WaitingOnConfirmation;
             }
         }
 

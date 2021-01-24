@@ -12,7 +12,8 @@ public class Player
         Selecting = 2,
         Moving = 3,
         Building = 4,
-        DoneTurn = 5
+        WaitingOnConfirmation = 5,
+        DoneTurn = 6
     }
 
     StateMachine _stateMachine = default;
@@ -54,6 +55,9 @@ public class Player
         BuildingState buildingState = new BuildingState();
         _stateMachine.RegisterState(buildingState);
 
+        WaitingOnConfirmationState waitingOnConfirmationState = new WaitingOnConfirmationState();
+        _stateMachine.RegisterState(waitingOnConfirmationState);
+
         DoneTurnState doneTurnState = new DoneTurnState();
         _stateMachine.RegisterState(doneTurnState);
 
@@ -93,6 +97,16 @@ public class Player
     public bool IsDoneTurn()
     {
         return _stateMachine.GetCurrentStateId() == (int)StateId.DoneTurn;
+    }
+
+    public bool IsWaiting()
+    {
+        return _stateMachine.GetCurrentStateId() == (int)StateId.Waiting;
+    }
+
+    public bool IsWaitingOnConfirmation()
+    {
+        return _stateMachine.GetCurrentStateId() == (int)StateId.WaitingOnConfirmation;
     }
 
     public bool HasAvailableMove()
