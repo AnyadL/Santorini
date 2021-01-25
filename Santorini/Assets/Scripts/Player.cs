@@ -104,6 +104,11 @@ public class Player
         return _stateMachine.GetCurrentStateId() == (int)StateId.Waiting;
     }
 
+    public bool IsBuilding()
+    {
+        return _stateMachine.GetCurrentStateId() == (int)StateId.Building;
+    }
+
     public bool IsWaitingOnConfirmation()
     {
         return _stateMachine.GetCurrentStateId() == (int)StateId.WaitingOnConfirmation;

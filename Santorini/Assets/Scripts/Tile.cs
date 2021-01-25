@@ -130,6 +130,11 @@ public class Tile : MonoBehaviour
         return _neighbours;
     }
 
+    public int GetTowerPieceCount()
+    {
+        return _towerPiecesOnTile.Count;
+    }
+
     public bool IsDomed()
     {
         return _domed;
@@ -171,10 +176,11 @@ public class Tile : MonoBehaviour
         transform.Find("TileMesh").gameObject.SetActive(false);
     }
 
-    public Worker PlaceWorker(GameObject workerPrefab)
+    public Worker PlaceWorker(GameObject workerPrefab, Worker.Gender gender, Worker.Colour colour)
     {
         GameObject newWorker = Instantiate(workerPrefab, new Vector3(transform.position.x, GetWorkerY(), transform.position.z), Quaternion.identity);
         _workerOnTile = newWorker.GetComponent<Worker>();
+        _workerOnTile.Initialize(gender, colour);
         _workerOnTile.SetTile(this);
         return _workerOnTile;
     }

@@ -118,7 +118,7 @@ public class Board : MonoBehaviour
     {
         return _playerHUD.PressedEndTurn();
     }
-
+    
     public void ResetPlayerHUD()
     {
         _playerHUD.Reset();
@@ -229,21 +229,30 @@ public class Board : MonoBehaviour
         return nearestTile;
     }
 
-    public GameObject GetNextWorkerPrefab()
+    public Tile[] GetTiles()
+    {
+        return _tiles;
+    }
+
+    public GameObject GetNextWorkerPrefab(out Worker.Gender gender, out Worker.Colour colour)
     {
         int numWorkers = _activePlayer.GetWorkers().Count;
-        Worker.Colour colour = _activePlayer.GetColour();
+        colour = _activePlayer.GetColour();
         if (numWorkers == 0)
         {
-            return GetWorkerPrefab(Worker.Gender.Female, colour);
+            gender = Worker.Gender.Female;
         }
         else if (numWorkers == 1)
         {
-            return GetWorkerPrefab(Worker.Gender.Male, colour);
+            gender = Worker.Gender.Male;
+        }
+        else
+        {
+            // First and Second must be male and female, but any additional workers can be any gender
+            gender = (Worker.Gender)UnityEngine.Random.Range(0, 1);
         }
 
-        // First and Second must be male and female, but any additional workers can be any gender
-        return GetWorkerPrefab((Worker.Gender) UnityEngine.Random.Range(0, 1), colour);
+        return GetWorkerPrefab(gender, colour);
     }
 
     GameObject GetWorkerPrefab(Worker.Gender gender, Worker.Colour colour)

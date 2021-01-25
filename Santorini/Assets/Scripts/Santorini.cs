@@ -14,6 +14,9 @@ public class Santorini : MonoBehaviour
     [SerializeField]
     InputSystem _input = default;
 
+    [SerializeField]
+    SaveGameState _json = default;
+
     List<Player> _players = default;
     Player _activePlayer = null;
 
@@ -80,6 +83,7 @@ public class Santorini : MonoBehaviour
             if (_activePlayer.IsDoneTurn())
             {
                 _activePlayer.FinalizeTurn();
+                _json.SaveState(_players, _activePlayer, _board);
                 _activePlayer = GetNextPlayer();
             }
         }

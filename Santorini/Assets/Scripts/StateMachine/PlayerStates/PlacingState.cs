@@ -27,7 +27,8 @@ public class PlacingState : State
 
         if (activePlayer.GetGod().AllowsMove(nearestTileToClick) && board.OpponentsAllowMove(nearestTileToClick))
         {
-            Worker newWorker = nearestTileToClick.PlaceWorker(board.GetNextWorkerPrefab());
+            GameObject newWorkerGO = board.GetNextWorkerPrefab(out Worker.Gender gender, out Worker.Colour colour);
+            Worker newWorker = nearestTileToClick.PlaceWorker(newWorkerGO, gender, colour);
             newWorker.SetPlayer(activePlayer);
             activePlayer.AddWorker(newWorker);
             activePlayer.GetGod().RegisterPlacedWorker();
