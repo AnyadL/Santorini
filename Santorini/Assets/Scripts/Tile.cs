@@ -34,7 +34,7 @@ public class Tile : MonoBehaviour
 #pragma warning restore 0649
 
         [SerializeField]
-        bool _directlyNeighbouring = false;
+        bool _directlyNeighbouring = false; //A1 and A2 are directly neighbouring. A1 and A5 are indirectly neighbouring
 
         public Tile GetTile()
         {
@@ -102,7 +102,7 @@ public class Tile : MonoBehaviour
         _domeY = domeY;
     }
 
-    public void SetPrefabs(GameObject level1TowerPiece, GameObject level2TowerPiece, GameObject level3TowerPiece, GameObject dome)
+    public void SetTowerPiecePrefabs(GameObject level1TowerPiece, GameObject level2TowerPiece, GameObject level3TowerPiece, GameObject dome)
     {
         _level1TowerPiece = level1TowerPiece;
         _level2TowerPiece = level2TowerPiece;

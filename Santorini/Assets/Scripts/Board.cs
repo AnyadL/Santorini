@@ -83,7 +83,7 @@ public class Board : MonoBehaviour
         {
             tile.OnStart();
             tile.SetYPositions(_groundWorkerPosition.position.y, _level1WorkerPosition.position.y, _level2WorkerPosition.position.y, _level3WorkerPosition.position.y, _level1TowerPiecePosition.position.y, _level2TowerPiecePosition.position.y, _level3TowerPiecePosition.position.y, _domePosition.position.y);
-            tile.SetPrefabs(_tower1Piece, _tower2Piece, _tower3Piece, _dome);
+            tile.SetTowerPiecePrefabs(_tower1Piece, _tower2Piece, _tower3Piece, _dome);
         }
     }
 

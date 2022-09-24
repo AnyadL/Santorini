@@ -28,6 +28,11 @@ public class InputSystem : MonoBehaviour
         }
     }
 
+    public bool GetMouse0ClickedThisFrame()
+    {
+        return _mouse0ClickedThisFrame;
+    }
+
     public bool Mouse0ClickedOnBoard()
     {
         return _mouse0ClickedBoard;
@@ -36,11 +41,6 @@ public class InputSystem : MonoBehaviour
     public Vector3 GetMouse0ClickedPositionBoard()
     {
         return _mouse0ClickedPositionBoard;
-    }
-
-    public bool GetMouse0ClickedThisFrame()
-    {
-        return _mouse0ClickedThisFrame;
     }
 
     public Vector3 GetMouse0ClickedPositionScreen()
