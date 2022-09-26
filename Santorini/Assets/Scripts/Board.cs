@@ -59,6 +59,8 @@ public class Board : MonoBehaviour
     TextMeshProUGUI _playerColourText = default;
     [SerializeField]
     TextMeshProUGUI _stateText = default;
+    [SerializeField]
+    TextMeshProUGUI _godText = default;
 
     List<Player> _players = default;
     Player _activePlayer = default;
@@ -103,6 +105,7 @@ public class Board : MonoBehaviour
     {
         _playerColourText.text = _activePlayer.GetColour().ToString();
         _stateText.text = _activePlayer.GetCurrentState().ToString();
+        _godText.text = _activePlayer.GetGod().ToString();
 
         if(_activePlayer.IsWaitingOnConfirmation())
         {

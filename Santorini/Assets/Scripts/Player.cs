@@ -35,10 +35,17 @@ public class Player
         _workers = new List<Worker>();
         _colour = colour;
 
-        _god = new BaseGod();
+        if(colour == Worker.Colour.Blue)
+        {
+            _god = new BaseGod();
+        } else {
+            _god = new Artemis();
+        }
+
+        _god.Initialize();
 
         _stateMachine = new StateMachine();
-        _stateMachine.Initialize(input, board);
+        _stateMachine.Initialize(input, board, colour);
 
         WaitingState waitingState = new WaitingState();
         _stateMachine.RegisterState(waitingState);
@@ -138,7 +145,7 @@ public class Player
         {
             _god.EnableRealTurns();
         }
-
+        
         _stateMachine.SetState((int)StateId.Waiting);
     }
 

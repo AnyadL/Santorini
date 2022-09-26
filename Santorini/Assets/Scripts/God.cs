@@ -21,13 +21,14 @@ public abstract class God
     {
         InitializeMoves();
         InitializeBuilds();
-        InitializePlacedWorkers();
+        InitializePlacedWorkersThisTurn();
     }
 
     public virtual void EnableRealTurns()
     {
         _maxMoves = 1;
         _maxBuilds = 1;
+        _placedWorkersPerTurn = 0;
     }
 
     public virtual bool FinishedTurn()
@@ -102,7 +103,7 @@ public abstract class God
     public virtual void RegisterBuild() { ++_builds; }
     public virtual bool DoneBuilding() { return _builds >= _maxBuilds; }
 
-    public virtual void InitializePlacedWorkers() { _placedWorkersThisTurn = 0; }
+    public virtual void InitializePlacedWorkersThisTurn() { _placedWorkersThisTurn = 0; }
     public virtual void RegisterPlacedWorker() { ++_placedWorkers; ++_placedWorkersThisTurn; }
     public virtual bool DonePlacing() { return _placedWorkers >= _maxPlacedWorkers; }
     public virtual bool DonePlacingThisTurn() { return _placedWorkersThisTurn >= _placedWorkersPerTurn; }
