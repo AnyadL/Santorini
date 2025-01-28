@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DoneTurnState : State
+﻿public class DoneTurnState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
