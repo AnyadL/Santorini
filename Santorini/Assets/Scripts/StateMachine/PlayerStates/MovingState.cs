@@ -33,7 +33,7 @@ public class MovingState : State
             // God, Board, and opponents all agree that the move is legal
             selectedWorker.GetTile().RemoveWorker();
             nearestTileToClick.AddWorker(selectedWorker);
-            activePlayer.GetGod().RegisterMove();
+            activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
             selectedWorker.SetTile(nearestTileToClick);
 
             if(activePlayer.GetGod().DoneMoving())

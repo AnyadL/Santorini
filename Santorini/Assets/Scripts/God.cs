@@ -92,7 +92,7 @@ public abstract class God
     public virtual bool PreventsWin(Player opponent) { return false; }
 
     public virtual void InitializeMoves() { _moves = 0; }
-    public virtual void RegisterMove() { ++_moves; }
+    public virtual void RegisterMove(Tile fromTile, Tile toTile) { ++_moves; }
     public virtual bool DoneMoving() { return _moves >= _maxMoves; }
 
 
