@@ -21,9 +21,13 @@ public class MovingState : State
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
         if(workerOnTile != null && activePlayer.GetWorkers().Contains(workerOnTile))
         {
-            // Player has decided to reselect which worker they're using
-            selectedWorker.DisableHighlight();
-            return (int)Player.StateId.Selecting;
+            // Check if you're allowed to go back to the Selecting State
+            if (activePlayer.GetGod().AllowsReturnToSelectingState())
+            {  
+                // Player has decided to reselect which worker they're using
+                selectedWorker.DisableHighlight();
+                return (int)Player.StateId.Selecting;
+            }
         }
 
         if(activePlayer.GetGod().AllowsMove(nearestTileToClick, selectedWorker) && 

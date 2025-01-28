@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public abstract class God
 {
@@ -44,6 +45,11 @@ public abstract class God
         }
 
         return false;
+    }
+
+    public virtual bool AllowsReturnToSelectingState()
+    {
+        return true;
     }
 
     public virtual bool AllowsMove(Tile tile, Worker worker)
