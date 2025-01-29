@@ -29,6 +29,7 @@ public class Hermes : God
         // Hermes is allowed to move anywhere from 0 to infinite times
         return !DoneMoving();
     }
+    
     public override void RegisterMove(Tile fromTile, Tile toTile)
     {
         base.RegisterMove(fromTile, toTile);
