@@ -34,7 +34,7 @@ public class Player
 
         if(colour == Worker.Colour.Blue)
         {
-            _god = new Demeter();
+            _god = new Hermes();
         } else {
             _god = new Hephaestus();
         }
