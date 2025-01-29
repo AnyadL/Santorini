@@ -214,6 +214,24 @@ public class Tile : MonoBehaviour
         // No matter how high the tower was, if you remove the top item you can guarantee it is no longer domed
         _domed = false;
     }
+    public bool NextTowerPieceIsLevel1()
+    {
+        return _towerPiecesOnTile.Count == 0;
+    }
+    public bool NextTowerPieceIsLevel2()
+    {
+        return _towerPiecesOnTile.Count == 1;
+    }
+
+    public bool NextTowerPieceIsLevel3()
+    {
+        return _towerPiecesOnTile.Count == 2;
+    }
+
+    public bool NextTowerPieceIsDome()
+    {
+        return _towerPiecesOnTile.Count == 3;
+    }
 
     float GetWorkerY()
     {
