@@ -141,7 +141,7 @@ public abstract class God
     public virtual void EndMove() { _movesEnded = true; }
 
     public virtual void InitializeBuilds() { _builds = 0; _buildsEnded = false;}
-    public virtual void RegisterBuild() { ++_builds; }
+    public virtual void RegisterBuild(Tile tile) { ++_builds; }
     public virtual bool DoneBuilding() { return _buildsEnded || _builds >= _maxBuilds; }
     public virtual void EndBuild() { _buildsEnded = true; }
 

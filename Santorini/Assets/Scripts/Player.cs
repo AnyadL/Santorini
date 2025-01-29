@@ -34,7 +34,7 @@ public class Player
 
         if(colour == Worker.Colour.Blue)
         {
-            _god = new BaseGod();
+            _god = new Demeter();
         } else {
             _god = new Artemis();
         }
