@@ -144,6 +144,7 @@ public abstract class God
     public virtual void RegisterBuild(Tile tile) { ++_builds; }
     public virtual bool DoneBuilding() { return _buildsEnded || _builds >= _maxBuilds; }
     public virtual void EndBuild() { _buildsEnded = true; }
+    public virtual bool EndBuildEarly() { return false; }
 
     public virtual void InitializePlacedWorkersThisTurn() { _placedWorkersThisTurn = 0; }
     public virtual void RegisterPlacedWorker() { ++_placedWorkers; ++_placedWorkersThisTurn; }

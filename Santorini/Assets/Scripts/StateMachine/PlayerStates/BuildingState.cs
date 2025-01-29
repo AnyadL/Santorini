@@ -14,7 +14,7 @@ public class BuildingState : State
         Player activePlayer = board.GetActivePlayer();
         Worker selectedWorker = activePlayer.GetSelectedWorker();
 
-        if(board.PressedEndBuild())
+        if(board.PressedEndBuild() || activePlayer.GetGod().EndBuildEarly())
         {
             activePlayer.GetGod().EndBuild();
             selectedWorker.DisableHighlight();

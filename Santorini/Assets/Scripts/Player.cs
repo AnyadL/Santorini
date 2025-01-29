@@ -36,7 +36,7 @@ public class Player
         {
             _god = new Demeter();
         } else {
-            _god = new Artemis();
+            _god = new Hephaestus();
         }
 
         _god.Initialize();
