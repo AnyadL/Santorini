@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MovingState : State
 {
@@ -13,19 +11,30 @@ public class MovingState : State
 
     public override int UpdateState(InputSystem input, Board board)
     {
-        if (!input.Mouse0ClickedOnBoard()) { return -1; }
+        Player activePlayer = board.GetActivePlayer();
+
+        if(board.PressedEndMove())
+        {
+            activePlayer.GetGod().EndMove();
+            return (int)Player.StateId.Building;
+        }
+
+        if(!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
-        Player activePlayer = board.GetActivePlayer();
         Worker selectedWorker = activePlayer.GetSelectedWorker();
 
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
         if(workerOnTile != null && activePlayer.GetWorkers().Contains(workerOnTile))
         {
-            // Player has decided to reselect which worker they're using
-            selectedWorker.DisableHighlight();
-            return (int)Player.StateId.Selecting;
+            // Check if you're allowed to go back to the Selecting State
+            if(activePlayer.GetGod().AllowsReturnToSelectingState())
+            {  
+                // Player has decided to reselect which worker they're using
+                selectedWorker.DisableHighlight();
+                return (int)Player.StateId.Selecting;
+            }
         }
 
         if(activePlayer.GetGod().AllowsMove(nearestTileToClick, selectedWorker) && 
@@ -35,7 +44,7 @@ public class MovingState : State
             // God, Board, and opponents all agree that the move is legal
             selectedWorker.GetTile().RemoveWorker();
             nearestTileToClick.AddWorker(selectedWorker);
-            activePlayer.GetGod().RegisterMove();
+            activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
             selectedWorker.SetTile(nearestTileToClick);
 
             if(activePlayer.GetGod().DoneMoving())

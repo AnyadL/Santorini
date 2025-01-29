@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public abstract class God
 {
@@ -11,7 +9,9 @@ public abstract class God
     int _placedWorkers = 0;
 
     protected int _maxMoves = 0;
+    protected bool _movesEnded = false;
     protected int _maxBuilds = 0;
+    protected bool _buildsEnded = false;
     protected int _placedWorkersPerTurn = 1;
     protected int _maxPlacedWorkers = 2;
 
@@ -21,13 +21,14 @@ public abstract class God
     {
         InitializeMoves();
         InitializeBuilds();
-        InitializePlacedWorkers();
+        InitializePlacedWorkersThisTurn();
     }
 
     public virtual void EnableRealTurns()
     {
         _maxMoves = 1;
         _maxBuilds = 1;
+        _placedWorkersPerTurn = 0;
     }
 
     public virtual bool FinishedTurn()
@@ -48,6 +49,17 @@ public abstract class God
         return false;
     }
 
+    public virtual bool AllowsReturnToSelectingState()
+    {
+        return true;
+    }
+
+    public virtual bool AllowedToUndoTurn()
+    {
+        // as long as they've started their turn, they're allowed to undo their turn
+        return HasMoved();        
+    }
+
     public virtual bool AllowsMove(Tile tile, Worker worker)
     {
         return AllowsMove(tile) && worker.GetTile().IsTileDirectlyNeighbouring(tile);
@@ -56,6 +68,21 @@ public abstract class God
     public virtual bool AllowsMove(Tile tile)
     {
         return !tile.HasWorkerOnTile();
+    }
+
+    public virtual bool AllowedToEndMove()
+    {
+        return AllowsMultipleMoves() && HasMoved() && !DoneMoving();
+    }
+
+    bool AllowsMultipleMoves()
+    {
+        return _maxMoves > 1;
+    }
+
+    bool HasMoved()
+    {
+        return _moves > 0;
     }
 
     public virtual bool AllowsOpponentMove(Tile tile) { return true; }
@@ -76,6 +103,21 @@ public abstract class God
         return true;
     }
 
+    public virtual bool AllowedToEndBuild()
+    {
+        return AllowsMultipleBuilds() && HasBuilt() && !DoneBuilding();
+    }
+
+    bool AllowsMultipleBuilds()
+    {
+        return _maxBuilds > 1;
+    }
+
+    bool HasBuilt()
+    {
+        return _builds > 0;
+    }
+
     public virtual bool AllowsOpponentBuild(Worker worker, Tile tile) { return true; }
 
     public virtual bool HasWon(Board board, List<Worker> workers)
@@ -93,16 +135,17 @@ public abstract class God
 
     public virtual bool PreventsWin(Player opponent) { return false; }
 
-    public virtual void InitializeMoves() { _moves = 0; }
-    public virtual void RegisterMove() { ++_moves; }
-    public virtual bool DoneMoving() { return _moves >= _maxMoves; }
+    public virtual void InitializeMoves() { _moves = 0; _movesEnded = false;}
+    public virtual void RegisterMove(Tile fromTile, Tile toTile) { ++_moves; }
+    public virtual bool DoneMoving() { return _movesEnded || _moves >= _maxMoves; }
+    public virtual void EndMove() { _movesEnded = true; }
 
-
-    public virtual void InitializeBuilds() { _builds = 0; }
+    public virtual void InitializeBuilds() { _builds = 0; _buildsEnded = false;}
     public virtual void RegisterBuild() { ++_builds; }
-    public virtual bool DoneBuilding() { return _builds >= _maxBuilds; }
+    public virtual bool DoneBuilding() { return _buildsEnded || _builds >= _maxBuilds; }
+    public virtual void EndBuild() { _buildsEnded = true; }
 
-    public virtual void InitializePlacedWorkers() { _placedWorkersThisTurn = 0; }
+    public virtual void InitializePlacedWorkersThisTurn() { _placedWorkersThisTurn = 0; }
     public virtual void RegisterPlacedWorker() { ++_placedWorkers; ++_placedWorkersThisTurn; }
     public virtual bool DonePlacing() { return _placedWorkers >= _maxPlacedWorkers; }
     public virtual bool DonePlacingThisTurn() { return _placedWorkersThisTurn >= _placedWorkersPerTurn; }

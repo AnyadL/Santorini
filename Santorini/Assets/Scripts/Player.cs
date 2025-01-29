@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class Player
 {
@@ -35,10 +32,17 @@ public class Player
         _workers = new List<Worker>();
         _colour = colour;
 
-        _god = new BaseGod();
+        if(colour == Worker.Colour.Blue)
+        {
+            _god = new BaseGod();
+        } else {
+            _god = new Artemis();
+        }
+
+        _god.Initialize();
 
         _stateMachine = new StateMachine();
-        _stateMachine.Initialize(input, board);
+        _stateMachine.Initialize(input, board, colour);
 
         WaitingState waitingState = new WaitingState();
         _stateMachine.RegisterState(waitingState);
@@ -109,6 +113,11 @@ public class Player
         return _stateMachine.GetCurrentStateId() == (int)StateId.Building;
     }
 
+    public bool IsMoving()
+    {
+        return _stateMachine.GetCurrentStateId() == (int)StateId.Moving;
+    }
+
     public bool IsWaitingOnConfirmation()
     {
         return _stateMachine.GetCurrentStateId() == (int)StateId.WaitingOnConfirmation;
@@ -138,7 +147,7 @@ public class Player
         {
             _god.EnableRealTurns();
         }
-
+        
         _stateMachine.SetState((int)StateId.Waiting);
     }
 

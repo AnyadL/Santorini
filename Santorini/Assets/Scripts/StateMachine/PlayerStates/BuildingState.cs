@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BuildingState : State
 {
@@ -13,11 +11,18 @@ public class BuildingState : State
 
     public override int UpdateState(InputSystem input, Board board)
     {
+        Player activePlayer = board.GetActivePlayer();
+
+        if(board.PressedEndBuild())
+        {
+            activePlayer.GetGod().EndBuild();
+            return (int)Player.StateId.WaitingOnConfirmation;
+        }
+
         if (!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
-        Player activePlayer = board.GetActivePlayer();
         Worker selectedWorker = activePlayer.GetSelectedWorker();
 
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();

@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using System;
 using TMPro;
 
 public class Board : MonoBehaviour
@@ -59,6 +56,8 @@ public class Board : MonoBehaviour
     TextMeshProUGUI _playerColourText = default;
     [SerializeField]
     TextMeshProUGUI _stateText = default;
+    [SerializeField]
+    TextMeshProUGUI _godText = default;
 
     List<Player> _players = default;
     Player _activePlayer = default;
@@ -103,23 +102,45 @@ public class Board : MonoBehaviour
     {
         _playerColourText.text = _activePlayer.GetColour().ToString();
         _stateText.text = _activePlayer.GetCurrentState().ToString();
+        _godText.text = _activePlayer.GetGod().ToString();
 
         if(_activePlayer.IsWaitingOnConfirmation())
         {
+            _playerHUD.DisableEndMoveButton();
+            _playerHUD.DisableEndBuildButton();
+
             _playerHUD.EnableEndTurnButton();
         }
         else
         {
             _playerHUD.DisableEndTurnButton();
-        }
+            
+            if(_activePlayer.GetGod().AllowedToUndoTurn())
+            {
+                _playerHUD.EnableUndoTurnButton();
+            }
+            else
+            {
+                _playerHUD.DisableUndoTurnButton();
+            }
 
-        if(_activePlayer.IsBuilding() || _activePlayer.IsWaitingOnConfirmation())
-        {
-            _playerHUD.EnableUndoTurnButton();
-        }
-        else
-        {
-            _playerHUD.DisableUndoTurnButton();
+            if(_activePlayer.IsMoving())
+            {
+                if(_activePlayer.GetGod().AllowedToEndMove())
+                {
+                    _playerHUD.EnableEndMoveButton();
+                }
+            }
+            else if(_activePlayer.IsBuilding())
+            {
+                _playerHUD.DisableEndMoveButton();
+                
+                if(_activePlayer.GetGod().AllowedToEndBuild())
+                {
+                    _playerHUD.EnableEndBuildButton();
+                }
+
+            }
         }
     }
 
@@ -131,6 +152,16 @@ public class Board : MonoBehaviour
     public bool PressedUndoTurn()
     {
         return _playerHUD.PressedUndoTurn();
+    }
+
+    public bool PressedEndMove()
+    {
+        return _playerHUD.PressedEndMove();
+    }
+
+    public bool PressedEndBuild()
+    {
+        return _playerHUD.PressedEndBuild();
     }
     
     public void ResetPlayerHUD()

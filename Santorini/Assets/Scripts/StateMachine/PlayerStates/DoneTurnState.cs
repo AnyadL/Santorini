@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DoneTurnState : State
+﻿public class DoneTurnState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
@@ -15,6 +11,11 @@ public class DoneTurnState : State
     {
         if(!board.GetActivePlayer().GetGod().FinishedTurn())
         {
+            if(board.GetActivePlayer() != null)
+            {
+                board.GetActivePlayer().GetGod().ResetCounters();
+            }
+            
             return (int)Player.StateId.Placing;
         }
 

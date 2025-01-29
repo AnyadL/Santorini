@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InputSystem : MonoBehaviour
 {
@@ -28,7 +26,7 @@ public class InputSystem : MonoBehaviour
         }
     }
 
-    public bool GetMouse0ClickedThisFrame()
+    public bool Mouse0ClickedThisFrame()
     {
         return _mouse0ClickedThisFrame;
     }

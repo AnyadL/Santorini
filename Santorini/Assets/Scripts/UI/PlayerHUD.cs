@@ -6,9 +6,15 @@ public class PlayerHUD : MonoBehaviour
     GameObject _endTurn = default;
     [SerializeField]
     GameObject _undoTurn = default;
+    [SerializeField]
+    GameObject _endMove = default;
+    [SerializeField]
+    GameObject _endBuild = default;
 
     bool _readyToEndTurn = false;
     bool _readyToUndoTurn = false;
+    bool _readyToEndMove = false;
+    bool _readyToUndoBuild = false;
 
     public void Reset()
     {
@@ -69,5 +75,63 @@ public class PlayerHUD : MonoBehaviour
     public bool PressedUndoTurn()
     {
         return _readyToUndoTurn;
+    }
+
+    
+    public void EnableEndMoveButton()
+    {
+        if (!_endMove.activeInHierarchy)
+        {
+            _endMove.SetActive(true);
+            _readyToEndMove = false;
+        }
+    }
+
+    public void DisableEndMoveButton()
+    {
+        if (_endMove.activeInHierarchy)
+        {
+            _endMove.SetActive(false);
+            _readyToEndMove = false;
+        }
+    }
+
+    public void EndMovePressed()
+    {
+        _readyToEndMove = true;
+    }
+
+    public bool PressedEndMove()
+    {
+        return _readyToEndMove;
+    }
+
+    
+    public void EnableEndBuildButton()
+    {
+        if (!_endBuild.activeInHierarchy)
+        {
+            _endBuild.SetActive(true);
+            _readyToUndoBuild = false;
+        }
+    }
+
+    public void DisableEndBuildButton()
+    {
+        if (_endBuild.activeInHierarchy)
+        {
+            _endBuild.SetActive(false);
+            _readyToUndoBuild = false;
+        }
+    }
+
+    public void EndBuildPressed()
+    {
+        _readyToUndoBuild = true;
+    }
+
+    public bool PressedEndBuild()
+    {
+        return _readyToUndoBuild;
     }
 }

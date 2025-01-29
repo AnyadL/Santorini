@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Each Player has at least one male and one female worker that they can move around the board and build around. Some gods allow you to have more workers

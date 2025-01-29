@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class StateMachine 
@@ -9,13 +8,15 @@ public class StateMachine
 
     InputSystem _input = default;
     Board _board = default;
+    Worker.Colour _playerColour = default;
 
-    public void Initialize(InputSystem input, Board board)
+    public void Initialize(InputSystem input, Board board, Worker.Colour colour)
     {
         _states = new List<State>();
 
         _input = input;
         _board = board;
+        _playerColour = colour;
     }
 
     public void RegisterState(State state)
@@ -31,6 +32,7 @@ public class StateMachine
 
         while (newStateIndex != -1)
         {
+            Debug.Log($"{Time.frameCount}: Machine {_playerColour} -- Leaving State: {(Player.StateId)_currentState.GetStateId()}, Entering State: {(Player.StateId)_states[newStateIndex].GetStateId()}");
             ++stateTransitionCounter;
             if(stateTransitionCounter > 15)
             {
@@ -55,6 +57,12 @@ public class StateMachine
 
     public void SetState(int stateId)
     {
+        if(_currentState != null)
+        {
+            _currentState.ExitState();
+        }
+
         _currentState = _states[stateId];
+        _currentState.EnterState(_input, _board);
     }
 }
