@@ -12,10 +12,12 @@ public class BuildingState : State
     public override int UpdateState(InputSystem input, Board board)
     {
         Player activePlayer = board.GetActivePlayer();
+        Worker selectedWorker = activePlayer.GetSelectedWorker();
 
         if(board.PressedEndBuild())
         {
             activePlayer.GetGod().EndBuild();
+            selectedWorker.DisableHighlight();
             return (int)Player.StateId.WaitingOnConfirmation;
         }
 
@@ -23,7 +25,6 @@ public class BuildingState : State
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
-        Worker selectedWorker = activePlayer.GetSelectedWorker();
 
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
         if (activePlayer.GetGod().AllowsBuild(nearestTileToClick, selectedWorker) && 
@@ -32,7 +33,7 @@ public class BuildingState : State
         {
             // God, Board, and opponents all agree that the build is legal
             nearestTileToClick.AddTowerPiece();
-            activePlayer.GetGod().RegisterBuild();
+            activePlayer.GetGod().RegisterBuild(nearestTileToClick);
             if(activePlayer.GetGod().DoneBuilding())
             {
                 selectedWorker.DisableHighlight();
