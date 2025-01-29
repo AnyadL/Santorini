@@ -1,7 +1,6 @@
 public class Hephaestus : God
 {
     Tile _firstBuildTile = null;
-    bool _endBuildEarly = false;
 
     public override void EnableRealTurns()
     {
@@ -14,7 +13,6 @@ public class Hephaestus : God
         base.InitializeBuilds();
 
         _firstBuildTile = null;
-        _endBuildEarly = false;
     }
 
     public override void RegisterBuild(Tile tile)
@@ -28,7 +26,7 @@ public class Hephaestus : God
         // And if his first build was a dome, he can't build again.
         if(tile.NextTowerPieceIsDome() || tile.IsDomed())
         {
-            _endBuildEarly = true;
+            _buildsEnded = true;
         }
     }
 
@@ -41,10 +39,5 @@ public class Hephaestus : God
         }
 
         return base.AllowsBuild(tile, worker);
-    }
-
-    public override bool EndBuildEarly()
-    {
-        return _endBuildEarly;
     }
 }

@@ -9,8 +9,10 @@ public abstract class God
     int _placedWorkers = 0;
 
     protected int _maxMoves = 0;
+    protected bool _movesStarted = false;
     protected bool _movesEnded = false;
     protected int _maxBuilds = 0;
+    protected bool _buildsStarted = false;
     protected bool _buildsEnded = false;
     protected int _placedWorkersPerTurn = 1;
     protected int _maxPlacedWorkers = 2;
@@ -51,7 +53,8 @@ public abstract class God
 
     public virtual bool AllowsReturnToSelectingState()
     {
-        return true;
+        // Most Gods can re-select their worker while in the Move State
+        return _movesStarted && !_buildsStarted;
     }
 
     public virtual bool AllowedToUndoTurn()
@@ -135,16 +138,15 @@ public abstract class God
 
     public virtual bool PreventsWin(Player opponent) { return false; }
 
-    public virtual void InitializeMoves() { _moves = 0; _movesEnded = false;}
-    public virtual void RegisterMove(Tile fromTile, Tile toTile) { ++_moves; }
+    public virtual void InitializeMoves() { _moves = 0; _movesEnded = false; _movesStarted = false; }
+    public virtual void RegisterMove(Tile fromTile, Tile toTile) { ++_moves; _movesStarted = true; }
     public virtual bool DoneMoving() { return _movesEnded || _moves >= _maxMoves; }
-    public virtual void EndMove() { _movesEnded = true; }
+    public virtual void EndMove() { _movesEnded = true; _movesStarted = true; }
 
-    public virtual void InitializeBuilds() { _builds = 0; _buildsEnded = false;}
-    public virtual void RegisterBuild(Tile tile) { ++_builds; }
+    public virtual void InitializeBuilds() { _builds = 0; _buildsEnded = false; _buildsStarted = false; }
+    public virtual void RegisterBuild(Tile tile) { ++_builds; _buildsStarted = true; }
     public virtual bool DoneBuilding() { return _buildsEnded || _builds >= _maxBuilds; }
-    public virtual void EndBuild() { _buildsEnded = true; }
-    public virtual bool EndBuildEarly() { return false; }
+    public virtual void EndBuild() { _buildsEnded = true; _buildsStarted = true; }
 
     public virtual void InitializePlacedWorkersThisTurn() { _placedWorkersThisTurn = 0; }
     public virtual void RegisterPlacedWorker() { ++_placedWorkers; ++_placedWorkersThisTurn; }

@@ -18,7 +18,6 @@ public class SelectingState : State
         if(!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
         Player activePlayer = board.GetActivePlayer();
 
         Worker selectedWorker = board.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();

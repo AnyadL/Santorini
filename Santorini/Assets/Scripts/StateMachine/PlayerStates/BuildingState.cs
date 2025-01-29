@@ -14,7 +14,7 @@ public class BuildingState : State
         Player activePlayer = board.GetActivePlayer();
         Worker selectedWorker = activePlayer.GetSelectedWorker();
 
-        if(board.PressedEndBuild() || activePlayer.GetGod().EndBuildEarly())
+        if(board.PressedEndBuild() || activePlayer.GetGod().DoneBuilding())
         {
             activePlayer.GetGod().EndBuild();
             selectedWorker.DisableHighlight();
@@ -27,6 +27,17 @@ public class BuildingState : State
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
 
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
+        if(workerOnTile != null && activePlayer.GetWorkers().Contains(workerOnTile))
+        {
+            // Check if you're allowed to go back to the Selecting State
+            if(activePlayer.GetGod().AllowsReturnToSelectingState())
+            {
+                // Player has decided to reselect which worker they're using
+                selectedWorker.DisableHighlight();
+                return (int)Player.StateId.Selecting;
+            }
+        }
+
         if (activePlayer.GetGod().AllowsBuild(nearestTileToClick, selectedWorker) && 
             board.AllowsBuild(selectedWorker, nearestTileToClick) &&
             board.OpponentsAllowBuild(selectedWorker, nearestTileToClick))

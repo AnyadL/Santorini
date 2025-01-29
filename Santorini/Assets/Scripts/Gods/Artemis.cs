@@ -13,7 +13,7 @@ public class Artemis : God
     public override bool AllowsReturnToSelectingState()
     {
         // Player is not allowed to return to the Selecting State if they've already moved once
-        return !_midMove;
+        return base.AllowsReturnToSelectingState() && !_midMove;
     }
 
     public override void InitializeMoves()

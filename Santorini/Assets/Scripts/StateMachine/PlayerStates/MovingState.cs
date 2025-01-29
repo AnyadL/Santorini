@@ -13,7 +13,7 @@ public class MovingState : State
     {
         Player activePlayer = board.GetActivePlayer();
 
-        if(board.PressedEndMove())
+        if(board.PressedEndMove() || activePlayer.GetGod().DoneMoving())
         {
             activePlayer.GetGod().EndMove();
             return (int)Player.StateId.Building;
