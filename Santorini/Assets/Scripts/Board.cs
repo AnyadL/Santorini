@@ -106,20 +106,41 @@ public class Board : MonoBehaviour
 
         if(_activePlayer.IsWaitingOnConfirmation())
         {
+            _playerHUD.DisableEndMoveButton();
+            _playerHUD.DisableEndBuildButton();
+
             _playerHUD.EnableEndTurnButton();
         }
         else
         {
             _playerHUD.DisableEndTurnButton();
-        }
+            
+            if(_activePlayer.GetGod().AllowedToUndoTurn())
+            {
+                _playerHUD.EnableUndoTurnButton();
+            }
+            else
+            {
+                _playerHUD.DisableUndoTurnButton();
+            }
 
-        if(_activePlayer.IsBuilding() || _activePlayer.IsWaitingOnConfirmation())
-        {
-            _playerHUD.EnableUndoTurnButton();
-        }
-        else
-        {
-            _playerHUD.DisableUndoTurnButton();
+            if(_activePlayer.IsMoving())
+            {
+                if(_activePlayer.GetGod().AllowedToEndMove())
+                {
+                    _playerHUD.EnableEndMoveButton();
+                }
+            }
+            else if(_activePlayer.IsBuilding())
+            {
+                _playerHUD.DisableEndMoveButton();
+                
+                if(_activePlayer.GetGod().AllowedToEndBuild())
+                {
+                    _playerHUD.EnableEndBuildButton();
+                }
+
+            }
         }
     }
 
@@ -131,6 +152,16 @@ public class Board : MonoBehaviour
     public bool PressedUndoTurn()
     {
         return _playerHUD.PressedUndoTurn();
+    }
+
+    public bool PressedEndMove()
+    {
+        return _playerHUD.PressedEndMove();
+    }
+
+    public bool PressedEndBuild()
+    {
+        return _playerHUD.PressedEndBuild();
     }
     
     public void ResetPlayerHUD()

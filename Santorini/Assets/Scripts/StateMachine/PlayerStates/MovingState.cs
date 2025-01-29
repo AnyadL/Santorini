@@ -11,18 +11,25 @@ public class MovingState : State
 
     public override int UpdateState(InputSystem input, Board board)
     {
-        if (!input.Mouse0ClickedOnBoard()) { return -1; }
+        Player activePlayer = board.GetActivePlayer();
+
+        if(board.PressedEndMove())
+        {
+            activePlayer.GetGod().EndMove();
+            return (int)Player.StateId.Building;
+        }
+
+        if(!input.Mouse0ClickedOnBoard()) { return -1; }
 
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
-        Player activePlayer = board.GetActivePlayer();
         Worker selectedWorker = activePlayer.GetSelectedWorker();
 
         Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
         if(workerOnTile != null && activePlayer.GetWorkers().Contains(workerOnTile))
         {
             // Check if you're allowed to go back to the Selecting State
-            if (activePlayer.GetGod().AllowsReturnToSelectingState())
+            if(activePlayer.GetGod().AllowsReturnToSelectingState())
             {  
                 // Player has decided to reselect which worker they're using
                 selectedWorker.DisableHighlight();

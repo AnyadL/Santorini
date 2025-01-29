@@ -11,6 +11,11 @@
     {
         if(!board.GetActivePlayer().GetGod().FinishedTurn())
         {
+            if(board.GetActivePlayer() != null)
+            {
+                board.GetActivePlayer().GetGod().ResetCounters();
+            }
+            
             return (int)Player.StateId.Placing;
         }
 
