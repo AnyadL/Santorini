@@ -18,18 +18,21 @@ public abstract class God
 
     public virtual void Initialize() { return; }
 
-    public virtual void ResetCounters()
-    {
-        InitializeMoves();
-        InitializeBuilds();
-        InitializePlacedWorkersThisTurn();
-    }
-
     public virtual void EnableRealTurns()
     {
         _maxMoves = 1;
         _maxBuilds = 1;
         _placedWorkersPerTurn = 0;
+    }
+
+    public virtual void OnTurnStart() { return; }
+    public virtual void OnTurnEnd() { ResetCounters(); }
+
+    public virtual void ResetCounters()
+    {
+        InitializeMoves();
+        InitializeBuilds();
+        InitializePlacedWorkersThisTurn();
     }
 
     public virtual bool FinishedTurn()
