@@ -34,7 +34,7 @@ public class Player
 
         if(colour == Worker.Colour.Blue)
         {
-            _god = new Hephaestus();
+            _god = new Athena();
         } else {
             _god = new Pan();
         }
@@ -76,6 +76,16 @@ public class Player
         }
 
         _stateMachine.UpdateCurrentState();
+    }
+
+    public void OnTurnStart()
+    {
+        _god.OnTurnStart();
+    }
+
+    public void OnTurnEnd()
+    {
+        _god.OnTurnEnd();
     }
 
     public bool PreventsWin(Player opponent)

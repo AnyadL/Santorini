@@ -13,7 +13,7 @@
         {
             if(board.GetActivePlayer() != null)
             {
-                board.GetActivePlayer().GetGod().ResetCounters();
+                board.GetActivePlayer().OnTurnEnd();
             }
             
             return (int)Player.StateId.Placing;

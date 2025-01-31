@@ -4,6 +4,7 @@ public class SelectingState : State
 {
     public override void EnterState(InputSystem input, Board board)
     {
+        board.GetActivePlayer().OnTurnStart();
         if (!board.GetActivePlayer().HasAvailableMove())
         {
             Debug.LogErrorFormat("Player {0} cannot move!", board.GetActivePlayer().GetColour().ToString());
