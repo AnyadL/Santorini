@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class PlayerHUD : MonoBehaviour
     GameObject _endMove = default;
     [SerializeField]
     GameObject _endBuild = default;
+    [SerializeField]
+    GameObject _buildUnique = default;
 
     bool _readyToEndTurn = false;
     bool _readyToUndoTurn = false;
     bool _readyToEndMove = false;
     bool _readyToUndoBuild = false;
-
+    bool _readyToBuildUnique = false;
     public void Reset()
     {
         ;
@@ -133,5 +136,38 @@ public class PlayerHUD : MonoBehaviour
     public bool PressedEndBuild()
     {
         return _readyToUndoBuild;
+    }
+    
+    public void EnableBuildUniqueButton()
+    {
+        if (!_buildUnique.activeInHierarchy)
+        {
+            _buildUnique.SetActive(true);
+            _readyToBuildUnique = false;
+        }
+    }
+
+    public void DisableBuildUniqueButton()
+    {
+        if (_buildUnique.activeInHierarchy)
+        {
+            _buildUnique.SetActive(false);
+            _readyToBuildUnique = false;
+        }
+    }
+
+    public void BuildUniquePressed()
+    {
+        _readyToBuildUnique = true;
+    }
+
+    public bool PressedUniqueBuild()
+    {
+        return _readyToBuildUnique;
+    }
+
+    public void SetBuildUniqueText(string text)
+    {
+        _buildUnique.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = text;
     }
 }

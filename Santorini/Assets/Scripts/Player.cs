@@ -36,7 +36,7 @@ public class Player
         {
             _god = new Athena();
         } else {
-            _god = new Pan();
+            _god = new Atlas();
         }
 
         _god.Initialize();

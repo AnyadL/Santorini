@@ -118,6 +118,11 @@ public abstract class God
         return _maxBuilds > 1;
     }
 
+    public virtual bool HasUniqueBuild() { return false; }
+    public virtual bool AllowedToUniqueBuild() { return false; }
+    public virtual string GetUniqueBuildText() { return "No Unique Build"; }
+    public virtual int GetUniqueBuildLevel() { return -1; }
+
     bool HasBuilt()
     {
         return _builds > 0;
