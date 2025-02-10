@@ -44,14 +44,14 @@ public class Hermes : God
         }
     }
 
-    public override bool AllowsMove(Tile tile, Worker worker)
+    public override bool AllowsMove(Tile fromTile, Tile toTile)
     {
         // Hermes cannot move up or down once he's decided to move more than once
-        if(_hasMovedOnce && tile.GetLevel() != worker.GetTile().GetLevel())
+        if(_hasMovedOnce && toTile.GetLevel() != fromTile.GetLevel())
         {
             return false;
         }
 
-        return base.AllowsMove(tile, worker);
+        return base.AllowsMove(fromTile, toTile);
     }
 }

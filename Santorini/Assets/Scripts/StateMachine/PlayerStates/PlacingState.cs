@@ -23,7 +23,7 @@ public class PlacingState : State
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
 
-        if (activePlayer.GetGod().AllowsMove(nearestTileToClick) && board.OpponentsAllowMove(nearestTileToClick))
+        if (activePlayer.GetGod().AllowsMove(null, nearestTileToClick) && board.OpponentsAllowMove(nearestTileToClick))
         {
             GameObject newWorkerGO = board.GetNextWorkerPrefab(out Worker.Gender gender, out Worker.Colour colour);
             Worker newWorker = nearestTileToClick.PlaceWorker(newWorkerGO, gender, colour);

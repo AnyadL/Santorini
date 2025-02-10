@@ -37,15 +37,44 @@ public class MovingState : State
             }
         }
 
-        if(activePlayer.GetGod().AllowsMove(nearestTileToClick, selectedWorker) && 
+        if(activePlayer.GetGod().AllowsMove(selectedWorker.GetTile(), nearestTileToClick) && 
             board.AllowsMove(selectedWorker, nearestTileToClick) &&
             board.OpponentsAllowMove(selectedWorker, nearestTileToClick))
         {
             // God, Board, and opponents all agree that the move is legal
-            selectedWorker.GetTile().RemoveWorker();
-            nearestTileToClick.AddWorker(selectedWorker);
-            activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
-            selectedWorker.SetTile(nearestTileToClick);
+            
+            // If there's a worker on the tile, then the active player's God 
+            // allows moving to a tile with a worker on it. Check with that God
+            // to see what to do with the worker
+            if(workerOnTile != null)
+            {
+                Tile opponentTile = activePlayer.GetGod().TileToMoveOpponentWorkerTo();
+                if (opponentTile == null)
+                {
+                    Debug.LogErrorFormat("Tried to move to a tile that already had a worker, but didn't provide a tile to move that worker to.");
+                }
+
+                workerOnTile.GetTile().RemoveWorker();
+                selectedWorker.GetTile().RemoveWorker();
+
+                opponentTile.AddWorker(workerOnTile);
+                nearestTileToClick.AddWorker(selectedWorker);
+
+                activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
+                
+                workerOnTile.SetTile(opponentTile);
+                selectedWorker.SetTile(nearestTileToClick);
+            }
+            else
+            {
+                selectedWorker.GetTile().RemoveWorker();
+
+                nearestTileToClick.AddWorker(selectedWorker);
+
+                activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
+                
+                selectedWorker.SetTile(nearestTileToClick);
+            }
 
             if(activePlayer.GetGod().DoneMoving())
             {

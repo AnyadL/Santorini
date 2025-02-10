@@ -32,8 +32,8 @@ public class Artemis : God
         _midMove = true;
     }
 
-    public override bool AllowsMove(Tile tile, Worker worker)
+    public override bool AllowsMove(Tile fromTile, Tile toTile)
     {
-        return base.AllowsMove(tile, worker) && tile != _lastTile;
+        return base.AllowsMove(fromTile, toTile) && toTile != _lastTile;
     }
 }

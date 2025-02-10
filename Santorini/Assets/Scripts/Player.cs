@@ -34,9 +34,9 @@ public class Player
 
         if(colour == Worker.Colour.Blue)
         {
-            _god = new BaseGod();
+            _god = new Apollo();
         } else {
-            _god = new Atlas();
+            _god = new Hermes();
         }
 
         _god.Initialize();
@@ -141,7 +141,7 @@ public class Player
 
             foreach(Tile tile in possibleMoves)
             {
-                if(_god.AllowsMove(tile, worker))
+                if(_god.AllowsMove(worker.GetTile(), tile))
                 {
                     return true;
                 }
