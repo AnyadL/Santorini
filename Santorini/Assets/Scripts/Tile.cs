@@ -32,7 +32,7 @@ public class Tile : MonoBehaviour
 
         [SerializeField]
         bool _directlyNeighbouring = false; //A1 and A2 are directly neighbouring. A1 and A5 are indirectly neighbouring
-
+        
         public Tile GetTile()
         {
             return _tile;
@@ -76,6 +76,10 @@ public class Tile : MonoBehaviour
     float _level2TowerPieceY = 0.0f;
     float _level3TowerPieceY = 0.0f;
     float _domeY = 0.0f;
+        
+    float _domeOnGroundOffset = -3.3f;
+    float _domeOnLevel1Offset = -3.3f;
+    float _domeOnLevel2Offset = -1.8f;
 
     Worker _workerOnTile = null;
     List<TowerPiece> _towerPiecesOnTile;
@@ -205,6 +209,27 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public void AddSpecificPiece(int pieceLevel)
+    {
+        // Domes are a different height than other tile pieces and need to be offset
+        float offset = 0.0f;
+        if(pieceLevel == 3)
+        {
+            if(_towerPiecesOnTile.Count == 0) { offset = _domeOnGroundOffset; }
+            else if (_towerPiecesOnTile.Count == 1) { offset = _domeOnLevel1Offset; }
+            else if (_towerPiecesOnTile.Count == 2) { offset = _domeOnLevel2Offset; }
+        }
+        
+        GameObject towerPieceGO = Instantiate(GetSpecificTowerPiecePrefab(pieceLevel), new Vector3(transform.position.x, GetTowerPieceY() + offset, transform.position.z), Quaternion.identity);
+        TowerPiece towerPiece = towerPieceGO.AddComponent<TowerPiece>();
+        _towerPiecesOnTile.Add(towerPiece);
+
+        if (_towerPiecesOnTile.Count == 4 || pieceLevel == 3)
+        {
+            _domed = true;
+        }
+    }
+
     public void RemoveTowerPiece()
     {
         GameObject removedTowerPiece = _towerPiecesOnTile[_towerPiecesOnTile.Count - 1].gameObject;
@@ -270,6 +295,23 @@ public class Tile : MonoBehaviour
     GameObject GetTowerPiecePrefab()
     {
         switch (_towerPiecesOnTile.Count)
+        {
+            case 0:
+                return _level1TowerPiece;
+            case 1:
+                return _level2TowerPiece;
+            case 2:
+                return _level3TowerPiece;
+            case 3:
+                return _dome;
+            default:
+                return null;
+        }
+    }
+
+    GameObject GetSpecificTowerPiecePrefab(int pieceLevel)
+    {
+        switch (pieceLevel)
         {
             case 0:
                 return _level1TowerPiece;

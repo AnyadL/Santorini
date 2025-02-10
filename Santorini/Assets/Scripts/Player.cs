@@ -34,9 +34,9 @@ public class Player
 
         if(colour == Worker.Colour.Blue)
         {
-            _god = new Athena();
+            _god = new BaseGod();
         } else {
-            _god = new Pan();
+            _god = new Atlas();
         }
 
         _god.Initialize();

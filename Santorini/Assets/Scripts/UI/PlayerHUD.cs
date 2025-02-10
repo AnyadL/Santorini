@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Microsoft.Unity.VisualStudio.Editor;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -10,11 +13,17 @@ public class PlayerHUD : MonoBehaviour
     GameObject _endMove = default;
     [SerializeField]
     GameObject _endBuild = default;
+    [SerializeField]
+    GameObject _buildUnique = default;
 
     bool _readyToEndTurn = false;
     bool _readyToUndoTurn = false;
     bool _readyToEndMove = false;
     bool _readyToUndoBuild = false;
+    bool _readyToBuildUnique = false;
+
+    Color32 _blue = new Color32(30,144,255,255);
+    Color32 _white = new Color32(255,255,255,255);
 
     public void Reset()
     {
@@ -133,5 +142,40 @@ public class PlayerHUD : MonoBehaviour
     public bool PressedEndBuild()
     {
         return _readyToUndoBuild;
+    }
+    
+    public void EnableBuildUniqueButton()
+    {
+        if (!_buildUnique.activeInHierarchy)
+        {
+            _buildUnique.SetActive(true);
+            _readyToBuildUnique = false;
+            _buildUnique.GetComponent<UnityEngine.UI.Image>().color = _white;
+        }
+    }
+
+    public void DisableBuildUniqueButton()
+    {
+        if (_buildUnique.activeInHierarchy)
+        {
+            _buildUnique.SetActive(false);
+            _readyToBuildUnique = false;
+        }
+    }
+
+    public void BuildUniquePressed()
+    {
+        _readyToBuildUnique = !_readyToBuildUnique;
+        _buildUnique.GetComponent<UnityEngine.UI.Image>().color = _readyToBuildUnique ? _blue : _white;
+    }
+
+    public bool PressedUniqueBuild()
+    {
+        return _readyToBuildUnique;
+    }
+
+    public void SetBuildUniqueText(string text)
+    {
+        _buildUnique.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = text;
     }
 }

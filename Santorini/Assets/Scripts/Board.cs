@@ -108,6 +108,7 @@ public class Board : MonoBehaviour
         {
             _playerHUD.DisableEndMoveButton();
             _playerHUD.DisableEndBuildButton();
+            _playerHUD.DisableBuildUniqueButton();
 
             _playerHUD.EnableEndTurnButton();
         }
@@ -141,6 +142,17 @@ public class Board : MonoBehaviour
                 }
 
             }
+            
+            God activePlayerGod = _activePlayer.GetGod();
+            if(_activePlayer.IsBuilding() && activePlayerGod.HasUniqueBuild() && activePlayerGod.AllowedToUniqueBuild())
+            {
+                _playerHUD.SetBuildUniqueText(activePlayerGod.GetUniqueBuildText());
+                _playerHUD.EnableBuildUniqueButton();
+            }
+            else
+            {
+                _playerHUD.DisableBuildUniqueButton();
+            }
         }
     }
 
@@ -164,6 +176,11 @@ public class Board : MonoBehaviour
         return _playerHUD.PressedEndBuild();
     }
     
+    public bool PressedUniqueBuild()
+    {
+        return _playerHUD.PressedUniqueBuild();
+    }
+
     public void ResetPlayerHUD()
     {
         _playerHUD.Reset();

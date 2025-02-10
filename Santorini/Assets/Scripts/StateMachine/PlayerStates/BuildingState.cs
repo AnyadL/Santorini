@@ -37,13 +37,21 @@ public class BuildingState : State
                 return (int)Player.StateId.Selecting;
             }
         }
-
+            
+        // God, Board, and opponents all agree that the build is legal
         if (activePlayer.GetGod().AllowsBuild(nearestTileToClick, selectedWorker) && 
             board.AllowsBuild(selectedWorker, nearestTileToClick) &&
             board.OpponentsAllowBuild(selectedWorker, nearestTileToClick))
         {
-            // God, Board, and opponents all agree that the build is legal
-            nearestTileToClick.AddTowerPiece();
+            if(board.PressedUniqueBuild())
+            {
+                nearestTileToClick.AddSpecificPiece(activePlayer.GetGod().GetUniqueBuildLevel());
+            }
+            else
+            {
+                nearestTileToClick.AddTowerPiece();
+            }
+            
             activePlayer.GetGod().RegisterBuild(nearestTileToClick);
             if(activePlayer.GetGod().DoneBuilding())
             {
