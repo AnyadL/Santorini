@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using Microsoft.Unity.VisualStudio.Editor;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -19,6 +21,10 @@ public class PlayerHUD : MonoBehaviour
     bool _readyToEndMove = false;
     bool _readyToUndoBuild = false;
     bool _readyToBuildUnique = false;
+
+    Color32 _blue = new Color32(30,144,255,255);
+    Color32 _white = new Color32(255,255,255,255);
+
     public void Reset()
     {
         ;
@@ -144,6 +150,7 @@ public class PlayerHUD : MonoBehaviour
         {
             _buildUnique.SetActive(true);
             _readyToBuildUnique = false;
+            _buildUnique.GetComponent<UnityEngine.UI.Image>().color = _white;
         }
     }
 
@@ -158,7 +165,8 @@ public class PlayerHUD : MonoBehaviour
 
     public void BuildUniquePressed()
     {
-        _readyToBuildUnique = true;
+        _readyToBuildUnique = !_readyToBuildUnique;
+        _buildUnique.GetComponent<UnityEngine.UI.Image>().color = _readyToBuildUnique ? _blue : _white;
     }
 
     public bool PressedUniqueBuild()

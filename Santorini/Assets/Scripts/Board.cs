@@ -108,6 +108,7 @@ public class Board : MonoBehaviour
         {
             _playerHUD.DisableEndMoveButton();
             _playerHUD.DisableEndBuildButton();
+            _playerHUD.DisableBuildUniqueButton();
 
             _playerHUD.EnableEndTurnButton();
         }
