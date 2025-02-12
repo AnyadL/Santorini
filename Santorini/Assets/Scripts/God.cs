@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 public abstract class God
 {
+    protected Player _player = null;
+
     int _moves = 0;
     int _builds = 0;
     int _placedWorkersThisTurn = 0;
@@ -16,7 +19,7 @@ public abstract class God
     protected int _placedWorkersPerTurn = 1;
     protected int _maxPlacedWorkers = 2;
 
-    public virtual void Initialize() { return; }
+    public virtual void Initialize(Player player) { _player = player; }
 
     public virtual void EnableRealTurns()
     {
@@ -44,7 +47,7 @@ public abstract class God
     {
         foreach(Tile.TileNeighbour neighbour in worker.GetTile().GetTileNeighbours())
         {
-            if(AllowsMove(neighbour.GetTile(), worker))
+            if(AllowsMove(worker.GetTile(), neighbour.GetTile()))
             {
                 return true;
             }
@@ -65,14 +68,19 @@ public abstract class God
         return HasMoved();        
     }
 
-    public virtual bool AllowsMove(Tile tile, Worker worker)
+    public virtual bool AllowsMove(Tile fromTile, Tile toTile)
     {
-        return AllowsMove(tile) && worker.GetTile().IsTileDirectlyNeighbouring(tile);
-    }
+        if(toTile.HasWorkerOnTile())
+        {
+            return false;
+        }
 
-    public virtual bool AllowsMove(Tile tile)
-    {
-        return !tile.HasWorkerOnTile();
+        if(fromTile != null && !fromTile.IsTileDirectlyNeighbouring(toTile))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public virtual bool AllowedToEndMove()
@@ -93,6 +101,8 @@ public abstract class God
     public virtual bool AllowsOpponentMove(Tile tile) { return true; }
     public virtual bool AllowsOpponentMove(Worker worker, Tile tile) { return true; }
     
+    public virtual Tile TileToMoveOpponentWorkerTo() { return null; }
+
     public virtual bool AllowsBuild(Tile tile, Worker worker)
     {
         if(tile.HasWorkerOnTile())
