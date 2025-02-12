@@ -58,8 +58,8 @@ public abstract class God
 
     public virtual bool AllowsReturnToSelectingState()
     {
-        // Most Gods can re-select their worker while in the Move State
-        return _movesStarted && !_buildsStarted;
+        // Most Gods can re-select their worker at the beginning of the Move State before they've started moving, but not while in the Build State
+        return !_movesStarted && !_buildsStarted;
     }
 
     public virtual bool AllowedToUndoTurn()
