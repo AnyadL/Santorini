@@ -15,8 +15,13 @@ public class Apollo : God
 
         if(fromTile != null)
         {
-            // No need to check if the tile has a worker on it,
-            // because if it does, Apollo will force them into his previous position
+            // Apollo can't move onto his own workers
+            if(toTile.HasWorkerOnTile() && toTile.GetWorkerOnTile().GetPlayer() == _player)
+            {
+                return false;
+            }
+
+            // Apollo can move onto other workers and force them into his previous position
             return fromTile.IsTileDirectlyNeighbouring(toTile);
         }
 

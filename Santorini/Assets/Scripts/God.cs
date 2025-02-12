@@ -3,6 +3,8 @@ using System.Diagnostics;
 
 public abstract class God
 {
+    protected Player _player = null;
+
     int _moves = 0;
     int _builds = 0;
     int _placedWorkersThisTurn = 0;
@@ -17,7 +19,7 @@ public abstract class God
     protected int _placedWorkersPerTurn = 1;
     protected int _maxPlacedWorkers = 2;
 
-    public virtual void Initialize() { return; }
+    public virtual void Initialize(Player player) { _player = player; }
 
     public virtual void EnableRealTurns()
     {

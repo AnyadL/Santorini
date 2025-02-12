@@ -39,7 +39,7 @@ public class Player
             _god = new Hermes();
         }
 
-        _god.Initialize();
+        _god.Initialize(this);
 
         _stateMachine = new StateMachine();
         _stateMachine.Initialize(input, board, colour);
