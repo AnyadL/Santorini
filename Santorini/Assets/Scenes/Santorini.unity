@@ -8689,6 +8689,14 @@ MonoBehaviour:
   _tower3Piece: {fileID: 2524677978011983681, guid: ebd9ccf07996d2348b188135cf4ebcb1,
     type: 3}
   _dome: {fileID: 8930429360730673587, guid: 07ced143d986b3e4db5a53443965552b, type: 3}
+  _tower1PieceGhost: {fileID: 4385001239567852089, guid: 055ca4859e082c74a8a4d6b4dfdad0d7,
+    type: 3}
+  _tower2PieceGhost: {fileID: 3707712745122840231, guid: eab22ef9b36f91441a453249c9cc927f,
+    type: 3}
+  _tower3PieceGhost: {fileID: 1128113214556367663, guid: 79741208681bd93488c5bb8f0890ff79,
+    type: 3}
+  _domeGhost: {fileID: 7217634714752036970, guid: 7fb333d9c17fe4444aa5ea9a013a08c3,
+    type: 3}
   _workerPrefabs:
   - gender: 0
     colour: 0

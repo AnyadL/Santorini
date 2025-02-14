@@ -68,6 +68,13 @@ public class Tile : MonoBehaviour
     GameObject _level3TowerPiece = default;
     GameObject _dome = default;
 
+    GameObject _level1TowerPieceGhost = default;
+    GameObject _level2TowerPieceGhost = default;
+    GameObject _level3TowerPieceGhost = default;
+    GameObject _domeGhost = default;
+
+    GameObject _towerPieceGhost = null;
+
     float _boardWorkerY = 0.0f;
     float _level1WorkerY = 0.0f;
     float _level2WorkerY = 0.0f;
@@ -109,6 +116,14 @@ public class Tile : MonoBehaviour
         _level2TowerPiece = level2TowerPiece;
         _level3TowerPiece = level3TowerPiece;
         _dome = dome;
+    }
+
+    public void SetTowerPieceGhostPrefabs(GameObject level1TowerPiece, GameObject level2TowerPiece, GameObject level3TowerPiece, GameObject dome)
+    {
+        _level1TowerPieceGhost = level1TowerPiece;
+        _level2TowerPieceGhost = level2TowerPiece;
+        _level3TowerPieceGhost = level3TowerPiece;
+        _domeGhost = dome;
     }
 
     public Worker GetWorkerOnTile()
@@ -169,12 +184,7 @@ public class Tile : MonoBehaviour
 
     public void OnUpdate()
     {
-        foreach (TileNeighbour tileNeighbour in _neighbours)
-        {
-            tileNeighbour.GetTile().transform.Find("TileMesh").gameObject.SetActive(false);
-        }
-
-        transform.Find("TileMesh").gameObject.SetActive(false);
+        DestroyGhosts();
     }
 
     public Worker PlaceWorker(GameObject workerPrefab, Worker.Gender gender, Worker.Colour colour)
@@ -209,6 +219,19 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public void AddTowerGhostPiece()
+    {
+        _towerPieceGhost = Instantiate(GetTowerPieceGhostPrefab(), new Vector3(transform.position.x, GetTowerPieceY(), transform.position.z), Quaternion.identity);      
+    }
+
+    public void DestroyGhosts()
+    {
+        if(_towerPieceGhost != null)
+        {
+            Destroy(_towerPieceGhost);
+        }
+    }
+
     public void AddSpecificPiece(int pieceLevel)
     {
         // Domes are a different height than other tile pieces and need to be offset
@@ -228,6 +251,20 @@ public class Tile : MonoBehaviour
         {
             _domed = true;
         }
+    }
+
+    public void AddSpecificGhostPiece(int pieceLevel)
+    {
+        // Domes are a different height than other tile pieces and need to be offset
+        float offset = 0.0f;
+        if(pieceLevel == 3)
+        {
+            if(_towerPiecesOnTile.Count == 0) { offset = _domeOnGroundOffset; }
+            else if (_towerPiecesOnTile.Count == 1) { offset = _domeOnLevel1Offset; }
+            else if (_towerPiecesOnTile.Count == 2) { offset = _domeOnLevel2Offset; }
+        }
+        
+        _towerPieceGhost = Instantiate(GetSpecificTowerPieceGhostPrefab(pieceLevel), new Vector3(transform.position.x, GetTowerPieceY() + offset, transform.position.z), Quaternion.identity);
     }
 
     public void RemoveTowerPiece()
@@ -309,6 +346,23 @@ public class Tile : MonoBehaviour
         }
     }
 
+    GameObject GetTowerPieceGhostPrefab()
+    {
+        switch (_towerPiecesOnTile.Count)
+        {
+            case 0:
+                return _level1TowerPieceGhost;
+            case 1:
+                return _level2TowerPieceGhost;
+            case 2:
+                return _level3TowerPieceGhost;
+            case 3:
+                return _domeGhost;
+            default:
+                return null;
+        }
+    }
+
     GameObject GetSpecificTowerPiecePrefab(int pieceLevel)
     {
         switch (pieceLevel)
@@ -321,6 +375,23 @@ public class Tile : MonoBehaviour
                 return _level3TowerPiece;
             case 3:
                 return _dome;
+            default:
+                return null;
+        }
+    }
+        
+    GameObject GetSpecificTowerPieceGhostPrefab(int pieceLevel)
+    {
+        switch (pieceLevel)
+        {
+            case 0:
+                return _level1TowerPieceGhost;
+            case 1:
+                return _level2TowerPieceGhost;
+            case 2:
+                return _level3TowerPieceGhost;
+            case 3:
+                return _domeGhost;
             default:
                 return null;
         }

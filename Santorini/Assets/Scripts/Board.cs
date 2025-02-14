@@ -17,6 +17,16 @@ public class Board : MonoBehaviour
     [SerializeField]
     GameObject _dome = default;
 
+    [Header("Ghost Tower Prefabs")]
+    [SerializeField]
+    GameObject _tower1PieceGhost = default;
+    [SerializeField]
+    GameObject _tower2PieceGhost = default;
+    [SerializeField]
+    GameObject _tower3PieceGhost = default;
+    [SerializeField]
+    GameObject _domeGhost = default;
+
     [System.SerializableAttribute]
     struct WorkerPrefab
     {
@@ -83,6 +93,7 @@ public class Board : MonoBehaviour
             tile.OnStart();
             tile.SetYPositions(_groundWorkerPosition.position.y, _level1WorkerPosition.position.y, _level2WorkerPosition.position.y, _level3WorkerPosition.position.y, _level1TowerPiecePosition.position.y, _level2TowerPiecePosition.position.y, _level3TowerPiecePosition.position.y, _domePosition.position.y);
             tile.SetTowerPiecePrefabs(_tower1Piece, _tower2Piece, _tower3Piece, _dome);
+            tile.SetTowerPieceGhostPrefabs(_tower1PieceGhost, _tower2PieceGhost, _tower3PieceGhost, _domeGhost);
         }
     }
 
