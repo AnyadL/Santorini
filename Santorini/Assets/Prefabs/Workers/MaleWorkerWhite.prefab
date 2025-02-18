@@ -12,16 +12,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: MaleWorkerWhite
       objectReference: {fileID: 0}
-    - target: {fileID: 9137886885786710271, guid: 68dc7a4cf5e396440855206bac0378aa,
-        type: 3}
-      propertyPath: _highlight
-      value: 
-      objectReference: {fileID: 164134536887072563}
     - target: {fileID: 5583159076045518457, guid: 68dc7a4cf5e396440855206bac0378aa,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 3d9a407e46cea4b48a4ee8b23e7dfb01, type: 2}
+    - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -36,6 +36,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
         type: 3}
@@ -54,16 +59,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
         type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6296291999491014711, guid: 68dc7a4cf5e396440855206bac0378aa,
-        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -77,6 +72,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9137886885786710271, guid: 68dc7a4cf5e396440855206bac0378aa,
+        type: 3}
+      propertyPath: _highlight
+      value: 
+      objectReference: {fileID: 164134536887072563}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68dc7a4cf5e396440855206bac0378aa, type: 3}
 --- !u!1 &164134536887072563 stripped

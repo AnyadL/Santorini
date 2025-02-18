@@ -18,22 +18,35 @@ public class PlacingState : State
             return (int)Player.StateId.Selecting;
         }
 
-        if (!input.Mouse0ClickedOnBoard()) { return -1; }
-
-        Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
-
-        if (activePlayer.GetGod().AllowsMove(null, nearestTileToClick) && board.OpponentsAllowMove(nearestTileToClick))
+        if (input.Mouse0ClickedOnBoard())
         {
-            GameObject newWorkerGO = board.GetNextWorkerPrefab(out Worker.Gender gender, out Worker.Colour colour);
-            Worker newWorker = nearestTileToClick.PlaceWorker(newWorkerGO, gender, colour);
-            newWorker.SetPlayer(activePlayer);
-            activePlayer.AddWorker(newWorker);
-            activePlayer.GetGod().RegisterPlacedWorker();
+            Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
+            Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
 
-            if (activePlayer.GetGod().DonePlacingThisTurn())
+            if (activePlayer.GetGod().AllowsMove(null, nearestTileToClick) && board.OpponentsAllowMove(nearestTileToClick))
             {
-                return (int)Player.StateId.WaitingOnConfirmation;
+                GameObject newWorkerGO = board.GetNextWorkerPrefab(out Worker.Gender gender, out Worker.Colour colour);
+                Worker newWorker = nearestTileToClick.PlaceWorker(newWorkerGO, gender, colour);
+                newWorker.SetPlayer(activePlayer);
+                activePlayer.AddWorker(newWorker);
+                activePlayer.GetGod().RegisterPlacedWorker();
+
+                if (activePlayer.GetGod().DonePlacingThisTurn())
+                {
+                    return (int)Player.StateId.WaitingOnConfirmation;
+                }
+            }
+        } 
+        else if (input.Mouse0HoveredOnBoard())
+        {
+            Vector3 hoverPosition = input.GetMouse0HoverPositionBoard();
+            Tile nearestTileToHover = board.GetNearestTileToPosition(hoverPosition);
+
+            if (activePlayer.GetGod().AllowsMove(null, nearestTileToHover) && board.OpponentsAllowMove(nearestTileToHover))
+            {
+                board.GetNextWorkerPrefab(out Worker.Gender gender, out Worker.Colour colour);
+                GameObject newWorkerGhost = board.GetWorkerGhostPrefab(gender, colour);
+                nearestTileToHover.AddGhostWorker(newWorkerGhost);
             }
         }
         

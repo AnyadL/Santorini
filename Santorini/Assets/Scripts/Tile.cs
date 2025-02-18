@@ -74,6 +74,7 @@ public class Tile : MonoBehaviour
     GameObject _domeGhost = default;
 
     GameObject _towerPieceGhost = null;
+    GameObject _workerGhost = null;
 
     float _boardWorkerY = 0.0f;
     float _level1WorkerY = 0.0f;
@@ -202,6 +203,17 @@ public class Tile : MonoBehaviour
         _workerOnTile.transform.position = new Vector3(transform.position.x, GetWorkerY(), transform.position.z);
     }
 
+    public void AddGhostWorker(GameObject workerGhost)
+    {
+        // hide workers
+        if(_workerOnTile)
+        {
+            _workerOnTile.gameObject.SetActive(false);
+        }
+
+        _workerGhost = Instantiate(workerGhost, new Vector3(transform.position.x, GetWorkerY(), transform.position.z), Quaternion.identity);
+    }
+
     public void RemoveWorker()
     {
         _workerOnTile = null;
@@ -229,6 +241,17 @@ public class Tile : MonoBehaviour
         if(_towerPieceGhost != null)
         {
             Destroy(_towerPieceGhost);
+        }
+
+        if(_workerGhost != null)
+        {
+            Destroy(_workerGhost);
+        }
+
+        // unhide workers
+        if(_workerOnTile)
+        {
+            _workerOnTile.gameObject.SetActive(true);
         }
     }
 

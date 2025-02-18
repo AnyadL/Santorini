@@ -7,10 +7,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5956778451337388307, guid: b1c803cfad71136479be5792b10e0fe5,
+    - target: {fileID: 422612245282505926, guid: b1c803cfad71136479be5792b10e0fe5,
         type: 3}
-      propertyPath: m_Name
-      value: FemaleWorkerWhite
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d9a407e46cea4b48a4ee8b23e7dfb01, type: 2}
+    - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
         type: 3}
@@ -29,6 +34,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -40,16 +50,6 @@ PrefabInstance:
     - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2289757388278887048, guid: b1c803cfad71136479be5792b10e0fe5,
@@ -67,10 +67,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 422612245282505926, guid: b1c803cfad71136479be5792b10e0fe5,
+    - target: {fileID: 5956778451337388307, guid: b1c803cfad71136479be5792b10e0fe5,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      propertyPath: m_Name
+      value: FemaleWorkerWhite
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1c803cfad71136479be5792b10e0fe5, type: 3}

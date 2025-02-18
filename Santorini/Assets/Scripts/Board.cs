@@ -41,6 +41,9 @@ public class Board : MonoBehaviour
     [SerializeField]
     List<WorkerPrefab> _workerPrefabs = default;
 
+    [SerializeField]
+    List<WorkerPrefab> _workerGhostPrefabs = default;
+
     [Header("Positions")]
     [SerializeField]
     Transform _groundWorkerPosition = default;
@@ -335,6 +338,20 @@ public class Board : MonoBehaviour
             if (workerPrefab.gender == gender && workerPrefab.colour == colour)
             {
                 return workerPrefab.prefab;
+            }
+        }
+
+        Debug.LogErrorFormat("Found no Worker prefab with these settings:\nGender: {0}, Colour: {1}", gender.ToString(), colour.ToString());
+        return null;
+    }
+
+    public GameObject GetWorkerGhostPrefab(Worker.Gender gender, Worker.Colour colour)
+    {
+        foreach(WorkerPrefab workerGhost in _workerGhostPrefabs)
+        {
+            if (workerGhost.gender == gender && workerGhost.colour == colour)
+            {
+                return workerGhost.prefab;
             }
         }
 

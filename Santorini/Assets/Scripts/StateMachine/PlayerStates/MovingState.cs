@@ -19,66 +19,104 @@ public class MovingState : State
             return (int)Player.StateId.Building;
         }
 
-        if(!input.Mouse0ClickedOnBoard()) { return -1; }
-
-        Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
-        Worker selectedWorker = activePlayer.GetSelectedWorker();
-
-        Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
-        if(workerOnTile != null && activePlayer.GetWorkers().Contains(workerOnTile))
+        if(input.Mouse0ClickedOnBoard())
         {
-            // Check if you're allowed to go back to the Selecting State
-            if(activePlayer.GetGod().AllowsReturnToSelectingState())
-            {  
-                // Player has decided to reselect which worker they're using
-                selectedWorker.DisableHighlight();
-                return (int)Player.StateId.Selecting;
-            }
-        }
+            Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
+            Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
+            Worker selectedWorker = activePlayer.GetSelectedWorker();
 
-        if(activePlayer.GetGod().AllowsMove(selectedWorker.GetTile(), nearestTileToClick) && 
-            board.AllowsMove(selectedWorker, nearestTileToClick) &&
-            board.OpponentsAllowMove(selectedWorker, nearestTileToClick))
-        {
-            // God, Board, and opponents all agree that the move is legal
-            
-            // If there's a worker on the tile, then the active player's God 
-            // allows moving to a tile with a worker on it. Check with that God
-            // to see what to do with the worker
-            if(workerOnTile != null)
+            Worker workerOnTile = nearestTileToClick.GetWorkerOnTile();
+            if(workerOnTile != null && activePlayer.GetWorkers().Contains(workerOnTile))
             {
-                Tile opponentTile = activePlayer.GetGod().TileToMoveOpponentWorkerTo();
-                if (opponentTile == null)
+                // Check if you're allowed to go back to the Selecting State
+                if(activePlayer.GetGod().AllowsReturnToSelectingState())
+                {  
+                    // Player has decided to reselect which worker they're using
+                    selectedWorker.DisableHighlight();
+                    return (int)Player.StateId.Selecting;
+                }
+            }
+
+            if(activePlayer.GetGod().AllowsMove(selectedWorker.GetTile(), nearestTileToClick) && 
+                board.AllowsMove(selectedWorker, nearestTileToClick) &&
+                board.OpponentsAllowMove(selectedWorker, nearestTileToClick))
+            {
+                // God, Board, and opponents all agree that the move is legal
+                
+                // If there's a worker on the tile, then the active player's God 
+                // allows moving to a tile with a worker on it. Check with that God
+                // to see what to do with the worker
+                if(workerOnTile != null)
                 {
-                    Debug.LogErrorFormat("Tried to move to a tile that already had a worker, but didn't provide a tile to move that worker to.");
+                    Tile opponentTile = activePlayer.GetGod().TileToMoveOpponentWorkerTo();
+                    if (opponentTile == null)
+                    {
+                        Debug.LogErrorFormat("Tried to move to a tile that already had a worker, but didn't provide a tile to move that worker to.");
+                    }
+
+                    workerOnTile.GetTile().RemoveWorker();
+                    selectedWorker.GetTile().RemoveWorker();
+
+                    opponentTile.AddWorker(workerOnTile);
+                    nearestTileToClick.AddWorker(selectedWorker);
+
+                    activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
+                    
+                    workerOnTile.SetTile(opponentTile);
+                    selectedWorker.SetTile(nearestTileToClick);
+                }
+                else
+                {
+                    selectedWorker.GetTile().RemoveWorker();
+
+                    nearestTileToClick.AddWorker(selectedWorker);
+
+                    activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
+                    
+                    selectedWorker.SetTile(nearestTileToClick);
                 }
 
-                workerOnTile.GetTile().RemoveWorker();
-                selectedWorker.GetTile().RemoveWorker();
-
-                opponentTile.AddWorker(workerOnTile);
-                nearestTileToClick.AddWorker(selectedWorker);
-
-                activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
-                
-                workerOnTile.SetTile(opponentTile);
-                selectedWorker.SetTile(nearestTileToClick);
+                if(activePlayer.GetGod().DoneMoving())
+                {
+                    return (int)Player.StateId.Building;
+                }
             }
-            else
+        }
+        else if (input.Mouse0HoveredOnBoard())
+        {
+            Vector3 hoverPosition = input.GetMouse0HoverPositionBoard();
+            Tile nearestTileToHover = board.GetNearestTileToPosition(hoverPosition);
+            Worker selectedWorker = activePlayer.GetSelectedWorker();
+
+            Worker workerOnTile = nearestTileToHover.GetWorkerOnTile();
+            GameObject selectedWorkerGhost = board.GetWorkerGhostPrefab(selectedWorker.GetGender(), selectedWorker.GetColour());
+
+            if(activePlayer.GetGod().AllowsMove(selectedWorker.GetTile(), nearestTileToHover) && 
+                board.AllowsMove(selectedWorker, nearestTileToHover) &&
+                board.OpponentsAllowMove(selectedWorker, nearestTileToHover))
             {
-                selectedWorker.GetTile().RemoveWorker();
+                if(workerOnTile != null && !activePlayer.GetWorkers().Contains(workerOnTile))
+                {
+                    Tile opponentTile = activePlayer.GetGod().TileToMoveOpponentWorkerTo();
+                    if (opponentTile == null)
+                    {
+                        Debug.LogErrorFormat("Considered to a tile that already had a worker, but didn't provide a tile to move that worker to.");
+                    }
 
-                nearestTileToClick.AddWorker(selectedWorker);
+                    GameObject opponentWorkerGhost = board.GetWorkerGhostPrefab(workerOnTile.GetGender(), workerOnTile.GetColour());
+                    
+                    opponentTile.AddGhostWorker(opponentWorkerGhost);
+                    nearestTileToHover.AddGhostWorker(selectedWorkerGhost);
+                }
+                else
+                {
+                    nearestTileToHover.AddGhostWorker(selectedWorkerGhost);
+                }
 
-                activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
-                
-                selectedWorker.SetTile(nearestTileToClick);
-            }
-
-            if(activePlayer.GetGod().DoneMoving())
-            {
-                return (int)Player.StateId.Building;
+                if(activePlayer.GetGod().DoneMoving())
+                {
+                    return (int)Player.StateId.Building;
+                }
             }
         }
 

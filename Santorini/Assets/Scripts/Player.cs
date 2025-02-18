@@ -34,9 +34,9 @@ public class Player
 
         if(colour == Worker.Colour.Blue)
         {
-            _god = new Atlas();
+            _god = new Apollo();
         } else {
-            _god = new Hermes();
+            _god = new Artemis();
         }
 
         _god.Initialize(this);
