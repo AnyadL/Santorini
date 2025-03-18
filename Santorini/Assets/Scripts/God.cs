@@ -144,7 +144,7 @@ public abstract class God
     {
         foreach(Worker worker in workers)
         {
-            if(worker.GetTile().GetLevel() == Tile.Level.Level3)
+            if(worker.GetPreviousTile()?.GetLevel() == Tile.Level.Level2 && worker.GetTile().GetLevel() == Tile.Level.Level3)
             {
                 return true;
             }

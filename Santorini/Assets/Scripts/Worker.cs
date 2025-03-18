@@ -22,6 +22,7 @@ public class Worker : MonoBehaviour
 
     Player _player = default;
     Tile _tile = default;
+    Tile _previousTile = default;
 
     Gender _gender = Gender.Female;
     Colour _colour = Colour.Blue;
@@ -54,12 +55,18 @@ public class Worker : MonoBehaviour
 
     public void SetTile(Tile tile)
     {
+        _previousTile = _tile;
         _tile = tile;
     }
 
     public Tile GetTile()
     {
         return _tile;
+    }
+
+    public Tile GetPreviousTile()
+    {
+        return _previousTile;
     }
 
     public Gender GetGender()
