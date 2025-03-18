@@ -8712,6 +8712,23 @@ MonoBehaviour:
     colour: 1
     prefab: {fileID: 8913242481601427647, guid: a6159057a6edcdb4d97647248e28a87b,
       type: 3}
+  _workerGhostPrefabs:
+  - gender: 0
+    colour: 0
+    prefab: {fileID: 1101849175725320300, guid: df495e16fb37cfc449b3d1f908007d04,
+      type: 3}
+  - gender: 1
+    colour: 0
+    prefab: {fileID: 8859600590639741127, guid: b866af9e05700dc4cb5b7dc266317f59,
+      type: 3}
+  - gender: 0
+    colour: 1
+    prefab: {fileID: 8673002247615235605, guid: 5d1fcfdcd1f10f64888f577ac688ab6e,
+      type: 3}
+  - gender: 1
+    colour: 1
+    prefab: {fileID: 7664469656739622175, guid: dab0416f1cd0d314ca8b0a6744d95e0a,
+      type: 3}
   _groundWorkerPosition: {fileID: 596148434}
   _level1WorkerPosition: {fileID: 191646712}
   _level2WorkerPosition: {fileID: 1081941943}
