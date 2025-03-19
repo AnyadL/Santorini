@@ -9,9 +9,9 @@ public class Athena : God
         _movedUp = false;
     }
 
-    public override void RegisterMove(Tile fromTile, Tile toTile)
+    public override void RegisterMove(Worker worker, Tile fromTile, Tile toTile)
     {
-        base.RegisterMove(fromTile, toTile);
+        base.RegisterMove(worker, fromTile, toTile);
 
         if (fromTile.GetTowerPieceCount() - toTile.GetTowerPieceCount() < 0)
         {

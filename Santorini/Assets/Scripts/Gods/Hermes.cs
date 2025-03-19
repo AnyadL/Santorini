@@ -30,9 +30,9 @@ public class Hermes : God
         return !DoneMoving();
     }
     
-    public override void RegisterMove(Tile fromTile, Tile toTile)
+    public override void RegisterMove(Worker worker, Tile fromTile, Tile toTile)
     {
-        base.RegisterMove(fromTile, toTile);
+        base.RegisterMove(worker, fromTile, toTile);
 
         _hasMovedOnce = true;
         

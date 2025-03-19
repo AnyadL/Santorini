@@ -9,16 +9,16 @@ public class Pan : God
         _movedDown2Levels = false;
     }
 
-    public override void RegisterMove(Tile fromTile, Tile toTile)
+    public override void RegisterMove(Worker worker, Tile fromTile, Tile toTile)
     {
-        base.RegisterMove(fromTile, toTile);
+        base.RegisterMove(worker, fromTile, toTile);
         if(fromTile.GetTowerPieceCount() - toTile.GetTowerPieceCount() == 2)
         {
             _movedDown2Levels = true;
         }
     }
 
-    public override bool HasWon(Board board, List<Worker> workers)
+    public override bool HasWon(Board board)
     {
         if (_movedDown2Levels)
         {
@@ -29,6 +29,6 @@ public class Pan : God
         }
 
         // Pan can also win the normal way
-        return base.HasWon(board, workers);
+        return base.HasWon(board);
     }
 }

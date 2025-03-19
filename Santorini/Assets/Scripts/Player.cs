@@ -95,7 +95,7 @@ public class Player
 
     public bool HasWon()
     {
-        return _god.HasWon(_board, _workers);
+        return _god.HasWon(_board);
     }
 
     public bool HasLost()

@@ -19,6 +19,8 @@ public abstract class God
     protected int _placedWorkersPerTurn = 1;
     protected int _maxPlacedWorkers = 2;
 
+    protected List<Worker> _workersMovedThisTurn = new List<Worker>();
+
     public virtual void Initialize(Player player) { _player = player; }
 
     public virtual void EnableRealTurns()
@@ -140,9 +142,9 @@ public abstract class God
 
     public virtual bool AllowsOpponentBuild(Worker worker, Tile tile) { return true; }
 
-    public virtual bool HasWon(Board board, List<Worker> workers)
+    public virtual bool HasWon(Board board)
     {
-        foreach(Worker worker in workers)
+        foreach(Worker worker in _workersMovedThisTurn)
         {
             if(worker.GetPreviousTile()?.GetLevel() == Tile.Level.Level2 && worker.GetTile().GetLevel() == Tile.Level.Level3)
             {
@@ -155,8 +157,8 @@ public abstract class God
 
     public virtual bool PreventsWin(Player opponent) { return false; }
 
-    public virtual void InitializeMoves() { _moves = 0; _movesEnded = false; _movesStarted = false; }
-    public virtual void RegisterMove(Tile fromTile, Tile toTile) { ++_moves; _movesStarted = true; }
+    public virtual void InitializeMoves() { _moves = 0; _movesEnded = false; _movesStarted = false; _workersMovedThisTurn.Clear();}
+    public virtual void RegisterMove(Worker worker, Tile fromTile, Tile toTile) { ++_moves; _movesStarted = true; _workersMovedThisTurn.Add(worker);}
     public virtual bool DoneMoving() { return _movesEnded || _moves >= _maxMoves; }
     public virtual void EndMove() { _movesEnded = true; _movesStarted = true; }
 
