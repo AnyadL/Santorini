@@ -19,7 +19,8 @@ public class Tile : MonoBehaviour
             South,
             SouthWest,
             West,
-            NorthWest
+            NorthWest,
+            Default
         }
 
 #pragma warning disable 0649

@@ -34,7 +34,7 @@ public class Player
 
         if(colour == Worker.Colour.Blue)
         {
-            _god = new Apollo();
+            _god = new Minotaur();
         } else {
             _god = new Artemis();
         }
@@ -95,7 +95,7 @@ public class Player
 
     public bool HasWon()
     {
-        return _god.HasWon(_board, _workers);
+        return _god.HasWon(_board);
     }
 
     public bool HasLost()

@@ -24,9 +24,9 @@ public class Artemis : God
         _midMove = false;
     }
 
-    public override void RegisterMove(Tile fromTile, Tile toTile)
+    public override void RegisterMove(Worker worker, Tile fromTile, Tile toTile)
     {
-        base.RegisterMove(fromTile, toTile);
+        base.RegisterMove(worker, fromTile, toTile);
 
         _lastTile = fromTile;
         _midMove = true;

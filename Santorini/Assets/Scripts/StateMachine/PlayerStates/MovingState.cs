@@ -60,7 +60,7 @@ public class MovingState : State
                     opponentTile.AddWorker(workerOnTile);
                     nearestTileToClick.AddWorker(selectedWorker);
 
-                    activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
+                    activePlayer.GetGod().RegisterMove(selectedWorker, selectedWorker.GetTile(), nearestTileToClick);
                     
                     workerOnTile.SetTile(opponentTile);
                     selectedWorker.SetTile(nearestTileToClick);
@@ -71,7 +71,7 @@ public class MovingState : State
 
                     nearestTileToClick.AddWorker(selectedWorker);
 
-                    activePlayer.GetGod().RegisterMove(selectedWorker.GetTile(), nearestTileToClick);
+                    activePlayer.GetGod().RegisterMove(selectedWorker, selectedWorker.GetTile(), nearestTileToClick);
                     
                     selectedWorker.SetTile(nearestTileToClick);
                 }
